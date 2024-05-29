@@ -7,7 +7,9 @@ import React, { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
+import { chainId } from '@/lib/constant'
 
+declare const window: any;
 
 const style = {
 	wrapper: `bg-black w-screen px-[1.2rem] py-[0.8rem] flex `,
@@ -23,7 +25,96 @@ const style = {
 
 export default function Navbar() {
 	const router = useRouter();
+	const [show, setShow] = useState(false);
+	const handleShow = () => setShow(true);
+	const handleClose = () => setShow(false);
 	const [searchQuery, setSearchQuery] = useState("");
+	const [wallets, setWallets] = useState({
+		isKeplrInstalled: null,
+		isLeapInstalled: null,
+	});
+
+	const connect = async (wallet) => {
+		if (wallet == "leap") {
+			if (!window.leap) {
+				alert("Please install leap extension");
+			} else {
+				try {
+					await window.leap.enable(chainId);
+
+					const offlineSigner = window.leap.getOfflineSigner(chainId);
+
+					const accounts = await offlineSigner.getAccounts();
+
+					// console.log(accounts[0].address);
+
+					setShow(false);
+
+					// dispatch(connected({ account: accounts[0].address, wallet: wallet }));
+					// navigate("/navigate");
+				} catch (error) {
+					console.log(error);
+				}
+			}
+		}
+
+		if (wallet == "keplr") {
+			if (!window.keplr) {
+				alert("Please install keplr extension");
+			} else {
+				try {
+
+					await window.keplr.enable(chainId);
+
+					const offlineSigner = window.keplr.getOfflineSigner(chainId);
+
+					const accounts = await offlineSigner.getAccounts();
+
+					// console.log(accounts[0].address);
+
+					setShow(false);
+
+					// dispatch(connected({ account: accounts[0].address, wallet: wallet }));
+					// navigate("/navigate");
+				} catch (error) {
+					console.log(error);
+				}
+			}
+		}
+	};
+
+	const connectKeplr = async () => {
+		if (!window.keplr) {
+			alert("Please install keplr extension");
+		}
+		else {
+			try {
+
+				await window.keplr.enable(chainId);
+
+				const offlineSigner = window.keplr.getOfflineSigner(chainId);
+
+				const accounts = await offlineSigner.getAccounts();
+
+				// console.log(accounts[0].address);
+
+				setShow(false);
+
+				// dispatch(connected({ account: accounts[0].address, wallet: wallet }));
+				// navigate("/navigate");
+			} catch (error) {
+				console.log(error);
+			}
+		}
+	};
+
+
+	const checkInstalledWallets = () => {
+		setWallets({
+			isLeapInstalled: window.leap !== undefined,
+			isKeplrInstalled: window.keplr !== undefined,
+		});
+	};
 
 	return (
 		<div className={style.wrapper}>
@@ -32,7 +123,7 @@ export default function Navbar() {
 					{/* <Image src={mantleSeaLogo} height={80} width={200} alt="mantle logo" /> */}
 					<div className="text-[32px] text-white font-serif"
 					>
-						MyLogo
+						NexusFi
 					</div>
 					<div className={style.logoText}></div>
 				</div>
@@ -89,10 +180,13 @@ export default function Navbar() {
 				<div className={style.headerIcon}>
 					<MdOutlineAccountBalanceWallet />
 				</div>
-				<div>
-					{/* <ConnectButton></ConnectButton> */}
+				<div
+					className="bg-[#5D00CF] text-white px-[18px] py-[10px] rounded-[16px] cursor-pointer"
+					onClick={connectKeplr}
+				>
+					Connect Wallet
 				</div>
 			</div>
 		</div>
 	);
-}
+};
