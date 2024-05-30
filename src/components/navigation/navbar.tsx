@@ -96,6 +96,9 @@ export default function Navbar() {
 
 				const accounts = await offlineSigner.getAccounts();
 
+				console.log("address", accounts[0].address, "chainId", chainId);
+				console.log(accounts)
+
 				// console.log(accounts[0].address);
 
 				setShow(false);
@@ -129,50 +132,52 @@ export default function Navbar() {
 				</div>
 			</Link>
 
-			{/* search bar to search streams */}
-			<div className={style.searchBar}>
-				<div className={style.searchIcon}>
-					<AiOutlineSearch />
-				</div>
-				<input
-					className={style.searchInput}
-					type="text"
-					defaultValue={searchQuery}
-					placeholder="Enter Text"
-				//  onKeyPress={(e) => {
-				// if (e.key === 'Enter')
-				//     console.log(searchQuery)
-				// }}
-				/>
-				<button
-					onClick={() => {
-						router.push(`/searching/${searchQuery}`);
-					}}
-					className="text-white px-2"
-				>
-					Search
-				</button>
-			</div>
+
 
 			<div className={style.headerItems}>
-				<Link href="/searching">
-					{/* <div className={style.headerItem}> Streaming </div> */}
-				</Link>
+				<div
+					className={style.headerItem}
+					onClick={() => {
+						router.push("/");
+					}}
+				>
+					Dashboard
+				</div>
 
 				<div
 					className={style.headerItem}
 					onClick={() => {
-						router.push("/explore");
+						router.push("/restake");
 					}}
 				>
-					Explore
+					Restake
 				</div>
 
+				<div
+					className={style.headerItem}
+					onClick={() => {
+						router.push("/operator");
+					}}
+				>
+					Operator
+				</div>
+
+				<div
+					className={style.headerItem}
+					onClick={() => {
+						router.push("/avs");
+					}}
+				>
+					AVS
+				</div>
+			</div>
+
+			<div className="flex flex-row space-x-1 items-center md:flex md:flex-grow justify-end ">
 				{/* <div className={style.headerIcon} onClick={() => { router.push(`/profile/${address}`) }}> */}
 				<div
 					className={style.headerIcon}
 					onClick={() => {
-						router.push("/nft");
+						router.push("/account");
 					}}
 				>
 					<CgProfile />
@@ -184,7 +189,7 @@ export default function Navbar() {
 					className="bg-[#5D00CF] text-white px-[18px] py-[10px] rounded-[16px] cursor-pointer"
 					onClick={connectKeplr}
 				>
-					Connect Wallet
+					Connect Keplr Wallet
 				</div>
 			</div>
 		</div>
