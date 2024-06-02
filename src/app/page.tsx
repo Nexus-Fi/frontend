@@ -1,10 +1,10 @@
 import Image from "next/image";
-import Hero from "@/components/Hero";
+import Dashboard from "@/components/Dashboard";
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center justify-between p-24">
-      <Hero />
+    <main className="flex flex-col justify-between px-28 py-16">
+      <Dashboard />
     </main>
   );
 }
