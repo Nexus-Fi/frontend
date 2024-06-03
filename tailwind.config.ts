@@ -80,4 +80,10 @@ const config = {
   ],
 } satisfies Config
 
+// module.exports = {
+//   daisyui: {
+//     themes: ["light", "dark", "cupcake", "black", "bumblebee", "emerald", "corporate", "synthwave", "retro", "cyberpunk", "valentine", "halloween", "garden", "forest", "aqua", "lofi", "pastel", "fantasy", "wireframe", "black", "luxury", "dracula"],
+//   },
+// }
+
 export default config
