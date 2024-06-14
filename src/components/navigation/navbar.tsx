@@ -96,6 +96,8 @@ export default function Navbar() {
 
 				const accounts = await offlineSigner.getAccounts();
 
+				console.log("Signer",offlineSigner)
+
 				console.log("address", accounts[0].address, "chainId", chainId);
 				console.log(accounts)
 

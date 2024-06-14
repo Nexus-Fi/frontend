@@ -11,12 +11,14 @@
   },
   "dependencies": {
     "@cosmjs/crypto": "^0.32.3",
-    "@nibiruchain/nibijs": "^4.3.2",
+    "@cosmjs/proto-signing": "^0.32.3",
+    "@nibiruchain/nibijs": "^4.4.0",
     "@nibiruchain/protojs": "^0.21.16",
     "@radix-ui/react-icons": "^1.3.0",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
+    "react-hot-toast": "^2.4.1",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
