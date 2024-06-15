@@ -13,6 +13,27 @@ export interface ValidatorResponce{
     total_delegated:number,
     address:string
 }
+export const CONTRACT_MESSAGES = {
+    "add_validator": {
+        "add_validator": {
+            "validator": {
+                "address": "validator-address",
+                "total_delegated": "amount"
+            }
+        }
+    },
+    "remove_validator": {
+        "remove_validator": {
+            "address": "validator-address"
+        }
+    },
+    "update_config": {
+        "update_config": {
+            "owner": "new-owner-address",
+            "hub_contract": "new-hub-contract-address"
+        }
+    }
+};
 
 export interface ExecuteMsg {
     add_validator?: {
