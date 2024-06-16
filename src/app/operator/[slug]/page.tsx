@@ -60,7 +60,7 @@ const OperatorPage = () => {
     )
 }
 
-export default OperatorPage;
+export default OperatorPage;git
 
 interface SectionProps {
     title: string;
