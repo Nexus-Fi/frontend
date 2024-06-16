@@ -1,6 +1,6 @@
 import { NibiruTxClient, NibiruQuerier, Testnet } from "@nibiruchain/nibijs";
 
-import {CONTRACT_MESSAGES,ExecuteMsg} from "../../lib/messages";
+import {CONTRACT_MESSAGES,ExecuteMsg} from "../../src/lib/messages";
 
 
 const chain = Testnet(1);

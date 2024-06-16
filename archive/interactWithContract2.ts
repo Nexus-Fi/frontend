@@ -1,8 +1,8 @@
 import { NibiruTxClient, NibiruQuerier, Testnet } from "@nibiruchain/nibijs";
 
-import {CONTRACT_MESSAGES,ExecuteMsg} from "./messages";
+import {CONTRACT_MESSAGES,ExecuteMsg} from "../src/lib/messages";
 import { useChain, useWalletClient } from "@cosmos-kit/react";
-import { CHAIN_NAME } from "./utils";
+import { CHAIN_NAME } from "../src/lib/utils";
 
 const chain = Testnet(1);
 

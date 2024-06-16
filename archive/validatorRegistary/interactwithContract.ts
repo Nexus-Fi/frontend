@@ -1,6 +1,6 @@
 import { NibiruTxClient, NibiruQuerier, Testnet } from "@nibiruchain/nibijs";
 import { CONTRACT_MESSAGES } from "./messages";
-import {executeContract} from "../../interactwithContract";
+import {executeContract} from "../../src/interactwithContract";
 
 async function sendContractMessage(contractAddress: string, message: any) {
 
