@@ -1,46 +1,28 @@
 import { NibiruTxClient, NibiruQuerier, Testnet } from "@nibiruchain/nibijs";
 
-import {CONTRACT_MESSAGES,ExecuteMsg} from "../../lib/messages";
-
+import {CONTRACT_MESSAGES,ExecuteMsg} from "./messages";
+import { useChain, useWalletClient } from "@cosmos-kit/react";
+import { CHAIN_NAME } from "./utils";
 
 const chain = Testnet(1);
-// export async function sendstakeNibitx() {
-//     const signer = window.keplr.getOfflineSigner(chain.chainId);
-//     // const signer = await window[walletEx].getOfflineSigner(chain.chainId);
-// const signingClient = await NibiruTxClient.connectWithSigner(
-//   chain.endptTm,
-//   signer
-// );
-// const contractAddr ="nibi1valvrt57mk90yl94jmqhj7z0fl24q87ztrkl5tlqgky4mcfg8kds9nrg7y"; 
-// const CONTRACT_MESSAGE = bondForNibi();
-// const accounts = await signer.getAccounts();
-//       const fromAddr = accounts[0].address;
-// const tx = await signingClient.wasmClient.execute(
-//     fromAddr,
-//     contractAddr,
-//     CONTRACT_MESSAGE,
-//     "auto"
-//   );
-//   console.log(tx.transactionHash);
-// }
 
-async function sendContractMessage(contractAddress: string, message: ExecuteMsg) {
-  const signer = window.keplr.getOfflineSigner(chain.chainId);
-  // const signer = await window[walletEx].getOfflineSigner(chain.chainId);
+export async function useTransaction(contractAddress: string, message : ExecuteMsg) {
+const {client} = useWalletClient(CHAIN_NAME);
+const { address} = useChain(CHAIN_NAME);
+const signer = await client?.getOfflineSigner(chain.chainId);
 const signingClient = await NibiruTxClient.connectWithSigner(
 chain.endptTm,
-signer
+signer!
 );
-const contractAddr ="nibi1valvrt57mk90yl94jmqhj7z0fl24q87ztrkl5tlqgky4mcfg8kds9nrg7y"; 
-const accounts = await signer.getAccounts();
-    const fromAddr = accounts[0].address;
+
 const tx = await signingClient.wasmClient.execute(
-  fromAddr,
-  contractAddr,
+  address!,
+  contractAddress,
   message,
   "auto"
 );
 console.log(tx.transactionHash);
+return tx;
 }
 
 export async function stakenibi() {
