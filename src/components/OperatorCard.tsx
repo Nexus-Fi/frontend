@@ -5,7 +5,7 @@ import Link from 'next/link';
 const OperatorCard = () => {
     return (
         <div className="card my-5 bg-base-200 shadow-xl">
-            <Link href="/operator/0x321980af329232423423"> // redirecting on basic of contract address
+            <Link href="/operator/0x321980af329232423423">
                 <div className=" p-5 justify-between items-center">
                     <div className='flex flex-row w-full items-center gap-4'>
                         <CiDollar className='bg-yellow-300 rounded-xl text-3xl' />
