@@ -15,7 +15,7 @@ export default function Staking() {
       denom: "unibi",
     },
   ];
-
+  
   const stake = async () => {
     const toastId = toast.loading("Staking...");
     const tx = await sendTransaction(
