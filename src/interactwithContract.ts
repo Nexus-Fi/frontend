@@ -8,7 +8,6 @@ export interface TokenToSend {
   }
 
 export const executeContract = async (
-    token_id: string,
     CONTRACT_MESSAGE: any,
     contractAddr:string ,
     tokenToSend?: TokenToSend[],
