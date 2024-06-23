@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import { CiDollar } from "react-icons/ci";
 import useTransaction from "@/hooks/useTransaction";
 import { CONTRACT_MESSAGES } from "@/lib/messages";
@@ -10,9 +10,12 @@ const contract_address =
 
 export default function Staking() {
   const { sendTransaction } = useTransaction();
-  const [value, setValue] = useState("0");
+  // const [amount, setAmount] = useState<string>("0");
   const [exchange, setExchange] = useState("1");
-  const [amount, setAmount] = useState("2");
+  const [amount, setAmount] = useState<string>("0");
+  const [open, setOpen] = useState("stake"); // unstake, withdraw
+  const [loggedIn, setLoggedIn] = useState();
+
 
   const tokenToStake = [
     {
@@ -21,16 +24,20 @@ export default function Staking() {
     },
   ];
 
-  const priceHandler = (event: { target: { defaultValue: React.SetStateAction<string>; }; }) => {
-    console.log("price", event.target.defaultValue);
-    setAmount(event.target.defaultValue);
-  }
+  const handleTabOpen = (tabCategory: string) => {
+    setOpen(tabCategory);
+  };
+
+  const priceHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setAmount(event.target.value);
+    console.log("price", event.target.value, "amount", amount);
+  };
 
   const stake = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
     const toastId = toast.loading("Staking...");
-    console.log("staking", tokenToStake, "amount", amount, value, exchange)
+    console.log("staking", tokenToStake, "amount", amount, "exchange", exchange)
     const tx = await sendTransaction(
       contract_address,
       CONTRACT_MESSAGES.bond_forstnibi,
@@ -56,15 +63,48 @@ export default function Staking() {
         <div className=" p-5 justify-between items-center">
           <div className='flex flex-row w-full items-center gap-4'>
             {/* <CiDollar className='bg-yellow-300 rounded-xl text-3xl' /> */}
-            <div>
-              <h2 className="text-left text-xl font-semibold ">Stake</h2>
+            <div className="flex flex-wrap">
+              <div className={`w-1/3 rounded-t-[30px] py-4 px-1 md:px-4 text-sm font-semibold md:text-base lg:px-12 hover:underline-offset-8
+                                            transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${open === "client" ? "bg-[#F1F1F1] text-black underline-offset-8" : " "
+                }`}>
+                <button
+                  onClick={() => handleTabOpen("stake")}
+                >
+                  Stake
+                </button>
+              </div>
+
+              <div className="w-1/3 rounded-t-[30px]">
+                <div className={`rounded-t-[30px] py-4 px-4 text-sm font-semibold md:text-base lg:px-12 hover:underline-offset-8
+                                            transition-all delay-75 text-black  cursor-pointer ${open === "auditor" ? "bg-[#F1F1F1] text-black underline-offset-8" : " "
+                  }`}>
+                  <button
+                    onClick={() => handleTabOpen("unstake")}
+                  >
+                    Unstake
+                  </button>
+                </div>
+              </div>
+
+              <div className="w-1/3 rounded-t-[30px]">
+                <div className={`rounded-t-[30px] py-4 px-4 text-sm font-semibold md:text-base lg:px-12 hover:underline-offset-8
+                                            transition-all delay-75 text-black  cursor-pointer ${open === "auditor" ? "bg-[#F1F1F1] text-black underline-offset-8" : " "
+                  }`}>
+                  <button
+                    onClick={() => handleTabOpen("withdraw")}
+                  >
+                    Withdraw
+                  </button>
+                </div>
+              </div>
             </div>
 
           </div>
           <div className="divider divider-neutral"></div>
 
           <div>
-            <form className="w-full max-w-lg">
+
+            <form onSubmit={stake} className="w-full max-w-lg">
               <div className="my-4">
                 <label className="form-control w-full">
                   <div className="label">
@@ -86,7 +126,7 @@ export default function Staking() {
                       Enter Amount
                     </div>
                   </div>
-                  <input type="text" placeholder="0.00" onChange={priceHandler} defaultValue="0" className="input input-lg input-bordered" />
+                  <input type="text" id='stake-value' defaultValue={amount} onChange={priceHandler} className="input input-lg input-bordered" placeholder="0" required />
                 </label>
               </div>
 
@@ -96,7 +136,7 @@ export default function Staking() {
                   <div className='flex items-center justify-between'>
                     <div className=''>You wil get</div>
                     <div>
-                      {value} stNIBI
+                      {amount} stNIBI
                     </div>
                   </div>
                 </div>
@@ -112,7 +152,7 @@ export default function Staking() {
               </div>
 
               <button
-                onClick={stake}
+                type="submit"
                 className="bg-black text-white py-4 mt-5 px-4 rounded-xl text-xl w-full"
               >
                 Stake
@@ -141,6 +181,6 @@ export default function Staking() {
             </div> */}
         </div>
       </div>
-    </main>
+    </main >
   );
 }
