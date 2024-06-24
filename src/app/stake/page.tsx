@@ -10,17 +10,14 @@ const contract_address =
 
 export default function Staking() {
   const { sendTransaction } = useTransaction();
-  // const [amount, setAmount] = useState<string>("0");
   const [exchange, setExchange] = useState("1");
   const [amount, setAmount] = useState<string>("0");
   const [unstakeAmount, setUnstakeAmount] = useState<string>("0");
   const [open, setOpen] = useState("stake"); // unstake, withdraw
-  const [loggedIn, setLoggedIn] = useState();
-  const [unstakeStatus, setUnstakeStatus] = useState(true);
+  const [wallet, setWallet] = useState<string>("");
+  const [unstakeStatus, setUnstakeStatus] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState<string>("0");
   const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
-
-
 
   const tokenToStake = [
     {
@@ -66,6 +63,7 @@ export default function Staking() {
         "Staking Failed";
       });
   };
+
   const unstake = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
@@ -85,12 +83,37 @@ export default function Staking() {
       });
   };
 
+  const withdraw = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+
+    const toastId = toast.loading("withdrawing...");
+    console.log("staking", tokenToStake, "unstake", amount, "exchange", exchange)
+    if (termsAccepted) {
+      console.log('Terms accepted');
+      // call contract withdraw function here
+      // const tx = await sendTransaction(
+      //   contract_address,
+      //   CONTRACT_MESSAGES.bond_forstnibi,
+      //   tokenToStake
+      // )
+      //   .then((res) => {
+      //     toast.dismiss(toastId);
+      //     toast.success("Staked Successfuly");
+      //   })
+      //   .catch((err) => {
+      //     "Staking Failed";
+      //   });
+    } else {
+      toast.error('Please tick the box to withdraw funds');
+    }
+
+  };
+
   return (
-    <main className="flex flex-row justify-center align-middle pt-5 ">
+    <main className="flex flex-row justify-center align-middle py-5 ">
       <div className="card my-5 bg-base-200 shadow-xl w-[600px] px-10 py-5">
         <div className=" p-4 justify-between items-center">
           <div className='flex flex-row w-full items-center gap-4'>
-            {/* <CiDollar className='bg-yellow-300 rounded-xl text-3xl' /> */}
             <div className="flex flex-wrap">
               <div className={`w-1/3 rounded-t-[40px] py-4 px-1 md:px-4 text-sm font-semibold md:text-base lg:px-12 hover:underline-offset-8
                                             transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${open === "client" ? "bg-[#F1F1F1] text-black underline-offset-8" : " "
@@ -305,7 +328,7 @@ export default function Staking() {
                   </div>
                   :
                   <div>
-                    <form onSubmit={unstake} className="w-full max-w-lg">
+                    <form onSubmit={withdraw} className="w-full max-w-lg">
                       <div className="my-4">
                         <label className="form-control w-full">
                           <div className="label">
@@ -313,7 +336,6 @@ export default function Staking() {
                               Withdraw amount available
                             </div>
                           </div>
-
                         </label>
                       </div>
 
@@ -322,7 +344,6 @@ export default function Staking() {
                           <div className="input input-lg input-bordered">
                             <div className="flex align-middle justify-between text-center pt-2 ">
                               {withdrawAmount} NIBI
-
                             </div>
                           </div>
                         </label>

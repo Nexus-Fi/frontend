@@ -43,9 +43,12 @@ export default function RootLayout({
           // @ts-ignore
           signerOptions={signerOptions}
         >
-          <Navbar />
-          <Toaster />
-          {children}
+          <div className="min-h-screen">
+            <Navbar />
+            <Toaster />
+            {children}
+          </div>
+
         </ChainProvider>
       </body>
     </html >
