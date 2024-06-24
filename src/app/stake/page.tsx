@@ -16,6 +16,10 @@ export default function Staking() {
   const [unstakeAmount, setUnstakeAmount] = useState<string>("0");
   const [open, setOpen] = useState("stake"); // unstake, withdraw
   const [loggedIn, setLoggedIn] = useState();
+  const [unstakeStatus, setUnstakeStatus] = useState(true);
+  const [withdrawAmount, setWithdrawAmount] = useState<string>("0");
+  const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
+
 
 
   const tokenToStake = [
@@ -38,6 +42,11 @@ export default function Staking() {
     setAmount(event.target.value);
     console.log("unstake amount", event.target.value, "amount", amount);
   };
+
+  const termsHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setTermsAccepted(event.target.checked);
+  };
+
 
   const stake = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
@@ -263,23 +272,92 @@ export default function Staking() {
             </div>
           }
 
+          {/* withdraw option */}
+          {
+            open === "withdraw" &&
+            <div>
+              <div role="alert" className="mt-3 alert alert-warning">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 shrink-0 stroke-current"
+                  fill="none"
+                  viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <span>Unstake requests are processed in 7-10 days, subject to exit queue on Network</span>
+              </div>
 
-          {/* <div className='flex flex-row gap-4'>
-                <div className="flex items-center justify-center">
-                    <div className="w-px h-12 bg-green-300"></div>
-                    <div className='flex flex-col px-2'>
-                        <div> 0.000</div>
-                        <div className='text-xs'>Restaked</div>
+              {
+                !unstakeStatus ?
+                  <div>
+                    <div className="flex flex-col align-middle justify-center my-8 py-8 p-5 bg-white rounded-3xl ">
+                      <div className="py-5 text-center text-3xl font-semibold">
+                        No unstake requests found
+                      </div>
+                      <div className="py-5 text-center ">
+                        You will be able to claim your tokens after the Unstake request has been processed. To Unstake your tokens go to Unstake tab
+                      </div>
                     </div>
-                </div>
-                <div className="flex items-center justify-center">
-                    <div className="w-px h-12 bg-green-300"></div>
-                    <div className='flex flex-col px-2'>
-                        <div> 7320223</div>
-                        <div className='text-xs'>TVL</div>
-                    </div>
-                </div>
-            </div> */}
+                  </div>
+                  :
+                  <div>
+                    <form onSubmit={unstake} className="w-full max-w-lg">
+                      <div className="my-4">
+                        <label className="form-control w-full">
+                          <div className="label">
+                            <div className="font-bold text-2xl pt-5">
+                              Withdraw amount available
+                            </div>
+                          </div>
+
+                        </label>
+                      </div>
+
+                      <div className="my-6">
+                        <label className="form-control w-full">
+                          <div className="input input-lg input-bordered">
+                            <div className="flex align-middle justify-between text-center pt-2 ">
+                              {withdrawAmount} NIBI
+
+                            </div>
+                          </div>
+                        </label>
+                      </div>
+
+
+                      <div className="flex items-center mb-6">
+                        <input
+                          type="checkbox"
+                          id="terms"
+                          checked={termsAccepted}
+                          onChange={termsHandler}
+                          className="mr-2"
+                        />
+                        <label htmlFor="terms" className="text-lg font-semibold text-black dark:text-white">
+                          I want to withdraw all available amount
+                        </label>
+                      </div>
+
+
+                      <button
+                        type="submit"
+                        className="bg-black text-white py-4 mt-5 px-4 rounded-xl text-xl w-full"
+                      >
+                        Withdraw
+                      </button>
+                    </form >
+
+                  </div>
+              }
+
+
+
+            </div>
+          }
         </div>
       </div>
     </main >
