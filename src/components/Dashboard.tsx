@@ -6,7 +6,7 @@ const Dashboard = () => {
 
     return (
         <div>
-            <div className='text-[30px] font-bold '>
+            <div className='pb-5 text-[30px] font-bold '>
                 Dashboard
             </div>
             <div className='flex gap-5'>
@@ -34,7 +34,7 @@ const Dashboard = () => {
                 </div>
             </div>
             <div className='flex gap-5'>
-                <div className=" bg-base-100 w-[50%]">
+                <div className=" w-[50%]">
                     <div className="m-5 p-5 rounded-lg">
                         <div className='p-0'>
                             {isConnected ? <div>Value : 0</div> :
@@ -46,7 +46,7 @@ const Dashboard = () => {
                     </div>
 
                 </div>
-                <div className=" bg-base-100 w-[50%]">
+                <div className="w-[50%]">
                     <div className="m-5 p-5 rounded-lg">
                         <div className='p-0'>
                             {isConnected ? <div>Value : 0</div> :
