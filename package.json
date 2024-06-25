@@ -22,6 +22,7 @@
     "chain-registry": "^1.63.0",
     "cosmos-kit": "^2.17.0",
     "next": "14.2.3",
+    "pino-pretty": "^11.2.1",
     "react": "^18",
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",

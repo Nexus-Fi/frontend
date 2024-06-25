@@ -23,7 +23,7 @@ export default function RootLayout({
   };
   return (
     <html lang="en" data-theme="light">
-      <body className={inter.className}>
+      <body className={inter.className} style={{ background: 'linear-gradient(to right, rgb(249, 168, 212), rgb(216, 180, 254), rgb(129, 140, 248))' }}>
         <ChainProvider
           chains={chains}
           assetLists={assets}
@@ -43,11 +43,14 @@ export default function RootLayout({
           // @ts-ignore
           signerOptions={signerOptions}
         >
-          <Navbar />
-          <Toaster />
-          {children}
+          <div className="min-h-screen">
+            <Navbar />
+            <Toaster />
+            {children}
+          </div>
+
         </ChainProvider>
       </body>
-    </html>
+    </html >
   );
 }
