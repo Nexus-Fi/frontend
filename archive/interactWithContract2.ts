@@ -1,4 +1,4 @@
-import { NibiruTxClient, NibiruQuerier, Testnet } from "@nibiruchain/nibijs";
+import { NibiruTxClient, Testnet } from "@nibiruchain/nibijs";
 
 import {CONTRACT_MESSAGES,ExecuteMsg} from "../src/lib/messages";
 import { useChain, useWalletClient } from "@cosmos-kit/react";

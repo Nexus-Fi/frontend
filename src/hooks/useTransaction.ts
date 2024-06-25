@@ -1,6 +1,6 @@
 import { CHAIN_NAME } from '@/lib/utils';
 import { useChain, useWalletClient } from '@cosmos-kit/react';
-import { NibiruTxClient, Testnet ,} from '@nibiruchain/nibijs';
+import { NibiruTxClient, Testnet, NibiruQuerier} from '@nibiruchain/nibijs';
 
 const chain = Testnet(1);
 
