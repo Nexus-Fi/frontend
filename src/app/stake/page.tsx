@@ -3,6 +3,7 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import { CiDollar } from "react-icons/ci";
 import useTransaction from "@/hooks/useTransaction";
 import { CONTRACT_MESSAGES } from "@/lib/messages";
+import { STAKE_CONTRACT_MESSAGES } from "@/components/stakeNibi/msg";
 import toast from "react-hot-toast";
 
 const contract_address =
@@ -80,6 +81,24 @@ export default function Staking() {
       })
       .catch((err) => {
         "Staking Failed";
+        toast.dismiss(toastId);
+      });
+  };
+
+  const update_params = async () => {
+    const toastId = toast.loading("update_params...");
+    const tx = await sendTransaction(
+      contract_address,
+      STAKE_CONTRACT_MESSAGES.update_params(1, 1)
+    )
+      .then((res) => {
+        toast.dismiss(toastId);
+        toast.success("update_params Successfuly");
+      })
+      .catch((err) => {
+        "update_params Failed";
+        toast.dismiss(toastId);
+        toast.error(err.message);
       });
   };
 
