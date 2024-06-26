@@ -1,4 +1,4 @@
-export const STAKE_CONTRACT_ADDRESS=""; 
-export const stNIBITOKEN_CONTRACT_ADDRESS = ""; 
-export const VALIDATOR_REGISTARY_CONTRACT_ADDRESS = ""; 
-export const REWARD_DISPATCHER_CONTRACT_ADDRESS = ""; 
+export const STAKE_CONTRACT_ADDRESS ="nibi1r0qdq0emcute0luvg4dxe5qmrvr4tqq4750vfwpjt8jvkj3gqxtq3tp7fq"; 
+export const stNIBITOKEN_CONTRACT_ADDRESS = "nibi1swhuu5sqkj8j3fz23qd7c82p920zpjaty6wa48aft55x9u352wtsw584k3"; 
+export const VALIDATOR_REGISTARY_CONTRACT_ADDRESS = "nibi19t4zanvshc6uzcen2g860m2j4cygaraqrss39racvhen6q59ytrqkkx8au"; 
+export const REWARD_DISPATCHER_CONTRACT_ADDRESS = "nibi1qmmmeqhy5qj0q6k8hxwuzq5nacj7rwa6x6mkptlncgpeu370zfus7ecam5"; 

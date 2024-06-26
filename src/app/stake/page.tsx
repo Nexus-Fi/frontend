@@ -5,7 +5,8 @@ import useTransaction from "@/hooks/useTransaction";
 import { CONTRACT_MESSAGES } from "@/lib/messages";
 import { STAKE_CONTRACT_MESSAGES } from "@/components/stakeNibi/msg";
 import toast from "react-hot-toast";
-
+import { STAKE_CONTRACT_ADDRESS, stNIBITOKEN_CONTRACT_ADDRESS } from "@/lib/address";
+import { TOKEN_CONTRACT_MESSAGES } from "@/lib/Message/token";
 const contract_address =
   "nibi1valvrt57mk90yl94jmqhj7z0fl24q87ztrkl5tlqgky4mcfg8kds9nrg7y";
 
@@ -45,6 +46,24 @@ export default function Staking() {
     setTermsAccepted(event.target.checked);
   };
 
+  const transfer = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+
+    const toastId = toast.loading("Transferring...");
+    const tx = await sendTransaction(
+      stNIBITOKEN_CONTRACT_ADDRESS,
+      TOKEN_CONTRACT_MESSAGES.transfer(stNIBITOKEN_CONTRACT_ADDRESS, unstakeAmount),
+    )
+      .then((res) => {
+        toast.dismiss(toastId);
+        toast.success("Transferred Successfuly");
+      })
+      .catch((err) => {
+        "Transfer Failed";
+      });
+
+
+  }
 
   const stake = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
@@ -52,8 +71,8 @@ export default function Staking() {
     const toastId = toast.loading("Staking...");
     console.log("staking", tokenToStake, "amount", amount, "exchange", exchange)
     const tx = await sendTransaction(
-      contract_address,
-      CONTRACT_MESSAGES.bond_forstnibi,
+      STAKE_CONTRACT_ADDRESS,
+      STAKE_CONTRACT_MESSAGES.bond_forstnibi,
       tokenToStake
     )
       .then((res) => {
@@ -71,8 +90,8 @@ export default function Staking() {
     const toastId = toast.loading("unstaking...");
     console.log("staking", tokenToStake, "unstake", amount, "exchange", exchange)
     const tx = await sendTransaction(
-      contract_address,
-      CONTRACT_MESSAGES.bond_forstnibi,
+      stNIBITOKEN_CONTRACT_ADDRESS,
+      TOKEN_CONTRACT_MESSAGES.send_from("",STAKE_CONTRACT_ADDRESS,unstakeAmount,""),
       tokenToStake
     )
       .then((res) => {
@@ -80,11 +99,11 @@ export default function Staking() {
         toast.success("Staked Successfuly");
       })
       .catch((err) => {
-        "Staking Failed";
+        "UnStaking Failed";
         toast.dismiss(toastId);
       });
   };
-
+  
   const update_params = async () => {
     const toastId = toast.loading("update_params...");
     const tx = await sendTransaction(
