@@ -230,8 +230,8 @@ export default function Staking() {
         <div className=" p-4 justify-between items-center">
           <div className='flex flex-row w-full items-center gap-4'>
             <div className="flex flex-wrap">
-              <div className={`w-1/3 rounded-t-[40px] py-4 px-1 md:px-4 text-sm font-semibold md:text-base lg:px-12 hover:underline-offset-8
-                                            transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${open === "client" ? "bg-[#F1F1F1] text-black underline-offset-8" : " "
+              <div className={`w-1/3 py-4 px-1 md:px-4 text- md:text-base lg:px-12 hover:underline-offset-8
+                                  rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${open === "stake" ? "bg-purple-100 text-black font-semibold" : " "
                 }`}>
                 <button
                   onClick={() => handleTabOpen("stake")}
@@ -240,28 +240,24 @@ export default function Staking() {
                 </button>
               </div>
 
-              <div className="w-1/3 rounded-t-[30px]">
-                <div className={`rounded-t-[30px] py-4 px-4 text-sm font-semibold md:text-base lg:px-12 hover:underline-offset-8
-                                            transition-all delay-75 text-black  cursor-pointer ${open === "auditor" ? "bg-[#F1F1F1] text-black underline-offset-8" : " "
-                  }`}>
-                  <button
-                    onClick={() => handleTabOpen("unstake")}
-                  >
-                    Unstake
-                  </button>
-                </div>
+              <div className={`w-1/3 py-4 px-1 md:px-4 text- md:text-base lg:px-12 hover:underline-offset-8
+                                  rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${open === "unstake" ? "bg-purple-100 text-black font-semibold" : " "
+                }`}>
+                <button
+                  onClick={() => handleTabOpen("unstake")}
+                >
+                  Unstake
+                </button>
               </div>
 
-              <div className="w-1/3 rounded-t-[30px]">
-                <div className={`rounded-t-[30px] py-4 px-4 text-sm font-semibold md:text-base lg:px-12 hover:underline-offset-8
-                                            transition-all delay-75 text-black  cursor-pointer ${open === "auditor" ? "bg-[#F1F1F1] text-black underline-offset-8" : " "
-                  }`}>
-                  <button
-                    onClick={() => handleTabOpen("withdraw")}
-                  >
-                    Withdraw
-                  </button>
-                </div>
+              <div className={`w-1/3 py-4 px-1 md:px-4 text- md:text-base lg:px-12 hover:underline-offset-8
+                                  rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${open === "withdraw" ? "bg-purple-100 text-black font-semibold" : " "
+                }`}>
+                <button
+                  onClick={() => handleTabOpen("withdraw")}
+                >
+                  Withdraw
+                </button>
               </div>
             </div>
 

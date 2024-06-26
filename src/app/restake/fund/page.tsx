@@ -143,7 +143,8 @@ export default function Staking() {
         <div className=" p-4 justify-between items-center">
           <div className='flex flex-row w-full items-center gap-4'>
             <div className={`w-1/2 py-4 px-1 md:px-4 text-sm font-semibold md:text-base lg:px-12 hover:underline-offset-8
-                              rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${open === "deposit" ? "bg-pink-100 text-black font-bold " : " "
+                              rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer 
+                              ${open === "deposit" ? "bg-purple-100 text-black font-semibold" : " "
               }`}>
               <button
                 onClick={() => handleTabOpen("deposit")}
@@ -153,7 +154,7 @@ export default function Staking() {
             </div>
 
             <div className={`w-1/2 py-4 px-4 text-sm md:text-base lg:px-12 hover:underline-offset-8
-                              text-center rounded-2xl transition-all delay-75 text-black  cursor-pointer ${open === "withdraw" ? "bg-pink-100 text-black font-semibold " : " "
+                              text-center rounded-2xl transition-all delay-75 text-black  cursor-pointer ${open === "withdraw" ? "bg-purple-100 text-black font-semibold " : " "
               }`}>
               <button
                 onClick={() => handleTabOpen("withdraw")}
