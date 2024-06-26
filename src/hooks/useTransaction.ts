@@ -1,6 +1,7 @@
 import { CHAIN_NAME } from '@/lib/utils';
 import { useChain, useWalletClient } from '@cosmos-kit/react';
-import { NibiruTxClient, Testnet } from '@nibiruchain/nibijs';
+import { NibiruQuerier, NibiruTxClient, Testnet } from '@nibiruchain/nibijs';
+import toast from 'react-hot-toast';
 
 const chain = Testnet(1);
 
@@ -41,6 +42,7 @@ const useTransaction = () => {
       chain.endptTm,
       signer!
     );
+
     let tx;
     if (tokenToSend) {
       tx = await signingClient.wasmClient.execute(
@@ -63,7 +65,16 @@ const useTransaction = () => {
     console.log(tx.transactionHash);
   }
 
-  return { sendTransaction };
+  const fetchQuery = async (contractAddress: string, message: JsonObject) => {
+    const querier = await NibiruQuerier.connect(chain.endptTm);
+    const res = await querier.nibiruExtensions.wasm.queryContractSmart(
+      contractAddress,
+      message
+    );
+    return res;
+  }
+
+  return { sendTransaction , fetchQuery};
 }
 
 export default useTransaction;
