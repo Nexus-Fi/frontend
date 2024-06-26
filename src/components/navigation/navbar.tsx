@@ -9,10 +9,10 @@ declare const window: any;
 const style = {
   wrapper: `max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4`,
   logoContainer: `flex items-center space-x-3`,
-  logoImage: `w-10 h-10 fill-white`,
-  logoText: ` self-center text-2xl font-semibold whitespace-nowrap text-white`,
+  logoImage: `w-10 h-10 fill-black`,
+  logoText: ` self-center text-2xl font-semibold whitespace-nowrap text-black`,
   headerItems: `flex flex-col p-4 md:p-0 mt-4 font-medium border rounded-lg md:space-x-8 md:flex-row md:mt-0 md:border-0 border-gray-700`,
-  headerItem: `block py-2 px-3 rounded md:p-0 md:hover:text-blue-500 text-white hover:bg-gray-700 hover:text-white md:hover:bg-transparent border-gray-700 cursor-pointer`,
+  headerItem: `block py-2 px-3 rounded md:p-0 md:hover:text-purple-900 text-black hover:bg-gray-700 hover:text-white md:hover:bg-transparent border-gray-700 cursor-pointer`,
   HamburgerMenuIcon: `text-[#8a939b] text-3xl font-black px-4 hover:text-white cursor-pointerinline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600`,
 };
 
@@ -24,7 +24,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-black border-b border-gray-600">
+    <nav className=" border-b border-gray-400">
       <div className={style.wrapper}>
         <a href="https://app.nexusfi.xyz/" className={style.logoContainer}>
           <Logo className={style.logoImage} />

@@ -33,7 +33,7 @@ export function Button({
         },
       }}
     >
-      <div className="mx-4 my-1"> {text}</div>
+      <div className="mx-4 my-1  border-1 border-black"> {text}</div>
     </UIButton>
   );
 }
