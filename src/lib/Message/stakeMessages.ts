@@ -116,3 +116,28 @@ export const STAKE_CONTRACT_MESSAGES = {
         },
     }),
 };
+
+
+// pub enum QueryMsg {
+//     Config { },
+//     State { },
+//     CurrentBatch { },
+//     WithdrawableUnbonded {
+//     address: String,
+//     },
+//     Parameters { },
+//     UnbondRequests {
+//     address: String,
+//     },
+//     AllHistory {
+//     start_from: Option<u64>,
+//         limit: Option<u32>,
+//     },
+// Guardians,
+// }
+
+export interface STAKE_QUERY_MESSAGE {
+    config:() => ({
+        
+    })
+}
