@@ -11,7 +11,7 @@ export type ButtonProps = {
 
 export type ConnectProps = Pick<ButtonProps, "text" | "loading" | "onClick">;
 
-function noop() {}
+function noop() { }
 
 export function Button({
   text,
@@ -28,12 +28,12 @@ export function Button({
       isLoading={loading}
       domAttributes={{
         style: {
-          backgroundImage:
-            "linear-gradient(109.6deg, rgba(157,75,199,1) 11.2%, rgba(119,81,204,1) 83.1%)",
+          background:
+            "linear-gradient(to right, rgb(249, 168, 212), rgb(216, 180, 254), rgb(129, 140, 248))"
         },
       }}
     >
-      <div className="mx-4"> {text}</div>
+      <div className="mx-4 my-1"> {text}</div>
     </UIButton>
   );
 }
@@ -46,14 +46,14 @@ export const ButtonConnect = ({
 );
 
 export const ButtonConnected = ({
-  text = "My Wallet",
+  text = "Connected",
   onClick = noop,
 }: ConnectProps) => (
   <Button text={text} icon="walletFilled" onClick={onClick} />
 );
 
 export const ButtonDisconnected = ({
-  text = "Connect",
+  text = "Connect Wallet",
   onClick = noop,
 }: ConnectProps) => (
   <Button text={text} icon="walletFilled" onClick={onClick} />
