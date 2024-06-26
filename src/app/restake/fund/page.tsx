@@ -41,11 +41,11 @@ export default function Staking() {
   const transfer = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
-    const amountAsNumber = parseFloat(unstakeAmount);
+    const amountAsNumber = parseFloat(withdrawAmount);
     const multipliedAmount = amountAsNumber * Math.pow(10, 6);
 
     const toastId = toast.loading("Transferring...");
-    console.log("transfering", stNIBITOKEN_CONTRACT_ADDRESS, "unstakeAmount", unstakeAmount)
+    console.log("transfering", stNIBITOKEN_CONTRACT_ADDRESS, "withdrawAmount", withdrawAmount)
     const tx = await sendTransaction(
       stNIBITOKEN_CONTRACT_ADDRESS,
       TOKEN_CONTRACT_MESSAGES.transfer(STAKE_CONTRACT_ADDRESS, multipliedAmount.toString()),
@@ -97,18 +97,18 @@ export default function Staking() {
     event.preventDefault();
     transfer(event);
     const toastId = toast.loading("unstaking...");
-    const amountAsNumber = parseFloat(unstakeAmount);
+    const amountAsNumber = parseFloat(withdrawAmount);
     const multipliedAmount = amountAsNumber * Math.pow(10, 6);
 
-    console.log("unstaking unstakeAmount", unstakeAmount, "stakeAmount", amount)
+    console.log("unstaking withdrawAmount", withdrawAmount, "stakeAmount", amount)
     const tx = await sendTransaction(
       stNIBITOKEN_CONTRACT_ADDRESS,
       TOKEN_CONTRACT_MESSAGES.send_from("", STAKE_CONTRACT_ADDRESS, multipliedAmount.toString(), "")
     )
       .then((res) => {
         toast.dismiss(toastId);
-        toast.success("Unstaked Successfuly");
-        console.log("unstake sendFrom tx", tx)
+        toast.success("Withdrawd Successfuly");
+        console.log("withdraw sendFrom tx", tx)
 
       })
       .catch((err) => {
@@ -121,7 +121,7 @@ export default function Staking() {
     event.preventDefault();
 
     const toastId = toast.loading("restaking...");
-    console.log("unstake", amount, "exchange", exchange)
+    console.log("withdraw", amount, "exchange", exchange)
     const tx = await sendTransaction(
       stNIBITOKEN_CONTRACT_ADDRESS,
       TOKEN_CONTRACT_MESSAGES.increase_allowance("", "restake_amount", ""),
@@ -247,7 +247,7 @@ export default function Staking() {
                     strokeWidth="2"
                     d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
-                <span>Unstake requests are processed in 7-10 days, subject to exit queue on Network</span>
+                <span>Withdraw requests are processed in 7-10 days, subject to exit queue on Nexus Finance.</span>
               </div>
 
               {
@@ -255,10 +255,10 @@ export default function Staking() {
                   <div>
                     <div className="flex flex-col align-middle justify-center my-8 py-8 p-5 bg-white rounded-3xl ">
                       <div className="py-5 text-center text-3xl font-semibold">
-                        No unstake requests found
+                        No withdraw requests found
                       </div>
                       <div className="py-5 text-center ">
-                        You will be able to claim your tokens after the Unstake request has been processed. To Unstake your tokens go to Unstake tab
+                        You will be able to claim your tokens after the Withdraw request has been processed. To Withdraw your tokens go to Withdraw tab
                       </div>
                     </div>
                   </div>
