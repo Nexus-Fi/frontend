@@ -5,7 +5,8 @@ import useTransaction from "@/hooks/useTransaction";
 import { CONTRACT_MESSAGES } from "@/lib/messages";
 import { STAKE_CONTRACT_MESSAGES } from "@/components/stakeNibi/msg";
 import toast from "react-hot-toast";
-
+import { STAKE_CONTRACT_ADDRESS, stNIBITOKEN_CONTRACT_ADDRESS } from "@/lib/address";
+import { TOKEN_CONTRACT_MESSAGES } from "@/lib/Message/token";
 const contract_address =
   "nibi1valvrt57mk90yl94jmqhj7z0fl24q87ztrkl5tlqgky4mcfg8kds9nrg7y";
 
@@ -16,16 +17,9 @@ export default function Staking() {
   const [unstakeAmount, setUnstakeAmount] = useState<string>("0");
   const [open, setOpen] = useState("stake"); // unstake, withdraw
   const [wallet, setWallet] = useState<string>("");
-  const [unstakeStatus, setUnstakeStatus] = useState(false);
+  const [unstakeStatus, setUnstakeStatus] = useState(true);
   const [withdrawAmount, setWithdrawAmount] = useState<string>("0");
   const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
-
-  const tokenToStake = [
-    {
-      amount,
-      denom: "unibi",
-    },
-  ];
 
   const handleTabOpen = (tabCategory: string) => {
     setOpen(tabCategory);
@@ -33,54 +27,93 @@ export default function Staking() {
 
   const priceHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setAmount(event.target.value);
-    console.log("price", event.target.value, "amount", amount);
+    console.log("amount", amount);
   };
 
   const unstakeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setAmount(event.target.value);
-    console.log("unstake amount", event.target.value, "amount", amount);
+    setUnstakeAmount(event.target.value);
+    console.log("unstake amount", unstakeAmount);
   };
 
   const termsHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setTermsAccepted(event.target.checked);
   };
 
+  const transfer = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+
+    const amountAsNumber = parseFloat(unstakeAmount);
+    const multipliedAmount = amountAsNumber * Math.pow(10, 6);
+
+    const toastId = toast.loading("Transferring...");
+    console.log("transfering", stNIBITOKEN_CONTRACT_ADDRESS, "unstakeAmount", unstakeAmount)
+    const tx = await sendTransaction(
+      stNIBITOKEN_CONTRACT_ADDRESS,
+      TOKEN_CONTRACT_MESSAGES.transfer(STAKE_CONTRACT_ADDRESS, multipliedAmount.toString()),
+    )
+      .then((res) => {
+        toast.dismiss(toastId);
+        toast.success("Transferred Successfuly");
+        console.log("transfer tx", tx)
+      })
+      .catch((err) => {
+        console.log("Transfer Failed");
+      });
+
+
+  }
 
   const stake = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
+    const amountAsNumber = parseFloat(amount);
+    const multipliedAmount = amountAsNumber * Math.pow(10, 6);
+
+    const tokenToStake = [
+      {
+        amount: multipliedAmount.toString(),
+        denom: "unibi",
+      },
+    ];
+
     const toastId = toast.loading("Staking...");
     console.log("staking", tokenToStake, "amount", amount, "exchange", exchange)
     const tx = await sendTransaction(
-      contract_address,
-      CONTRACT_MESSAGES.bond_forstnibi,
+      STAKE_CONTRACT_ADDRESS,
+      STAKE_CONTRACT_MESSAGES.bond_forstnibi(),
       tokenToStake
     )
       .then((res) => {
         toast.dismiss(toastId);
         toast.success("Staked Successfuly");
+        console.log("stake tx :", tx)
       })
       .catch((err) => {
-        "Staking Failed";
+        console.log("Staking Failed", err);
+        toast.dismiss(toastId);
       });
   };
 
   const unstake = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-
+    transfer(event);
     const toastId = toast.loading("unstaking...");
-    console.log("staking", tokenToStake, "unstake", amount, "exchange", exchange)
+    const amountAsNumber = parseFloat(unstakeAmount);
+    const multipliedAmount = amountAsNumber * Math.pow(10, 6);
+
+    console.log("unstaking unstakeAmount", unstakeAmount, "stakeAmount", amount)
     const tx = await sendTransaction(
-      contract_address,
-      CONTRACT_MESSAGES.bond_forstnibi,
-      tokenToStake
+      stNIBITOKEN_CONTRACT_ADDRESS,
+      TOKEN_CONTRACT_MESSAGES.send_from("", STAKE_CONTRACT_ADDRESS, multipliedAmount.toString(), "")
     )
       .then((res) => {
         toast.dismiss(toastId);
-        toast.success("Staked Successfuly");
+        toast.success("Unstaked Successfuly");
+        console.log("unstake sendFrom tx", tx)
+
       })
       .catch((err) => {
-        "Staking Failed";
+        console.log("Unstaking Failed", err);
         toast.dismiss(toastId);
       });
   };
