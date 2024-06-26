@@ -4,6 +4,7 @@ import useTransaction from "@/hooks/useTransaction";
 import { STAKE_CONTRACT_ADDRESS } from "@/lib/address";
 import { QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
 
+
 const Dashboard = () => {
   const [isConnected, setIsConnected] = React.useState(false);
   const { sendTransaction, fetchQuery } = useTransaction();
