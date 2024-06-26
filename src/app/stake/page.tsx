@@ -17,7 +17,7 @@ export default function Staking() {
   const [unstakeAmount, setUnstakeAmount] = useState<string>("0");
   const [open, setOpen] = useState("stake"); // unstake, withdraw
   const [wallet, setWallet] = useState<string>("");
-  const [unstakeStatus, setUnstakeStatus] = useState(false);
+  const [unstakeStatus, setUnstakeStatus] = useState(true);
   const [withdrawAmount, setWithdrawAmount] = useState<string>("0");
   const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
 
@@ -42,11 +42,14 @@ export default function Staking() {
   const transfer = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
+    const amountAsNumber = parseFloat(unstakeAmount);
+    const multipliedAmount = amountAsNumber * Math.pow(10, 6);
+
     const toastId = toast.loading("Transferring...");
     console.log("transfering", stNIBITOKEN_CONTRACT_ADDRESS, "unstakeAmount", unstakeAmount)
     const tx = await sendTransaction(
       stNIBITOKEN_CONTRACT_ADDRESS,
-      TOKEN_CONTRACT_MESSAGES.transfer(STAKE_CONTRACT_ADDRESS, unstakeAmount),
+      TOKEN_CONTRACT_MESSAGES.transfer(STAKE_CONTRACT_ADDRESS, multipliedAmount.toString()),
     )
       .then((res) => {
         toast.dismiss(toastId);
@@ -77,7 +80,7 @@ export default function Staking() {
     console.log("staking", tokenToStake, "amount", amount, "exchange", exchange)
     const tx = await sendTransaction(
       STAKE_CONTRACT_ADDRESS,
-      CONTRACT_MESSAGES.bond_forstnibi,
+      STAKE_CONTRACT_MESSAGES.bond_forstnibi(),
       tokenToStake
     )
       .then((res) => {
@@ -87,6 +90,7 @@ export default function Staking() {
       })
       .catch((err) => {
         console.log("Staking Failed", err);
+        toast.dismiss(toastId);
       });
   };
 
@@ -94,10 +98,13 @@ export default function Staking() {
     event.preventDefault();
     transfer(event);
     const toastId = toast.loading("unstaking...");
-    console.log("unstaking", tokenToStake, "unstakeAmount", unstakeAmount, "stakeAmount", amount)
+    const amountAsNumber = parseFloat(unstakeAmount);
+    const multipliedAmount = amountAsNumber * Math.pow(10, 6);
+
+    console.log("unstaking unstakeAmount", unstakeAmount, "stakeAmount", amount)
     const tx = await sendTransaction(
       stNIBITOKEN_CONTRACT_ADDRESS,
-      TOKEN_CONTRACT_MESSAGES.send_from("", STAKE_CONTRACT_ADDRESS, unstakeAmount, "")
+      TOKEN_CONTRACT_MESSAGES.send_from("", STAKE_CONTRACT_ADDRESS, multipliedAmount.toString(), "")
     )
       .then((res) => {
         toast.dismiss(toastId);
@@ -106,7 +113,7 @@ export default function Staking() {
 
       })
       .catch((err) => {
-        console.log("Unstaking Failed");
+        console.log("Unstaking Failed", err);
         toast.dismiss(toastId);
       });
   };
