@@ -7,6 +7,7 @@ import { QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
 const Dashboard = () => {
   const [isConnected, setIsConnected] = React.useState(false);
   const { sendTransaction, fetchQuery } = useTransaction();
+  const [queryData, setQueryData] = React.useState()
 
   const getQueryDataFromContract = async () => {
     try {
@@ -14,11 +15,16 @@ const Dashboard = () => {
         STAKE_CONTRACT_ADDRESS,
         QUERY_MESSAGES.all_history(1, 10)
       );
-      console.log(result);
+      setQueryData(result)
+      console.log("queryData", result);
     } catch (error) {
       console.log(error);
     }
   };
+
+  React.useEffect(() => {
+    getQueryDataFromContract();
+  }, []);
 
   return (
     <div>

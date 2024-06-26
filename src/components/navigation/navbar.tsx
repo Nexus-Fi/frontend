@@ -59,11 +59,9 @@ export default function Navbar() {
           </button>
         </div>
         <div
-          className={`items-center justify-between ${
-            isMenuOpen && "bg-[#181818c5]"
-          } w-full md:flex md:w-auto md:order-1 ${
-            isMenuOpen ? "block" : "hidden"
-          }`}
+          className={`items-center justify-between ${isMenuOpen && "bg-[#181818c5]"
+            } w-full md:flex md:w-auto md:order-1 ${isMenuOpen ? "block" : "hidden"
+            }`}
           id="navbar-sticky"
         >
           <div className={style.headerItems}>
@@ -93,14 +91,14 @@ export default function Navbar() {
             >
               Restake
             </div>
-            <div
+            {/* <div
               className={style.headerItem}
               onClick={() => {
                 router.push("/operator");
               }}
             >
               Operator
-            </div>
+            </div> */}
             <div
               className={style.headerItem}
               onClick={() => {

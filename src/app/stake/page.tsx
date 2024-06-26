@@ -18,7 +18,7 @@ export default function Staking() {
   const [open, setOpen] = useState("stake"); // unstake, withdraw
   const [wallet, setWallet] = useState<string>("");
   const [unstakeStatus, setUnstakeStatus] = useState(true);
-  const [withdrawAmount, setWithdrawAmount] = useState<string>("0");
+  const [withdrawAmount, setWithdrawAmount] = useState<string>("1");
   const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
 
   const handleTabOpen = (tabCategory: string) => {
@@ -118,6 +118,65 @@ export default function Staking() {
       });
   };
 
+  const restake_deposit = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+
+    const toastId = toast.loading("restaking...");
+    console.log("unstake", amount, "exchange", exchange)
+    const tx = await sendTransaction(
+      stNIBITOKEN_CONTRACT_ADDRESS,
+      TOKEN_CONTRACT_MESSAGES.increase_allowance("", "restake_amount", ""),
+    )
+      .then((res) => {
+        toast.dismiss(toastId);
+        toast.success("Staked Successfuly");
+      })
+      .catch((err) => {
+        "UnStaking Failed";
+        toast.dismiss(toastId);
+      });
+  };
+
+  const withdraw_restaked = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+
+    const toastId = toast.loading("restaking...");
+    console.log("unstake", amount, "exchange", exchange)
+    const tx = await sendTransaction(
+      STAKE_CONTRACT_ADDRESS,
+      STAKE_CONTRACT_MESSAGES.withdraw_liquidity(),
+    )
+      .then((res) => {
+        toast.dismiss(toastId);
+        toast.success("Staked Successfuly");
+      })
+      .catch((err) => {
+        "UnStaking Failed";
+        toast.dismiss(toastId);
+      });
+  };
+
+
+  const dispatch_rewards = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+
+    const toastId = toast.loading("dispatching...");
+    console.log("staking", tokenToStake, "unstake", amount, "exchange", exchange)
+    const tx = await sendTransaction(
+      STAKE_CONTRACT_ADDRESS,
+      STAKE_CONTRACT_MESSAGES.dispatch_rewards(),
+    )
+      .then((res) => {
+        toast.dismiss(toastId);
+        toast.success("rewards Successfuly");
+      })
+      .catch((err) => {
+        "Dispatch rewards Failed";
+        toast.dismiss(toastId);
+      });
+  };
+
+
   const update_params = async () => {
     const toastId = toast.loading("update_params...");
     const tx = await sendTransaction(
@@ -139,22 +198,26 @@ export default function Staking() {
     event.preventDefault();
 
     const toastId = toast.loading("withdrawing...");
-    console.log("staking", tokenToStake, "unstake", amount, "exchange", exchange)
+    // const amountAsNumber = parseFloat(withdrawAmount);
+    // const multipliedAmount = amountAsNumber * Math.pow(10, 6);
+
+    console.log("withdraw", withdrawAmount, "termsAccepted", termsAccepted)
     if (termsAccepted) {
-      console.log('Terms accepted');
       // call contract withdraw function here
-      // const tx = await sendTransaction(
-      //   contract_address,
-      //   CONTRACT_MESSAGES.bond_forstnibi,
-      //   tokenToStake
-      // )
-      //   .then((res) => {
-      //     toast.dismiss(toastId);
-      //     toast.success("Staked Successfuly");
-      //   })
-      //   .catch((err) => {
-      //     "Staking Failed";
-      //   });
+      const tx = await sendTransaction(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_CONTRACT_MESSAGES.withdraw_unbonded,
+      )
+        .then((res) => {
+          toast.dismiss(toastId);
+          toast.success("Withdraw Successfuly");
+        })
+        .catch((err) => {
+          "Withdrawing Failed";
+          console.log("withdraw error", err)
+        });
+      console.log("withdraw tx", tx)
+
     } else {
       toast.error('Please tick the box to withdraw funds');
     }
