@@ -16,3 +16,12 @@ export const VALIDATOR_CONTRACT_MESSAGES = {
         },
     }),
 };
+
+export const VALIDATOR_QUERY = {
+    get_validator_for_delegation: () => ({
+        get_validator_for_delegation:{}
+    }),
+    config:() => ({
+        config:{}
+    })
+}
