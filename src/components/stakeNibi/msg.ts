@@ -44,7 +44,7 @@ export const STAKE_CONTRACT_MESSAGES = {
       },
     }),
     bond_forstnibi: () => ({
-      bond_for_stnibi: {},
+      "bond_for_stnibi": {}
     }),
     bond_rewards: () => ({
       bond_rewards: {},
