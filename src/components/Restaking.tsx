@@ -46,10 +46,10 @@ const Restaking = () => {
 
                             <div className="flex items-center justify-center">
                                 <div className='flex flex-col px-2'>
-                                    <button onClick={() => { router.push('./restake/deposit') }} className="text-black bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 mb-1 py-1 px-2 rounded-xl">
+                                    <button onClick={() => { router.push('./restake/fund/?state=deposit') }} className="text-black bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 mb-1 py-1 px-2 rounded-xl">
                                         Deposit
                                     </button>
-                                    <button onClick={() => { router.push('./restake/withdraw') }} className="bg-black text-white p-1 px-4 rounded-xl">
+                                    <button onClick={() => { router.push('./restake/fund/?state=withdraw') }} className="bg-black text-white p-1 px-4 rounded-xl">
                                         Withdraw
                                     </button>
                                 </div>
