@@ -23,7 +23,7 @@ export default function Staking() {
   const [open, setOpen] = useState(state); // withdraw
   const [wallet, setWallet] = useState<string>("");
   const [withdrawAmount, setWithdrawAmount] = useState<string>("0");
-  const [withdrawStatus, setWithdrawStatus] = useState<boolean>(false);
+  const [withdrawStatus, setWithdrawStatus] = useState<boolean>(true);
   const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
 
   const handleTabOpen = (tabCategory: string) => {
@@ -122,10 +122,10 @@ export default function Staking() {
     event.preventDefault();
 
     const toastId = toast.loading("restaking...");
-    console.log("withdraw", amount, "exchange", exchange)
+    console.log("restake deposit withdraw", amount, "exchange", exchange)
     const tx = await sendTransaction(
       stNIBITOKEN_CONTRACT_ADDRESS,
-      TOKEN_CONTRACT_MESSAGES.increase_allowance("", "restake_amount", ""),
+      TOKEN_CONTRACT_MESSAGES.increase_allowance("", amount, ""),
     )
       .then((res) => {
         toast.dismiss(toastId);
@@ -146,22 +146,20 @@ export default function Staking() {
             <div
               className={`w-1/2 py-4 px-1 md:px-4 text-sm font-semibold md:text-base lg:px-12 hover:underline-offset-8
                               rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer 
-                              ${
-                                open === "deposit"
-                                  ? "bg-base-200 drop-shadow-2xl text-black font-semibold"
-                                  : " "
-                              }`}
+                              ${open === "deposit"
+                  ? "bg-base-200 drop-shadow-2xl text-black font-semibold"
+                  : " "
+                }`}
             >
               <button onClick={() => handleTabOpen("deposit")}>Deposit</button>
             </div>
 
             <div
               className={`w-1/2 py-4 px-4 text-sm md:text-base lg:px-12 hover:underline-offset-8
-                              text-center rounded-2xl transition-all delay-75 text-black  cursor-pointer ${
-                                open === "withdraw"
-                                  ? "bg-base-200 drop-shadow-2xl text-black font-semibold "
-                                  : " "
-                              }`}
+                              text-center rounded-2xl transition-all delay-75 text-black  cursor-pointer ${open === "withdraw"
+                  ? "bg-base-200 drop-shadow-2xl text-black font-semibold "
+                  : " "
+                }`}
             >
               <button onClick={() => handleTabOpen("withdraw")}>
                 Withdraw
@@ -173,7 +171,7 @@ export default function Staking() {
           {/* stake option */}
           {open === "deposit" && (
             <div>
-              <form onSubmit={deposit} className="w-full max-w-lg">
+              <form onSubmit={restake_deposit} className="w-full max-w-lg">
                 <div className="my-4">
                   <label className="form-control w-full">
                     <div className="label">
@@ -181,7 +179,6 @@ export default function Staking() {
                     </div>
                     <select className="select select-bordered">
                       <option>stNIBI</option>
-                      <option>stNEXFI</option>
                     </select>
                   </label>
                 </div>
@@ -202,9 +199,7 @@ export default function Staking() {
                     />
                   </label>
                 </div>
-
-                <div className="text-sm">
-                  {/* <div className="my-1 border-t border-gray-300"></div> */}
+                <div className='text-sm'>
                   <div className="">
                     <div className="flex items-center justify-between">
                       <div className="">You wil get</div>
@@ -227,97 +222,100 @@ export default function Staking() {
                   Stake
                 </Button>
               </form>
-            </div>
-          )}
+            </div >
+          )
+          }
 
           {/* withdraw option */}
-          {open === "withdraw" && (
-            <div>
-              <div role="alert" className="mt-3 alert alert-warning">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 shrink-0 stroke-current"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                  />
-                </svg>
-                <span>
-                  Withdraw requests are processed in 7-10 days, subject to exit
-                  queue on Nexus Finance.
-                </span>
-              </div>
+          {
+            open === "withdraw" && (
+              <div>
+                <div role="alert" className="mt-3 alert alert-warning">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 shrink-0 stroke-current"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    />
+                  </svg>
+                  <span>
+                    Withdraw requests are processed in 7-10 days, subject to exit
+                    queue on Nexus Finance.
+                  </span>
+                </div>
 
-              {!withdrawStatus ? (
-                <div>
-                  <div className="flex flex-col align-middle justify-center my-8 py-8 p-5 bg-white rounded-3xl ">
-                    <div className="py-5 text-center text-3xl font-semibold">
-                      No withdraw requests found
-                    </div>
-                    <div className="py-5 text-center ">
-                      You will be able to claim your tokens after the Withdraw
-                      request has been processed. To Withdraw your tokens go to
-                      Withdraw tab
+                {!withdrawStatus ? (
+                  <div>
+                    <div className="flex flex-col align-middle justify-center my-8 py-8 p-5 bg-white rounded-3xl ">
+                      <div className="py-5 text-center text-3xl font-semibold">
+                        No withdraw requests found
+                      </div>
+                      <div className="py-5 text-center ">
+                        You will be able to claim your tokens after the Withdraw
+                        request has been processed. To Withdraw your tokens go to
+                        Withdraw tab
+                      </div>
                     </div>
                   </div>
-                </div>
-              ) : (
-                <div>
-                  <form onSubmit={withdraw} className="w-full max-w-lg">
-                    <div className="my-4">
-                      <label className="form-control w-full">
-                        <div className="label">
-                          <div className="font-bold text-2xl pt-5">
-                            Withdraw amount available
+                ) : (
+                  <div>
+                    <form onSubmit={withdraw} className="w-full max-w-lg">
+                      <div className="my-4">
+                        <label className="form-control w-full">
+                          <div className="label">
+                            <div className="font-bold text-2xl pt-5">
+                              Withdraw amount available
+                            </div>
                           </div>
-                        </div>
-                      </label>
-                    </div>
+                        </label>
+                      </div>
 
-                    <div className="my-6">
-                      <label className="form-control w-full">
-                        <div className="input input-lg input-bordered">
-                          <div className="flex align-middle justify-between text-center pt-2 ">
-                            {withdrawAmount} stNIBI
+                      <div className="my-6">
+                        <label className="form-control w-full">
+                          <div className="input input-lg input-bordered">
+                            <div className="flex align-middle justify-between text-center pt-2 ">
+                              {withdrawAmount} stNIBI
+                            </div>
                           </div>
-                        </div>
-                      </label>
-                    </div>
+                        </label>
+                      </div>
 
-                    <div className="flex items-center mb-6">
-                      <input
-                        type="checkbox"
-                        id="terms"
-                        checked={termsAccepted}
-                        onChange={termsHandler}
-                        className="mr-2"
-                      />
-                      <label
-                        htmlFor="terms"
-                        className="text-lg font-semibold text-black dark:text-white"
+                      <div className="flex items-center mb-6">
+                        <input
+                          type="checkbox"
+                          id="terms"
+                          checked={termsAccepted}
+                          onChange={termsHandler}
+                          className="mr-2"
+                        />
+                        <label
+                          htmlFor="terms"
+                          className="text-lg font-semibold text-black dark:text-white"
+                        >
+                          I want to withdraw all available amount
+                        </label>
+                      </div>
+
+                      <Button
+                        type="submit"
+                        className="bg-black dark:bg-slate-900 text-white text-lg font-bold py-4 px-4  dark:text-black border-blue-700 "
                       >
-                        I want to withdraw all available amount
-                      </label>
-                    </div>
-
-                    <Button
-                      type="submit"
-                      className="bg-black dark:bg-slate-900 text-white text-lg font-bold py-4 px-4  dark:text-black border-blue-700 "
-                    >
-                      Withdraw
-                    </Button>
-                  </form>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-    </main>
+                        Withdraw
+                      </Button>
+                    </form>
+                  </div>
+                )}
+              </div>
+            )
+          }
+        </div >
+      </div >
+    </main >
   );
 }
