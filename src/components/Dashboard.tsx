@@ -17,7 +17,7 @@ const Dashboard = () => {
   const [restaked, setRestaked] = React.useState("0");
   const [delegated, setDelegated] = React.useState("0");
   const [restakedPoints, setRestakedPoints] = React.useState("0");
-  const [restakedRatio, setRestakedRatio] = React.useState("0");
+  const [restakedRatio, setRestakedRatio] = React.useState("0.00000001");
 
   const [isConnected, setIsConnected] = React.useState(status === "Connected");
 
@@ -33,6 +33,11 @@ const Dashboard = () => {
     const valueAsNumber = parseFloat(value);
     const dividedValue = valueAsNumber / Math.pow(10, 6);
     return dividedValue.toString();
+  }
+
+  const calculateRestakedPoints = () => {
+    const restakedPoints = parseFloat(restaked) + parseFloat(delegated);
+    setRestakedPoints(restakedPoints.toString());
   }
 
   const getQueryDataFromContract = async () => {
@@ -142,7 +147,7 @@ const Dashboard = () => {
           <div className="m-5 p-5 rounded-lg">
             <div className="p-0">
               {isConnected ? (
-                <div>Value : 0</div>
+                <div className="font-bold text-2xl "> {restakedPoints} Points</div>
               ) : (
                 <div>
                   <progress
@@ -160,7 +165,7 @@ const Dashboard = () => {
           <div className="m-5 p-5 rounded-lg">
             <div className="p-0">
               {isConnected ? (
-                <div>Value : 0</div>
+                <div className="font-bold text-2xl "> {restakedRatio} %</div>
               ) : (
                 <div>
                   <progress
