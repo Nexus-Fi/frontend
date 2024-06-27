@@ -50,9 +50,11 @@ const Dashboard = () => {
         STAKE_QUERY_MESSAGES.staker(address)
       );
       setStakeQueryData(Stakeresult)
-      const dlNIBI = Stakeresult?.amount_staked_stnibi?.toString();
-      console.log("stNIBI: ", dlNIBI)
-      setDelegated(convertToNibi(dlNIBI));
+      const StNIBI = Stakeresult?.amount_staked_stnibi?.toString();
+      const NIBI = Stakeresult?.amount_staked_unibi?.toString();
+
+      console.log("stNIBI: ", NIBI)
+      setDelegated(convertToNibi(NIBI));
       console.log("Stakeresult", Stakeresult);
 
       // const Restakeresult = await fetchQuery(
@@ -62,7 +64,7 @@ const Dashboard = () => {
       // setRestakeQueryData(Stakeresult)
       // const stNIBI = Restakeresult?.stnibi_amount?.toString();
       // console.log("stNIBI: ", stNIBI)
-      // setRestaked(convertToNibi(stNIBI));
+      setRestaked(convertToNibi(StNIBI));
       // console.log("Restakeresult", Restakeresult);
       // const Rewardresult = await fetchQuery(
       //   REWARD_DISPATCHER_CONTRACT_ADDRESS,
@@ -85,7 +87,7 @@ const Dashboard = () => {
       setRestakeQueryData(DlegationDataResult)
       console.log("DlegationDataResult", DlegationDataResult);
 
-
+      
     } catch (error) {
       console.log(error);
     }
@@ -108,7 +110,7 @@ const Dashboard = () => {
       <div className="flex gap-5">
         <div className="card bg-[] shadow-xl w-[50%]">
           <div className="card-body">
-            <h2 className="card-title">Restaked</h2>
+            <h2 className="card-title"> Nexus Staked NIBI  </h2>
             <div className="p-5">
               {isConnected ? (
                 <div className="font-bold text-2xl "> {restaked} stNIBI</div>
