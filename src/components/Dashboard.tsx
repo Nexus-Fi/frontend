@@ -13,6 +13,8 @@ const Dashboard = () => {
   const [RestakequeryData, setRestakeQueryData] = React.useState()
   const [RewardequeryData, setRewardQueryData] = React.useState()
   const [UnbondRequestData, setUnbondReQuestQueryData] = React.useState()
+  const [DelegationData, setDelegationDataQueryData] = React.useState()
+
 
 
 
@@ -50,6 +52,16 @@ const Dashboard = () => {
       );
       setUnbondReQuestQueryData(unbondRequestsResult)
       console.log("unbondRequestsResult", unbondRequestsResult);
+
+
+      const DlegationDataResult = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES.delegation_data(STAKE_CONTRACT_ADDRESS)
+      );
+      setRestakeQueryData(DlegationDataResult)
+      console.log("DlegationDataResult", DlegationDataResult);
+
+
     } catch (error) {
       console.log(error);
     }

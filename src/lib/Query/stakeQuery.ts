@@ -35,5 +35,10 @@ export const STAKE_QUERY_MESSAGES = {
     }),
     staker: (staker: string) => ({
         staker: { staker }
+    }),
+    delegation_data: (delegator:string) => ({
+        delegation_data:{
+            delegator
+        }
     })
 };
