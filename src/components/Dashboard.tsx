@@ -55,27 +55,27 @@ const Dashboard = () => {
       setDelegated(convertToNibi(dlNIBI));
       console.log("Stakeresult", Stakeresult);
 
-      const Restakeresult = await fetchQuery(
-        STAKE_CONTRACT_ADDRESS,
-        STAKE_QUERY_MESSAGES.restake(address)
-      );
-      setRestakeQueryData(Stakeresult)
-      const stNIBI = Restakeresult?.stnibi_amount?.toString();
-      console.log("stNIBI: ", stNIBI)
-      setRestaked(convertToNibi(stNIBI));
-      console.log("Restakeresult", Restakeresult);
+      // const Restakeresult = await fetchQuery(
+      //   STAKE_CONTRACT_ADDRESS,
+      //   STAKE_QUERY_MESSAGES.restake(address)
+      // );
+      // setRestakeQueryData(Stakeresult)
+      // const stNIBI = Restakeresult?.stnibi_amount?.toString();
+      // console.log("stNIBI: ", stNIBI)
+      // setRestaked(convertToNibi(stNIBI));
+      // console.log("Restakeresult", Restakeresult);
       // const Rewardresult = await fetchQuery(
       //   REWARD_DISPATCHER_CONTRACT_ADDRESS,
       //   REWARD_QUERY_MESSAGES.get_buffered_rewards
       // );
       // setRewardQueryData(Rewardresult)
       // console.log("Rewardresult", Rewardresult);
-      const unbondRequestsResult = await fetchQuery(
-        STAKE_CONTRACT_ADDRESS,
-        STAKE_QUERY_MESSAGES.unbond_requests(address)
-      );
-      setUnbondReQuestQueryData(unbondRequestsResult)
-      console.log("unbondRequestsResult", unbondRequestsResult);
+      // const unbondRequestsResult = await fetchQuery(
+      //   STAKE_CONTRACT_ADDRESS,
+      //   STAKE_QUERY_MESSAGES.unbond_requests(address)
+      // );
+      // setUnbondReQuestQueryData(unbondRequestsResult)
+      // console.log("unbondRequestsResult", unbondRequestsResult);
 
 
       const DlegationDataResult = await fetchQuery(
