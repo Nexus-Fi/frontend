@@ -58,7 +58,7 @@ const Dashboard = () => {
       const StNIBI = Stakeresult?.amount_staked_stnibi?.toString();
       const NIBI = Stakeresult?.amount_staked_unibi?.toString();
 
-      console.log("stNIBI: ", NIBI)
+      console.log("NIBI: ", NIBI, "StNIBI: ", StNIBI)
       setDelegated(convertToNibi(NIBI));
       console.log("Stakeresult", Stakeresult);
 
@@ -92,7 +92,7 @@ const Dashboard = () => {
       setRestakeQueryData(DlegationDataResult)
       console.log("DlegationDataResult", DlegationDataResult);
 
-      
+
     } catch (error) {
       console.log(error);
     }
@@ -104,9 +104,6 @@ const Dashboard = () => {
   useEffect(() => {
     setIsConnected(status === "Connected");
     getQueryDataFromContract();
-    if (address) {
-
-    }
   }, [status, address]);
 
   return (

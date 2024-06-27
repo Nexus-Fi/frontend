@@ -6,7 +6,7 @@ import { CONTRACT_MESSAGES } from "@/lib/messages";
 import { STAKE_CONTRACT_MESSAGES } from "@/components/stakeNibi/msg";
 import toast from "react-hot-toast";
 import { STAKE_CONTRACT_ADDRESS, stNIBITOKEN_CONTRACT_ADDRESS } from "@/lib/address";
-import {Button} from "@/components/ui/moving-border"
+import { Button } from "@/components/ui/moving-border"
 import { TOKEN_CONTRACT_MESSAGES } from "@/lib/Message/token";
 import { QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
 const contract_address =
@@ -77,7 +77,7 @@ export default function Staking() {
         QUERY_MESSAGES.withdrawable_unbonded("nibi1hzty850q3vnew33yuft82j0v5fazyvfcescxhs")
       );
       const amountAsNumber = parseFloat(result.withdrawable);
-      const diviedAmount = amountAsNumber /Math.pow(10, 6);
+      const diviedAmount = amountAsNumber / Math.pow(10, 6);
       setWithdrawAmount(diviedAmount.toString());
       setQueryData(result)
       console.log("queryData", result);
@@ -91,6 +91,8 @@ export default function Staking() {
   React.useEffect(() => {
     getQueryDataFromContract();
   }, []);
+
+
   const stake = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
@@ -106,20 +108,23 @@ export default function Staking() {
 
     const toastId = toast.loading("Staking...");
     console.log("staking", tokenToStake, "amount", amount, "exchange", exchange)
-    const tx = await sendTransaction(
-      STAKE_CONTRACT_ADDRESS,
-      STAKE_CONTRACT_MESSAGES.bond_forstnibi(),
-      tokenToStake
-    )
-      .then((res) => {
-        toast.dismiss(toastId);
-        toast.success("Staked Successfuly");
-        console.log("stake tx :", tx)
-      })
-      .catch((err) => {
-        console.log("Staking Failed", err);
-        toast.dismiss(toastId);
-      });
+    try {
+      const tx = await sendTransaction(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_CONTRACT_MESSAGES.bond_forstnibi(),
+        tokenToStake
+      );
+
+      // If the transaction is successful
+      toast.dismiss(toastId);
+      toast.success(`Staked ${amount} NIBI successfully`);
+
+    } catch (err) {
+      // If the transaction fails
+      console.log("Staking Failed", err);
+      toast.dismiss(toastId);
+      toast.error("Staking Failed");
+    }
   };
 
   const unstake = async (event: { preventDefault: () => void; }) => {
@@ -136,51 +141,13 @@ export default function Staking() {
     )
       .then((res) => {
         toast.dismiss(toastId);
-        toast.success("Unstaked Successfuly");
+        toast.success(`Unstaked ${unstakeAmount} NIBI successfully`);
         console.log("unstake sendFrom tx", tx)
 
       })
       .catch((err) => {
         console.log("Unstaking Failed", err);
         toast.dismiss(toastId);
-      });
-  };
-
-
-  const dispatch_rewards = async (event: { preventDefault: () => void; }) => {
-    event.preventDefault();
-
-    const toastId = toast.loading("dispatching...");
-    //console.log("staking", tokenToStake, "unstake", amount, "exchange", exchange)
-    const tx = await sendTransaction(
-      STAKE_CONTRACT_ADDRESS,
-      STAKE_CONTRACT_MESSAGES.dispatch_rewards(),
-    )
-      .then((res) => {
-        toast.dismiss(toastId);
-        toast.success("rewards Successfuly");
-      })
-      .catch((err) => {
-        "Dispatch rewards Failed";
-        toast.dismiss(toastId);
-      });
-  };
-
-
-  const update_params = async () => {
-    const toastId = toast.loading("update_params...");
-    const tx = await sendTransaction(
-      contract_address,
-      STAKE_CONTRACT_MESSAGES.update_params(1, 1)
-    )
-      .then((res) => {
-        toast.dismiss(toastId);
-        toast.success("update_params Successfuly");
-      })
-      .catch((err) => {
-        "update_params Failed";
-        toast.dismiss(toastId);
-        toast.error(err.message);
       });
   };
 
@@ -200,7 +167,7 @@ export default function Staking() {
       )
         .then((res) => {
           toast.dismiss(toastId);
-          toast.success("Withdraw Successfuly");
+          toast.success(`Withdraw ${withdrawAmount} NIBI successfully`);
         })
         .catch((err) => {
           "Withdrawing Failed";
@@ -222,22 +189,20 @@ export default function Staking() {
             <div className="flex flex-wrap">
               <div
                 className={`w-1/3 py-4 px-1 md:px-4 text- md:text-base lg:px-12 hover:underline-offset-8
-                                  rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${
-                                    open === "stake"
-                                      ? "bg-purple-100 drop-shadow-xl text-black font-semibold"
-                                      : " "
-                                  }`}
+                                  rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${open === "stake"
+                    ? "bg-purple-100 drop-shadow-xl text-black font-semibold"
+                    : " "
+                  }`}
               >
                 <button onClick={() => handleTabOpen("stake")}>Stake</button>
               </div>
 
               <div
                 className={`w-1/3 py-4 px-1 md:px-4 text- md:text-base lg:px-12 hover:underline-offset-8
-                                  rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${
-                                    open === "unstake"
-                                      ? "bg-purple-200 drop-shadow-xl text-black font-semibold"
-                                      : " "
-                                  }`}
+                                  rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${open === "unstake"
+                    ? "bg-purple-200 drop-shadow-xl text-black font-semibold"
+                    : " "
+                  }`}
               >
                 <button onClick={() => handleTabOpen("unstake")}>
                   Unstake
@@ -246,11 +211,10 @@ export default function Staking() {
 
               <div
                 className={`w-1/3 py-4 px-1 md:px-4 text- md:text-base lg:px-12 hover:underline-offset-8
-                                  rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${
-                                    open === "withdraw"
-                                      ? "bg-purple-200 drop-shadow-xl text-black font-semibold"
-                                      : " "
-                                  }`}
+                                  rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${open === "withdraw"
+                    ? "bg-purple-200 drop-shadow-xl text-black font-semibold"
+                    : " "
+                  }`}
               >
                 <button onClick={() => handleTabOpen("withdraw")}>
                   Withdraw

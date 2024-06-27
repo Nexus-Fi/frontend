@@ -30,20 +30,19 @@ export default function Staking() {
   const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
   const getQueryDataFromContract = async () => {
     // if (address) {
-      console.log("address", address)
+    console.log("address", address)
 
-      try {
-        const result = await fetchQuery(
-          STAKE_CONTRACT_ADDRESS,
-          QUERY_MESSAGES.restake("nibi1hzty850q3vnew33yuft82j0v5fazyvfcescxhs")
-        );
-        setQueryData(result)
-        console.log("queryData", result);
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      const result = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        QUERY_MESSAGES.restake("nibi1hzty850q3vnew33yuft82j0v5fazyvfcescxhs")
+      );
+      setQueryData(result)
+      console.log("queryData", result);
+    } catch (error) {
+      console.log(error);
+    }
     // }
-   
   };
 
   React.useEffect(() => {
@@ -92,11 +91,9 @@ export default function Staking() {
       .catch((err) => {
         console.log("Transfer Failed");
       });
-
-
   }
 
-  
+
   const restake_deposit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     transfer(event);
@@ -108,7 +105,7 @@ export default function Staking() {
     )
       .then((res) => {
         toast.dismiss(toastId);
-        toast.success("ReStaked Successfuly");
+        toast.success(`ReStaked ${amount} NIBI successfully`);
       })
       .catch((err) => {
         "ReStaking Failed";
@@ -127,7 +124,7 @@ export default function Staking() {
     )
       .then((res) => {
         toast.dismiss(toastId);
-        toast.success("withdraw Successfuly");
+        toast.success(`Withdraw ${amount} NIBI successfully`);
       })
       .catch((err) => {
         "UnStaking Failed";
@@ -261,7 +258,7 @@ export default function Staking() {
                   </div>
                 ) : (
                   <div>
-                      <form onSubmit={withdraw_restaked} className="w-full max-w-lg">
+                    <form onSubmit={withdraw_restaked} className="w-full max-w-lg">
                       <div className="my-4">
                         <label className="form-control w-full">
                           <div className="label">

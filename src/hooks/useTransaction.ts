@@ -63,6 +63,10 @@ const useTransaction = () => {
     }
 
     console.log(tx.transactionHash);
+    // Display the transaction hash
+    toast(`Transaction Hash: \n\n https://explorer.nibiru.fi/nibiru-testnet-1/tx/${tx.transactionHash}`, {
+      duration: 8000,
+    });
   }
 
   const fetchQuery = async (contractAddress: string, message: JsonObject) => {
@@ -74,7 +78,7 @@ const useTransaction = () => {
     return res;
   }
 
-  return { sendTransaction , fetchQuery};
+  return { sendTransaction, fetchQuery };
 }
 
 export default useTransaction;
