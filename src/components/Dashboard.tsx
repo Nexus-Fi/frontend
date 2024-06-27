@@ -17,7 +17,7 @@ const Dashboard = () => {
   const [restaked, setRestaked] = React.useState("0");
   const [delegated, setDelegated] = React.useState("0");
   const [restakedPoints, setRestakedPoints] = React.useState("0");
-  const [restakedRatio, setRestakedRatio] = React.useState("0.00000001");
+  const [restakedRatio, setRestakedRatio] = React.useState("0.000000001");
 
   const [isConnected, setIsConnected] = React.useState(status === "Connected");
 
