@@ -1,23 +1,55 @@
 "use client";
 import React from "react";
 import useTransaction from "@/hooks/useTransaction";
-import { STAKE_CONTRACT_ADDRESS } from "@/lib/address";
-import { QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
-
+import { STAKE_CONTRACT_ADDRESS,REWARD_DISPATCHER_CONTRACT_ADDRESS } from "@/lib/address";
+import { STAKE_QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
+import { REWARD_QUERY_MESSAGES } from "@/lib/Query/rewardDispatcher";
 
 const Dashboard = () => {
   const [isConnected, setIsConnected] = React.useState(false);
   const { sendTransaction, fetchQuery } = useTransaction();
-  const [queryData, setQueryData] = React.useState()
+  const [HistroyqueryData, setHistoryQueryData] = React.useState()
+  const [StakequeryData, setStakeQueryData] = React.useState()
+  const [RestakequeryData, setRestakeQueryData] = React.useState()
+  const [RewardequeryData, setRewardQueryData] = React.useState()
+  const [UnbondRequestData, setUnbondReQuestQueryData] = React.useState()
+
+
 
   const getQueryDataFromContract = async () => {
     try {
-      const result = await fetchQuery(
+      const Historyresult = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
-        QUERY_MESSAGES.all_history(1, 10)
+        STAKE_QUERY_MESSAGES.all_history(1, 10)
       );
-      setQueryData(result)
-      console.log("queryData", result);
+      setHistoryQueryData(Historyresult)
+      console.log("Historyresult", Historyresult);
+
+      const Stakeresult = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES.staker("nibi1hzty850q3vnew33yuft82j0v5fazyvfcescxhs")
+      );
+      setStakeQueryData(Stakeresult)
+      console.log("Stakeresult", Stakeresult);
+
+      const Restakeresult = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES.restake("nibi1hzty850q3vnew33yuft82j0v5fazyvfcescxhs")
+      );
+      setRestakeQueryData(Stakeresult)
+      console.log("Restakeresult", Restakeresult);
+      // const Rewardresult = await fetchQuery(
+      //   REWARD_DISPATCHER_CONTRACT_ADDRESS,
+      //   REWARD_QUERY_MESSAGES.get_buffered_rewards
+      // );
+      // setRewardQueryData(Rewardresult)
+      // console.log("Rewardresult", Rewardresult);
+      const unbondRequestsResult = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES.unbond_requests("nibi1hzty850q3vnew33yuft82j0v5fazyvfcescxhs")
+      );
+      setUnbondReQuestQueryData(unbondRequestsResult)
+      console.log("unbondRequestsResult", unbondRequestsResult);
     } catch (error) {
       console.log(error);
     }

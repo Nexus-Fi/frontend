@@ -1,4 +1,4 @@
-export const QUERY_MESSAGES = {
+export const STAKE_QUERY_MESSAGES = {
     config: () => ({
         config: {},
     }),
