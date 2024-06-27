@@ -224,7 +224,7 @@ export default function Staking() {
                 className={`w-1/3 py-4 px-1 md:px-4 text- md:text-base lg:px-12 hover:underline-offset-8
                                   rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${
                                     open === "stake"
-                                      ? "bg-base-200 drop-shadow-xl text-black font-semibold"
+                                      ? "bg-purple-100 drop-shadow-xl text-black font-semibold"
                                       : " "
                                   }`}
               >
@@ -235,7 +235,7 @@ export default function Staking() {
                 className={`w-1/3 py-4 px-1 md:px-4 text- md:text-base lg:px-12 hover:underline-offset-8
                                   rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${
                                     open === "unstake"
-                                      ? "bg-base-200 drop-shadow-xl text-black font-semibold"
+                                      ? "bg-purple-200 drop-shadow-xl text-black font-semibold"
                                       : " "
                                   }`}
               >
@@ -248,7 +248,7 @@ export default function Staking() {
                 className={`w-1/3 py-4 px-1 md:px-4 text- md:text-base lg:px-12 hover:underline-offset-8
                                   rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${
                                     open === "withdraw"
-                                      ? "bg-base-200 drop-shadow-xl text-black font-semibold"
+                                      ? "bg-purple-200 drop-shadow-xl text-black font-semibold"
                                       : " "
                                   }`}
               >

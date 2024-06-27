@@ -106,7 +106,7 @@ const Dashboard = () => {
     <div>
       <div className="pb-5 text-[30px] font-bold ">Dashboard</div>
       <div className="flex gap-5">
-        <div className="card bg-base-100 shadow-xl w-[50%]">
+        <div className="card bg-[] shadow-xl w-[50%]">
           <div className="card-body">
             <h2 className="card-title">Restaked</h2>
             <div className="p-5">
@@ -120,7 +120,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className="card bg-base-100 shadow-xl w-[50%]">
+        <div className="card bg-[] shadow-xl w-[50%]">
           <div className="card-body">
             <h2 className="card-title">Delegated</h2>
             <div className="p-5">
