@@ -1,4 +1,4 @@
-export const STAKE_CONTRACT_ADDRESS ="nibi1r0qdq0emcute0luvg4dxe5qmrvr4tqq4750vfwpjt8jvkj3gqxtq3tp7fq"; 
-export const stNIBITOKEN_CONTRACT_ADDRESS = "nibi1swhuu5sqkj8j3fz23qd7c82p920zpjaty6wa48aft55x9u352wtsw584k3"; 
-export const VALIDATOR_REGISTARY_CONTRACT_ADDRESS = "nibi19t4zanvshc6uzcen2g860m2j4cygaraqrss39racvhen6q59ytrqkkx8au"; 
-export const REWARD_DISPATCHER_CONTRACT_ADDRESS = "nibi1qmmmeqhy5qj0q6k8hxwuzq5nacj7rwa6x6mkptlncgpeu370zfus7ecam5"; 
+export const STAKE_CONTRACT_ADDRESS ="nibi1d60sluxatyclxayl55l76rqnvjy4z02wlxy6d4k2l2ek8prwclfsumaj60"; 
+export const stNIBITOKEN_CONTRACT_ADDRESS = "nibi18x7cysxtqd5ln4l0cvad5w9qycmc299lgk23vr0spxgf469kegnqzx6z6r"; 
+export const VALIDATOR_REGISTARY_CONTRACT_ADDRESS = "nibi19z8sx7gpu9cryenf2068uwqpfshverf0m5zjaxp9x3eyyy0xtexql5zx82"; 
+export const REWARD_DISPATCHER_CONTRACT_ADDRESS = "nibi1zce3zjsua686sjt6n3jer8cpa5slpsprhhsgw7p8ru9s046xendsuv0uej"; 

@@ -9,22 +9,55 @@ import toast from "react-hot-toast";
 import { STAKE_CONTRACT_ADDRESS, stNIBITOKEN_CONTRACT_ADDRESS } from "@/lib/address";
 import { Button } from "@/components/ui/moving-border";
 import { TOKEN_CONTRACT_MESSAGES } from "@/lib/Message/token";
+import { QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
 const contract_address =
   "nibi1valvrt57mk90yl94jmqhj7z0fl24q87ztrkl5tlqgky4mcfg8kds9nrg7y";
+import { useChain, useWalletClient } from '@cosmos-kit/react';
+import { CHAIN_NAME } from '@/lib/utils';
 
 export default function Staking() {
-  const { sendTransaction } = useTransaction();
+  const { address } = useChain(CHAIN_NAME);
+  const { sendTransaction, fetchQuery } = useTransaction();
   const router = useRouter();
   const searchParams = useSearchParams()
   const state = searchParams.get('state')
-
+  const [queryData, setQueryData] = React.useState()
   const [exchange, setExchange] = useState("1");
   const [amount, setAmount] = useState<string>("0");
   const [open, setOpen] = useState(state); // withdraw
-  const [wallet, setWallet] = useState<string>("");
   const [withdrawAmount, setWithdrawAmount] = useState<string>("0");
   const [withdrawStatus, setWithdrawStatus] = useState<boolean>(true);
   const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
+  const getQueryDataFromContract = async () => {
+    // if (address) {
+      console.log("address", address)
+
+      try {
+        const result = await fetchQuery(
+          STAKE_CONTRACT_ADDRESS,
+          QUERY_MESSAGES.restake("nibi1hzty850q3vnew33yuft82j0v5fazyvfcescxhs")
+        );
+        setQueryData(result)
+        console.log("queryData", result);
+      } catch (error) {
+        console.log(error);
+      }
+    // }
+   
+  };
+
+  React.useEffect(() => {
+    getQueryDataFromContract();
+  }, []);
+
+  console.log("queryresult", queryData)
+
+  if (queryData) {
+    setAmount(queryData)
+    console.log("if is called")
+  }
+
+
 
   const handleTabOpen = (tabCategory: string) => {
     setOpen(tabCategory);
@@ -63,73 +96,38 @@ export default function Staking() {
 
   }
 
-  const deposit = async (event: { preventDefault: () => void; }) => {
-    event.preventDefault();
-
-    const amountAsNumber = parseFloat(amount);
-    const multipliedAmount = amountAsNumber * Math.pow(10, 6);
-
-    const tokenToStake = [
-      {
-        amount: multipliedAmount.toString(),
-        denom: "unibi",
-      },
-    ];
-
-    const toastId = toast.loading("Staking...");
-    console.log("staking", tokenToStake, "amount", amount, "exchange", exchange)
-    const tx = await sendTransaction(
-      STAKE_CONTRACT_ADDRESS,
-      STAKE_CONTRACT_MESSAGES.bond_forstnibi(),
-      tokenToStake
-    )
-      .then((res) => {
-        toast.dismiss(toastId);
-        toast.success("Staked Successfuly");
-        console.log("stake tx :", tx)
-      })
-      .catch((err) => {
-        console.log("Staking Failed", err);
-        toast.dismiss(toastId);
-      });
-  };
-
-  const withdraw = async (event: { preventDefault: () => void; }) => {
-    event.preventDefault();
-    transfer(event);
-    const toastId = toast.loading("unstaking...");
-    const amountAsNumber = parseFloat(withdrawAmount);
-    const multipliedAmount = amountAsNumber * Math.pow(10, 6);
-
-    console.log("unstaking withdrawAmount", withdrawAmount, "stakeAmount", amount)
-    const tx = await sendTransaction(
-      stNIBITOKEN_CONTRACT_ADDRESS,
-      TOKEN_CONTRACT_MESSAGES.send_from("", STAKE_CONTRACT_ADDRESS, multipliedAmount.toString(), "")
-    )
-      .then((res) => {
-        toast.dismiss(toastId);
-        toast.success("Withdrawd Successfuly");
-        console.log("withdraw sendFrom tx", tx)
-
-      })
-      .catch((err) => {
-        console.log("Unstaking Failed", err);
-        toast.dismiss(toastId);
-      });
-  };
-
+  
   const restake_deposit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-
+    transfer(event);
     const toastId = toast.loading("restaking...");
-    console.log("restake deposit withdraw", amount, "exchange", exchange)
+    console.log("unstake", amount, "exchange", exchange)
     const tx = await sendTransaction(
       stNIBITOKEN_CONTRACT_ADDRESS,
       TOKEN_CONTRACT_MESSAGES.increase_allowance("", amount, ""),
     )
       .then((res) => {
         toast.dismiss(toastId);
-        toast.success("Staked Successfuly");
+        toast.success("ReStaked Successfuly");
+      })
+      .catch((err) => {
+        "ReStaking Failed";
+        toast.dismiss(toastId);
+      });
+  };
+
+  const withdraw_restaked = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+
+    const toastId = toast.loading("restaking...");
+    console.log("unstake", amount, "exchange", exchange)
+    const tx = await sendTransaction(
+      STAKE_CONTRACT_ADDRESS,
+      STAKE_CONTRACT_MESSAGES.withdraw_liquidity(),
+    )
+      .then((res) => {
+        toast.dismiss(toastId);
+        toast.success("withdraw Successfuly");
       })
       .catch((err) => {
         "UnStaking Failed";
@@ -202,8 +200,6 @@ export default function Staking() {
                 <div className='text-sm'>
                   <div className="">
                     <div className="flex items-center justify-between">
-                      <div className="">You wil get</div>
-                      <div>{amount} stNIBI</div>
                     </div>
                   </div>
 
@@ -265,7 +261,7 @@ export default function Staking() {
                   </div>
                 ) : (
                   <div>
-                    <form onSubmit={withdraw} className="w-full max-w-lg">
+                      <form onSubmit={withdraw_restaked} className="w-full max-w-lg">
                       <div className="my-4">
                         <label className="form-control w-full">
                           <div className="label">
@@ -319,3 +315,7 @@ export default function Staking() {
     </main >
   );
 }
+function fetchQuery(STAKE_CONTRACT_ADDRESS: string, arg1: any) {
+  throw new Error("Function not implemented.");
+}
+

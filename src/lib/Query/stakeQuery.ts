@@ -30,4 +30,10 @@ export const QUERY_MESSAGES = {
     guardians: () => ({
         guardians: {},
     }),
+    restake: (staker: string) => ({
+        restake: { staker }
+    }),
+    staker: (staker: string) => ({
+        staker: { staker }
+    })
 };
