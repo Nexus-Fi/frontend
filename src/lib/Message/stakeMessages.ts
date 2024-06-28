@@ -115,6 +115,11 @@ export const STAKE_CONTRACT_MESSAGES = {
             amount,
         },
     }),
+    burnrestakenibi:() =>({
+        burn_restake_nibi:{
+            
+        }
+    })
 };
 
 

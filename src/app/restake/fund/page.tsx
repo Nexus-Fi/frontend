@@ -4,9 +4,9 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { CiDollar } from "react-icons/ci";
 import useTransaction from "@/hooks/useTransaction";
 import { CONTRACT_MESSAGES } from "@/lib/messages";
-import { STAKE_CONTRACT_MESSAGES } from "@/components/stakeNibi/msg";
+import { STAKE_CONTRACT_MESSAGES } from "@/lib/Message/stakeMessages";
 import toast from "react-hot-toast";
-import { STAKE_CONTRACT_ADDRESS, stNIBITOKEN_CONTRACT_ADDRESS } from "@/lib/address";
+import { STAKE_CONTRACT_ADDRESS, rstNIBI_TOKEN_CONTRACT_ADDRESS, stNIBITOKEN_CONTRACT_ADDRESS } from "@/lib/address";
 import { Button } from "@/components/ui/moving-border";
 import { TOKEN_CONTRACT_MESSAGES } from "@/lib/Message/token";
 import { QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
@@ -93,6 +93,29 @@ export default function Staking() {
       });
   }
 
+  const transferRestake = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+
+    const amountAsNumber = parseFloat(withdrawAmount);
+    const multipliedAmount = amountAsNumber * Math.pow(10, 6);
+
+    const toastId = toast.loading("Transferring...");
+    console.log("transfering", stNIBITOKEN_CONTRACT_ADDRESS, "withdrawAmount", withdrawAmount)
+    const tx = await sendTransaction(
+      rstNIBI_TOKEN_CONTRACT_ADDRESS,
+      TOKEN_CONTRACT_MESSAGES.transfer(STAKE_CONTRACT_ADDRESS, multipliedAmount.toString()),
+    )
+      .then((res) => {
+        toast.dismiss(toastId);
+        toast.success("Transferred Successfuly");
+        console.log("transfer tx", tx)
+      })
+      .catch((err) => {
+        console.log("Transfer Failed");
+      });
+  }
+
+  
 
   const restake_deposit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
@@ -112,6 +135,25 @@ export default function Staking() {
         toast.dismiss(toastId);
       });
   };
+
+  const burnrestake = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+    const tx = await sendTransaction(
+      STAKE_CONTRACT_ADDRESS,
+      STAKE_CONTRACT_MESSAGES.burnrestakenibi()
+    )
+      .then((res) => {
+        toast.dismiss(toastId);
+        toast.success(`Unstaked ${unstakeAmount} NIBI successfully`);
+        console.log("unstake sendFrom tx", tx)
+
+      })
+      .catch((err) => {
+        console.log("Unstaking Failed", err);
+        toast.dismiss(toastId);
+      });
+  };
+
 
   const withdraw_restaked = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
