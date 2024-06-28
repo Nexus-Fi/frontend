@@ -113,9 +113,9 @@ export const STAKE_CONTRACT_MESSAGES = {
             amount,
         },
     }),
-    burnrestakenibi:() =>({
-        burn_restake_nibi:{
-            
+    burnrestakenibi: () => ({
+        burn_restake_nibi: {
+
         }
     })
 };
@@ -140,7 +140,7 @@ export const STAKE_CONTRACT_MESSAGES = {
 // }
 
 export interface STAKE_QUERY_MESSAGE {
-    config:() => ({
-        
+    config: () => ({
+
     })
 }

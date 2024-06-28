@@ -11,35 +11,47 @@ import {
 } from "@/lib/address";
 import { Button } from "@/components/ui/moving-border";
 import { TOKEN_CONTRACT_MESSAGES } from "@/lib/Message/token";
-
 import { STAKE_QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
+import { useChain } from "@cosmos-kit/react";
+import { CHAIN_NAME, getChainLogo } from "@/lib/utils";
 
 export default function Staking() {
   const { sendTransaction, fetchQuery } = useTransaction();
+  const { status, address } = useChain(CHAIN_NAME);
   const [state, setState] = useState<string>("");
-  const [queryData, setQueryData] = React.useState();
+  const [queryData, setQueryData] = React.useState()
   const [exchange, setExchange] = useState("1");
   const [amount, setAmount] = useState<string>("0");
   const [open, setOpen] = useState(state); // withdraw
   const [withdrawAmount, setWithdrawAmount] = useState<string>("0");
+  const [unstakedAmount, setUnstakedAmount] = useState<string>("0");
   const [withdrawStatus, setWithdrawStatus] = useState<boolean>(true);
   const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
-  const getQueryDataFromContract = async () => {
-    // if (address) {
 
-    try {
-      const result = await fetchQuery(
-        STAKE_CONTRACT_ADDRESS,
-        STAKE_QUERY_MESSAGES.restake(
-          "nibi1hzty850q3vnew33yuft82j0v5fazyvfcescxhs"
-        )
-      );
-      setQueryData(result);
-      console.log("queryData", result);
-    } catch (error) {
-      console.log(error);
+  const getQueryDataFromContract = async () => {
+    if (address) {
+      console.log("address restake", address)
+
+      try {
+        const result2 = await fetchQuery(
+          STAKE_CONTRACT_ADDRESS,
+          STAKE_QUERY_MESSAGES.staker(address)
+        );
+        setQueryData(result2)
+        setUnstakedAmount(convertToNibi(result2?.amount_restaked_rstnibi)) //burn
+        setWithdrawAmount(convertToNibi(result2?.amount_staked_stnibi)) // withdraw
+        console.log("result2", result2);
+      } catch (error) {
+        console.log("error:", error);
+      }
     }
   };
+
+  const convertToNibi = (value: string): string => {
+    const valueAsNumber = parseFloat(value);
+    const dividedValue = valueAsNumber / Math.pow(10, 6);
+    return dividedValue.toString();
+  }
 
   React.useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -48,14 +60,7 @@ export default function Staking() {
 
   React.useEffect(() => {
     getQueryDataFromContract();
-  }, []);
-
-  console.log("queryresult", queryData);
-
-  if (queryData) {
-    setAmount(queryData);
-    console.log("if is called");
-  }
+  }, [address]);
 
   const handleTabOpen = (tabCategory: string) => {
     setOpen(tabCategory);
@@ -73,16 +78,12 @@ export default function Staking() {
   const transfer = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
-    const amountAsNumber = parseFloat(withdrawAmount);
+    const amountAsNumber = parseFloat(amount);
     const multipliedAmount = amountAsNumber * Math.pow(10, 6);
 
     const toastId = toast.loading("Transferring...");
-    console.log(
-      "transfering",
-      stNIBITOKEN_CONTRACT_ADDRESS,
-      "withdrawAmount",
-      withdrawAmount
-    );
+
+    console.log("transfering", stNIBITOKEN_CONTRACT_ADDRESS, "withdrawAmount", withdrawAmount, "amount", amount, "multipliedAmount", multipliedAmount)
     const tx = await sendTransaction(
       stNIBITOKEN_CONTRACT_ADDRESS,
       TOKEN_CONTRACT_MESSAGES.transfer(
@@ -96,7 +97,7 @@ export default function Staking() {
         console.log("transfer tx", tx);
       })
       .catch((err) => {
-        console.log("Transfer Failed");
+        console.log("Transfer Failed", err);
       });
   };
 
@@ -107,12 +108,8 @@ export default function Staking() {
     const multipliedAmount = amountAsNumber * Math.pow(10, 6);
 
     const toastId = toast.loading("Transferring...");
-    console.log(
-      "transfering",
-      stNIBITOKEN_CONTRACT_ADDRESS,
-      "withdrawAmount",
-      withdrawAmount
-    );
+
+    console.log("transfering", stNIBITOKEN_CONTRACT_ADDRESS, "withdrawAmount", withdrawAmount, "amount", amount, "multipliedAmount", multipliedAmount)
     const tx = await sendTransaction(
       rstNIBI_TOKEN_CONTRACT_ADDRESS,
       TOKEN_CONTRACT_MESSAGES.transfer(
@@ -126,39 +123,50 @@ export default function Staking() {
         console.log("transfer tx", tx);
       })
       .catch((err) => {
-        console.log("Transfer Failed");
+        console.log("Transfer Failed", err);
       });
   };
 
-  const restake_deposit = async (event: { preventDefault: () => void }) => {
+  const restake_deposit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     transfer(event);
     const toastId = toast.loading("restaking...");
-    console.log("unstake", amount, "exchange", exchange);
+    console.log("restake", amount, "exchange", exchange)
+    const amountAsNumber = parseFloat(amount);
+    const multipliedAmount = amountAsNumber * Math.pow(10, 6);
+
+    try {
+      console.log("try block")
+      const tx = await sendTransaction(
+        stNIBITOKEN_CONTRACT_ADDRESS,
+        TOKEN_CONTRACT_MESSAGES.increase_allowance("", amount, null)
+      )
+
+      toast.dismiss(toastId);
+      toast.success(`Staked ${amount} NIBI successfully`);
+      console.log("restake tx", tx)
+    }
+    catch (error) {
+      console.log("error:", error);
+    }
+  };
+
+  const burnrestake = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+    const toastId = toast.loading("buring...");
+
     const tx = await sendTransaction(
-      stNIBITOKEN_CONTRACT_ADDRESS,
-      TOKEN_CONTRACT_MESSAGES.increase_allowance("", amount, "")
+      STAKE_CONTRACT_ADDRESS,
+      STAKE_CONTRACT_MESSAGES.burnrestakenibi()
     )
       .then((res) => {
         toast.dismiss(toastId);
-        toast.success(`ReStaked ${amount} NIBI successfully`);
-      })
-      .catch((err) => {
-        "ReStaking Failed";
-        toast.dismiss(toastId);
-      });
-  };
+        toast.success(`Unstaked ${withdrawAmount} NIBI successfully`);
+        console.log("unstake sendFrom tx", tx)
+      }
+      )
+  }
 
-  // const burnrestake = async (event: { preventDefault: () => void; }) => {
-  //   event.preventDefault();
-  //   const tx = await sendTransaction(
-  //     STAKE_CONTRACT_ADDRESS,
-  //     STAKE_CONTRACT_MESSAGES.burnrestakenibi()
-  //   )
-  //     .then((res) => {
-  //       toast.dismiss(toastId);
-  //       toast.success(`Unstaked ${unstakeAmount} NIBI successfully`);
-  //       console.log("unstake sendFrom tx", tx)
 
   //     })
   //     .catch((err) => {
@@ -167,11 +175,12 @@ export default function Staking() {
   //     });
   // };
 
-  const withdraw_restaked = async (event: { preventDefault: () => void }) => {
+  const withdraw_restaked = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
-    const toastId = toast.loading("restaking...");
-    console.log("unstake", amount, "exchange", exchange);
+    transferRestake(event);
+    const toastId = toast.loading("Withdrawing...");
+    console.log("withdraw", amount, "exchange", exchange)
     const tx = await sendTransaction(
       STAKE_CONTRACT_ADDRESS,
       STAKE_CONTRACT_MESSAGES.withdraw_liquidity()
@@ -181,9 +190,10 @@ export default function Staking() {
         toast.success(`Withdraw ${amount} NIBI successfully`);
       })
       .catch((err) => {
-        "UnStaking Failed";
+        console.log("Withdraw Failed", err);
         toast.dismiss(toastId);
       });
+    // await burnrestake(event);
   };
 
   return (
@@ -194,22 +204,20 @@ export default function Staking() {
             <div
               className={`w-1/2 py-4 px-1 md:px-4 text-sm font-semibold md:text-base lg:px-12 hover:underline-offset-8
                               rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer 
-                              ${
-                                open === "deposit"
-                                  ? "bg-base-200 drop-shadow-2xl text-black font-semibold"
-                                  : " "
-                              }`}
+                              ${open === "deposit"
+                  ? "bg-base-200 drop-shadow-2xl text-black font-semibold"
+                  : " "
+                }`}
             >
               <button onClick={() => handleTabOpen("deposit")}>Deposit</button>
             </div>
 
             <div
               className={`w-1/2 py-4 px-4 text-sm md:text-base lg:px-12 hover:underline-offset-8
-                              text-center rounded-2xl transition-all delay-75 text-black  cursor-pointer ${
-                                open === "withdraw"
-                                  ? "bg-base-200 drop-shadow-2xl text-black font-semibold "
-                                  : " "
-                              }`}
+                              text-center rounded-2xl transition-all delay-75 text-black  cursor-pointer ${open === "withdraw"
+                  ? "bg-base-200 drop-shadow-2xl text-black font-semibold "
+                  : " "
+                }`}
             >
               <button onClick={() => handleTabOpen("withdraw")}>
                 Withdraw
@@ -366,6 +374,4 @@ export default function Staking() {
     </main>
   );
 }
-function fetchQuery(STAKE_CONTRACT_ADDRESS: string, arg1: any) {
-  throw new Error("Function not implemented.");
-}
+
