@@ -36,8 +36,7 @@ const useTransaction = () => {
       throw new Error('Wallet client is not initialized');
     }
 
-    const signer = await client?.getOfflineSigner(chain.chainId);
-
+    const signer = await client?.getOfflineSigner(chain.chainId) || "";
     const signingClient = await NibiruTxClient.connectWithSigner(
       chain.endptTm,
       signer!

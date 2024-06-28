@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import { STAKE_CONTRACT_ADDRESS, rstNIBI_TOKEN_CONTRACT_ADDRESS, stNIBITOKEN_CONTRACT_ADDRESS } from "@/lib/address";
 import { Button } from "@/components/ui/moving-border";
 import { TOKEN_CONTRACT_MESSAGES } from "@/lib/Message/token";
-import { QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
+import { STAKE_QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
 const contract_address =
   "nibi1valvrt57mk90yl94jmqhj7z0fl24q87ztrkl5tlqgky4mcfg8kds9nrg7y";
 import { useChain, useWalletClient } from '@cosmos-kit/react';
@@ -35,7 +35,7 @@ export default function Staking() {
     try {
       const result = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
-        QUERY_MESSAGES.restake("nibi1hzty850q3vnew33yuft82j0v5fazyvfcescxhs")
+        STAKE_QUERY_MESSAGES.restake("nibi1hzty850q3vnew33yuft82j0v5fazyvfcescxhs")
       );
       setQueryData(result)
       console.log("queryData", result);
