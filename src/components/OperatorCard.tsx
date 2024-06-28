@@ -11,7 +11,7 @@ const OperatorCard = () => {
                     <CiDollar className='bg-yellow-300 rounded-xl text-3xl' />
                     <div>
                         <h2 className="text-left text-xl font-semibold ">NexusFi Restaking Validator</h2>
-                        <div className='text-[12px]'> Coming Soon </div>
+                        <div className='text-[12px]'> Coming Soon on Mainnet</div>
                     </div>
 
                 </div>
