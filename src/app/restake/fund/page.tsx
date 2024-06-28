@@ -1,24 +1,27 @@
 "use client";
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useSearchParams, useRouter } from 'next/navigation'
-import { CiDollar } from "react-icons/ci";
 import useTransaction from "@/hooks/useTransaction";
-import { CONTRACT_MESSAGES } from "@/lib/messages";
 import { STAKE_CONTRACT_MESSAGES } from "@/lib/Message/stakeMessages";
 import toast from "react-hot-toast";
 import { STAKE_CONTRACT_ADDRESS, rstNIBI_TOKEN_CONTRACT_ADDRESS, stNIBITOKEN_CONTRACT_ADDRESS } from "@/lib/address";
 import { Button } from "@/components/ui/moving-border";
 import { TOKEN_CONTRACT_MESSAGES } from "@/lib/Message/token";
+
+
+
 import { STAKE_QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
 const contract_address =
   "nibi1valvrt57mk90yl94jmqhj7z0fl24q87ztrkl5tlqgky4mcfg8kds9nrg7y";
 import { useChain, useWalletClient } from '@cosmos-kit/react';
 import { CHAIN_NAME } from '@/lib/utils';
 
+
 export default function Staking() {
-  const { address } = useChain(CHAIN_NAME);
   const { sendTransaction, fetchQuery } = useTransaction();
   const router = useRouter();
+  const { status, address } = useChain(CHAIN_NAME);
+  console.log("status", status, "address", address)
   const searchParams = useSearchParams()
   const state = searchParams.get('state')
   const [queryData, setQueryData] = React.useState()
@@ -29,20 +32,21 @@ export default function Staking() {
   const [withdrawStatus, setWithdrawStatus] = useState<boolean>(true);
   const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
   const getQueryDataFromContract = async () => {
-    // if (address) {
+    if (address === undefined) return;
     console.log("address", address)
 
     try {
       const result = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
-        STAKE_QUERY_MESSAGES.restake("nibi1hzty850q3vnew33yuft82j0v5fazyvfcescxhs")
+
+        STAKE_CONTRACT_MESSAGES.restake()
+
       );
       setQueryData(result)
       console.log("queryData", result);
     } catch (error) {
       console.log(error);
     }
-    // }
   };
 
   React.useEffect(() => {
@@ -115,7 +119,7 @@ export default function Staking() {
       });
   }
 
-  
+
 
   const restake_deposit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
@@ -143,14 +147,12 @@ export default function Staking() {
       STAKE_CONTRACT_MESSAGES.burnrestakenibi()
     )
       .then((res) => {
-        toast.dismiss(toastId);
-        toast.success(`Unstaked ${unstakeAmount} NIBI successfully`);
+      
         console.log("unstake sendFrom tx", tx)
 
       })
       .catch((err) => {
         console.log("Unstaking Failed", err);
-        toast.dismiss(toastId);
       });
   };
 
@@ -173,7 +175,7 @@ export default function Staking() {
         toast.dismiss(toastId);
       });
   };
-
+  
 
   return (
     <main className="flex flex-row justify-center align-middle py-5 ">

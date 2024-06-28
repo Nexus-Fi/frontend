@@ -2,17 +2,16 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { CiDollar } from "react-icons/ci";
 import useTransaction from "@/hooks/useTransaction";
-import { CONTRACT_MESSAGES } from "@/lib/messages";
-import { STAKE_CONTRACT_MESSAGES } from "@/components/stakeNibi/msg";
 import toast from "react-hot-toast";
 import { STAKE_CONTRACT_ADDRESS, stNIBITOKEN_CONTRACT_ADDRESS } from "@/lib/address";
 import { Button } from "@/components/ui/moving-border"
 import { TOKEN_CONTRACT_MESSAGES } from "@/lib/Message/token";
+
 import { STAKE_QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
-const contract_address =
-  "nibi1valvrt57mk90yl94jmqhj7z0fl24q87ztrkl5tlqgky4mcfg8kds9nrg7y";
+
 import { useChain, useWalletClient } from '@cosmos-kit/react';
 import { CHAIN_NAME } from '@/lib/utils';
+import { STAKE_CONTRACT_MESSAGES } from "@/lib/Message/stakeMessages";
 export default function Staking() {
   const [exchange, setExchange] = useState("1");
   const [amount, setAmount] = useState<string>("0");
@@ -67,6 +66,7 @@ export default function Staking() {
 
 
   }
+
   const getQueryDataFromContract = async () => {
     // if (address) {
     console.log("address", address)
@@ -74,7 +74,9 @@ export default function Staking() {
     try {
       const result = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
-        STAKE_QUERY_MESSAGES.withdrawable_unbonded("nibi1hzty850q3vnew33yuft82j0v5fazyvfcescxhs")
+
+        STAKE_CONTRACT_MESSAGES.withdraw_unbonded()
+
       );
       const amountAsNumber = parseFloat(result.withdrawable);
       const diviedAmount = amountAsNumber / Math.pow(10, 6);
