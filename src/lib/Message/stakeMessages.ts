@@ -103,9 +103,9 @@ export const STAKE_CONTRACT_MESSAGES = {
             nusd_amount,
         },
     }),
-    withdraw_liquidity: (lp_tokens: string) => ({
+    withdraw_liquidity: () => ({
         withdraw_liquidity: {
-            lp_tokens,
+       
         },
     }),
     swap: (from_token: string, to_token: string, amount: string) => ({
