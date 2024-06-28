@@ -36,8 +36,8 @@ const Dashboard = () => {
   }
 
   const calculateRestakedPoints = () => {
-    const restakedPoints = parseFloat(restaked) + parseFloat(delegated);
-    setRestakedPoints(restakedPoints.toString());
+    const restakedPoint = parseFloat(restaked) + parseFloat(delegated);
+    setRestakedPoints(restakedPoint.toString());
   }
 
   const getQueryDataFromContract = async () => {
@@ -92,6 +92,7 @@ const Dashboard = () => {
       setRestakeQueryData(DlegationDataResult)
       console.log("DlegationDataResult", DlegationDataResult);
 
+      calculateRestakedPoints();
 
     } catch (error) {
       console.log(error);
@@ -112,7 +113,7 @@ const Dashboard = () => {
       <div className="flex gap-5">
         <div className="card bg-[] shadow-xl w-[50%]">
           <div className="card-body">
-            <h2 className="card-title"> Nexus Staked NIBI  </h2>
+            <h2 className="card-title"> Staked NIBI  </h2>
             <div className="p-5">
               {isConnected ? (
                 <div className="font-bold text-2xl "> {restaked} stNIBI</div>
@@ -126,10 +127,10 @@ const Dashboard = () => {
         </div>
         <div className="card bg-[] shadow-xl w-[50%]">
           <div className="card-body">
-            <h2 className="card-title">Delegated</h2>
+            <h2 className="card-title">Restaked NIBI</h2>
             <div className="p-5">
               {isConnected ? (
-                <div className="font-bold text-2xl "> {delegated} NIBI</div>
+                <div className="font-bold text-2xl "> {delegated} rstNIBI</div>
               ) : (
                 <div>
                   <progress className="progress p-2 "></progress>

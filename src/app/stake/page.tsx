@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { STAKE_CONTRACT_ADDRESS, stNIBITOKEN_CONTRACT_ADDRESS } from "@/lib/address";
 import { Button } from "@/components/ui/moving-border"
 import { TOKEN_CONTRACT_MESSAGES } from "@/lib/Message/token";
-import { QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
+import { STAKE_QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
 const contract_address =
   "nibi1valvrt57mk90yl94jmqhj7z0fl24q87ztrkl5tlqgky4mcfg8kds9nrg7y";
 import { useChain, useWalletClient } from '@cosmos-kit/react';
@@ -23,7 +23,7 @@ export default function Staking() {
   const [withdrawAmount, setWithdrawAmount] = useState<string>("1");
   const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
   const { sendTransaction, fetchQuery } = useTransaction();
-  const [queryData, setQueryData] = React.useState()
+  const [queryData, setQueryData] = React.useState();
   const { address } = useChain(CHAIN_NAME);
 
   const handleTabOpen = (tabCategory: string) => {
@@ -74,7 +74,7 @@ export default function Staking() {
     try {
       const result = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
-        QUERY_MESSAGES.withdrawable_unbonded("nibi1hzty850q3vnew33yuft82j0v5fazyvfcescxhs")
+        STAKE_QUERY_MESSAGES.withdrawable_unbonded("nibi1hzty850q3vnew33yuft82j0v5fazyvfcescxhs")
       );
       const amountAsNumber = parseFloat(result.withdrawable);
       const diviedAmount = amountAsNumber / Math.pow(10, 6);
@@ -341,7 +341,7 @@ export default function Staking() {
                   Unstake
                 </Button>
               </form>
-              <div role="alert" className="mt-3 alert alert-warning">
+              {/* <div role="alert" className="mt-3 alert alert-warning">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 shrink-0 stroke-current"
@@ -359,7 +359,7 @@ export default function Staking() {
                   Unstake requests are processed in 7-10 days, subject to exit
                   queue on Network
                 </span>
-              </div>
+              </div> */}
             </div>
           )}
 
