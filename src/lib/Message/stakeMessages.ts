@@ -104,9 +104,7 @@ export const STAKE_CONTRACT_MESSAGES = {
         },
     }),
     withdraw_liquidity: () => ({
-        withdraw_liquidity: {
-       
-        },
+        withdraw_liquidity: {},
     }),
     swap: (from_token: string, to_token: string, amount: string) => ({
         swap: {
