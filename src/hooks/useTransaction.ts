@@ -1,5 +1,7 @@
 import { CHAIN_NAME } from '@/lib/utils';
 import { useChain, useWalletClient } from '@cosmos-kit/react';
+import { SignerOptions, wallets } from 'cosmos-kit';
+
 import { NibiruQuerier, NibiruTxClient, Testnet } from '@nibiruchain/nibijs';
 import toast from 'react-hot-toast';
 
@@ -36,7 +38,7 @@ const useTransaction = () => {
       throw new Error('Wallet client is not initialized');
     }
 
-
+    // @ts-ignore
     const signer = await client?.getOfflineSigner(chain.chainId) || "";
 
     const signingClient = await NibiruTxClient.connectWithSigner(
