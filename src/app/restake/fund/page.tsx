@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, ChangeEvent } from "react";
-import { useSearchParams } from "next/navigation";
 import useTransaction from "@/hooks/useTransaction";
 import { STAKE_CONTRACT_MESSAGES } from "@/lib/Message/stakeMessages";
 import toast from "react-hot-toast";
@@ -18,7 +17,7 @@ import { CHAIN_NAME, getChainLogo } from "@/lib/utils";
 export default function Staking() {
   const { sendTransaction, fetchQuery } = useTransaction();
   const { status, address } = useChain(CHAIN_NAME);
-  const [state, setState] = useState<string>("");
+  const [state, setState] = useState<string>("deposit");
   const [queryData, setQueryData] = React.useState()
   const [exchange, setExchange] = useState("1");
   const [amount, setAmount] = useState<string>("0");
@@ -38,8 +37,8 @@ export default function Staking() {
           STAKE_QUERY_MESSAGES.staker(address)
         );
         setQueryData(result2)
-        setUnstakedAmount(convertToNibi(result2?.amount_restaked_rstnibi)) //burn
-        setWithdrawAmount(convertToNibi(result2?.amount_staked_stnibi)) // withdraw
+        setUnstakedAmount(convertToNibi(result2?.amount_staked_stnibi)) //burn
+        setWithdrawAmount(convertToNibi(result2?.amount_restaked_rstnibi)) // withdraw
         console.log("result2", result2);
       } catch (error) {
         console.log("error:", error);
@@ -205,19 +204,19 @@ export default function Staking() {
           <div className="flex flex-row w-full items-center gap-4">
             <div
               className={`w-1/2 py-4 px-1 md:px-4 text-sm font-semibold md:text-base lg:px-12 hover:underline-offset-8
-                              rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer 
+                          rounded-2xl text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer 
                               ${open === "deposit"
-                  ? "bg-base-200 drop-shadow-2xl text-black font-semibold"
+                  ? " bg-purple-100 drop-shadow-2xl text-black font-semibold"
                   : " "
                 }`}
             >
-              <button onClick={() => handleTabOpen("deposit")}>Restake</button>
+              <button onClick={() => handleTabOpen("deposit")}>Deposit</button>
             </div>
 
             <div
               className={`w-1/2 py-4 px-4 text-sm md:text-base lg:px-12 hover:underline-offset-8
-                              text-center rounded-2xl transition-all delay-75 text-black  cursor-pointer ${open === "withdraw"
-                  ? "bg-base-200 drop-shadow-2xl text-black font-semibold "
+                           text-center rounded-2xl transition-all delay-75 text-black  cursor-pointer ${open === "withdraw"
+                  ? " bg-purple-100 drop-shadow-2xl text-black font-semibold "
                   : " "
                 }`}
             >
@@ -276,7 +275,7 @@ export default function Staking() {
                   type="submit"
                   className="bg-black dark:bg-slate-900 text-white text-lg font-bold py-4 px-4  dark:text-black border-blue-700 "
                 >
-                  Stake
+                  Restake
                 </Button>
               </form>
             </div>
