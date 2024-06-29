@@ -51,7 +51,7 @@ const Dashboard = () => {
       setDelegated(convertToNibi(result2?.amount_restaked_rstnibi));
       setRestaked(convertToNibi(result2?.amount_staked_stnibi));
       calculateRestakedPoints();
-
+      
       const Historyresult = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
         STAKE_QUERY_MESSAGES.all_history(1, 10)

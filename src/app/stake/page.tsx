@@ -237,7 +237,6 @@ export default function Staking() {
                     </div>
                     <select className="select select-bordered">
                       <option>NIBI</option>
-                      <option>ATOM</option>
                     </select>
                   </label>
                 </div>

@@ -143,7 +143,7 @@ export default function Staking() {
       )
 
       toast.dismiss(toastId);
-      toast.success(`Staked ${amount} NIBI successfully`);
+      toast.success(`Staked ${amount} stNIBI successfully`);
       console.log("restake tx", tx)
     }
     catch (error) {
@@ -194,7 +194,7 @@ export default function Staking() {
         console.log("Withdraw Failed", err);
         toast.dismiss(toastId);
       });
-    // await burnrestake(event);
+    await burnrestake(event);
   };
 
   return (
