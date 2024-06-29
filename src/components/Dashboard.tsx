@@ -36,13 +36,22 @@ const Dashboard = () => {
   }
 
   const calculateRestakedPoints = () => {
-    const restakedPoint = parseFloat(restaked) + parseFloat(delegated);
+    const restakedPoint = (parseFloat(restaked) + parseFloat(delegated)) * 2;
     setRestakedPoints(restakedPoint.toString());
   }
 
   const getQueryDataFromContract = async () => {
     if (address === undefined) return;
     try {
+      const result2 = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES.staker(address)
+      );
+      console.log("result2", result2);
+      setDelegated(convertToNibi(result2?.amount_restaked_rstnibi));
+      setRestaked(convertToNibi(result2?.amount_staked_stnibi));
+      calculateRestakedPoints();
+
       const Historyresult = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
         STAKE_QUERY_MESSAGES.all_history(1, 10)
@@ -50,17 +59,16 @@ const Dashboard = () => {
       setHistoryQueryData(Historyresult)
       console.log("Historyresult", Historyresult);
 
-      const Stakeresult = await fetchQuery(
-        STAKE_CONTRACT_ADDRESS,
-        STAKE_QUERY_MESSAGES.staker(address)
-      );
-      setStakeQueryData(Stakeresult)
-      const StNIBI = Stakeresult?.amount_staked_stnibi?.toString();
-      const NIBI = Stakeresult?.amount_staked_unibi?.toString();
-
-      console.log("NIBI: ", NIBI, "StNIBI: ", StNIBI)
-      setDelegated(convertToNibi(NIBI));
-      console.log("Stakeresult", Stakeresult);
+      // const Stakeresult = await fetchQuery(
+      //   STAKE_CONTRACT_ADDRESS,
+      //   STAKE_QUERY_MESSAGES.staker(address)
+      // );
+      // setStakeQueryData(Stakeresult)
+      // const StNIBI = Stakeresult?.amount_staked_stnibi?.toString();
+      // const NIBI = Stakeresult?.amount_staked_unibi?.toString();
+      // console.log("NIBI: ", NIBI, "StNIBI: ", StNIBI)
+      // setDelegated(convertToNibi(NIBI));
+      // console.log("Stakeresult", Stakeresult);
 
       // const Restakeresult = await fetchQuery(
       //   STAKE_CONTRACT_ADDRESS,
@@ -69,7 +77,7 @@ const Dashboard = () => {
       // setRestakeQueryData(Stakeresult)
       // const stNIBI = Restakeresult?.stnibi_amount?.toString();
       // console.log("stNIBI: ", stNIBI)
-      setRestaked(convertToNibi(StNIBI));
+      // setRestaked(convertToNibi(StNIBI));
       // console.log("Restakeresult", Restakeresult);
       // const Rewardresult = await fetchQuery(
       //   REWARD_DISPATCHER_CONTRACT_ADDRESS,

@@ -24,7 +24,7 @@ export const TOKEN_CONTRACT_MESSAGES = {
             amount,
         },
     }),
-    increase_allowance: (spender: string, amount: string, expires: string) => ({
+    increase_allowance: (spender: string, amount: string, expires: string | null) => ({
         increase_allowance: {
             spender,
             amount,
