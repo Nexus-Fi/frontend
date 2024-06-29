@@ -124,12 +124,13 @@ export default function Staking() {
       })
       .catch((err) => {
         console.log("Transfer Failed", err);
+        toast.dismiss(toastId);
       });
   };
 
   const restake_deposit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    transfer(event);
+    // transfer(event);
     const toastId = toast.loading("restaking...");
     console.log("restake", amount, "exchange", exchange)
     const amountAsNumber = parseFloat(amount);
@@ -139,7 +140,7 @@ export default function Staking() {
       console.log("try block")
       const tx = await sendTransaction(
         stNIBITOKEN_CONTRACT_ADDRESS,
-        TOKEN_CONTRACT_MESSAGES.increase_allowance("", amount, null)
+        TOKEN_CONTRACT_MESSAGES.increase_allowance("", multipliedAmount.toString(), null)
       )
 
       toast.dismiss(toastId);
@@ -148,6 +149,7 @@ export default function Staking() {
     }
     catch (error) {
       console.log("error:", error);
+      toast.dismiss(toastId);
     }
   };
 
@@ -209,7 +211,7 @@ export default function Staking() {
                   : " "
                 }`}
             >
-              <button onClick={() => handleTabOpen("deposit")}>Deposit</button>
+              <button onClick={() => handleTabOpen("deposit")}>Restake</button>
             </div>
 
             <div
