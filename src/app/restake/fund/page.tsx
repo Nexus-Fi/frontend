@@ -168,14 +168,6 @@ export default function Staking() {
       )
   }
 
-
-  //     })
-  //     .catch((err) => {
-  //       console.log("Unstaking Failed", err);
-  //       toast.dismiss(toastId);
-  //     });
-  // };
-
   const withdraw_restaked = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
@@ -215,7 +207,7 @@ export default function Staking() {
 
             <div
               className={`w-1/2 py-4 px-4 text-sm md:text-base lg:px-12 hover:underline-offset-8
-                           text-center rounded-2xl transition-all delay-75 text-black  cursor-pointer ${open === "withdraw"
+                          text-center rounded-2xl transition-all delay-75 text-black  cursor-pointer ${open === "withdraw"
                   ? " bg-purple-100 drop-shadow-2xl text-black font-semibold "
                   : " "
                 }`}
