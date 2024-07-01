@@ -151,7 +151,7 @@ export default function Staking() {
       toast.dismiss(toastId);
     }
   };
-  
+
   const burnrestake = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     const toastId = toast.loading("buring...");
@@ -170,7 +170,7 @@ export default function Staking() {
   const withdraw_restaked = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
-    transferRestake(event);
+   await  transferRestake(event);
     const toastId = toast.loading("Withdrawing...");
     console.log("withdraw", amount, "exchange", exchange)
     const tx = await sendTransaction(
@@ -185,7 +185,7 @@ export default function Staking() {
         console.log("Withdraw Failed", err);
         toast.dismiss(toastId);
       });
-     burnrestake(event);
+    await burnrestake(event);
   };
 
   return (
