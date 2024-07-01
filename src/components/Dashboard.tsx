@@ -37,7 +37,7 @@ const Dashboard = () => {
 
   const calculateRestakedPoints = () => {
     const restakedPoint = (parseFloat(restaked) + parseFloat(delegated)) * 2;
-    setRestakedPoints(restakedPoint.toString());
+    return restakedPoint.toString();
   }
 
   const getQueryDataFromContract = async () => {
@@ -51,7 +51,7 @@ const Dashboard = () => {
       setDelegated(convertToNibi(result2?.amount_restaked_rstnibi));
       setRestaked(convertToNibi(result2?.amount_staked_stnibi));
       calculateRestakedPoints();
-      
+
       const Historyresult = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
         STAKE_QUERY_MESSAGES.all_history(1, 10)
@@ -92,7 +92,6 @@ const Dashboard = () => {
       // setUnbondReQuestQueryData(unbondRequestsResult)
       // console.log("unbondRequestsResult", unbondRequestsResult);
 
-
       const DlegationDataResult = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
         STAKE_QUERY_MESSAGES.delegation_data(STAKE_CONTRACT_ADDRESS)
@@ -100,20 +99,21 @@ const Dashboard = () => {
       setRestakeQueryData(DlegationDataResult)
       console.log("DlegationDataResult", DlegationDataResult);
 
-      calculateRestakedPoints();
-
     } catch (error) {
       console.log(error);
     }
   };
 
-  // useEffect(() => {
-  // }, []);
-
   useEffect(() => {
     setIsConnected(status === "Connected");
     getQueryDataFromContract();
-  }, [status, address]);
+    const points = calculateRestakedPoints();
+    setRestakedPoints(points);
+  }, [status, address, delegated, restaked]);
+
+  // useEffect(() => {
+
+  // }, []);
 
   return (
     <div>
