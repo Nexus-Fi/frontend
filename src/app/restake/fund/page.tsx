@@ -129,7 +129,7 @@ export default function Staking() {
 
   const restake_deposit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    // transfer(event);
+    transfer(event);
     const toastId = toast.loading("restaking...");
     console.log("restake", amount, "exchange", exchange)
     const amountAsNumber = parseFloat(amount);
