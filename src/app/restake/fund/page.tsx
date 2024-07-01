@@ -143,7 +143,7 @@ export default function Staking() {
       )
 
       toast.dismiss(toastId);
-      toast.success(`Staked ${amount} NIBI successfully`);
+      toast.success(`Staked ${amount} stNIBI successfully`);
       console.log("restake tx", tx)
     }
     catch (error) {
@@ -162,8 +162,7 @@ export default function Staking() {
     )
       .then((res) => {
         toast.dismiss(toastId);
-        toast.success(`Unstaked ${withdrawAmount} NIBI successfully`);
-        console.log("unstake sendFrom tx", tx)
+        toast.success(`Unstaked ${withdrawAmount} stNIBI successfully`);
       }
       )
   }
@@ -180,13 +179,13 @@ export default function Staking() {
     )
       .then((res) => {
         toast.dismiss(toastId);
-        toast.success(`Withdraw ${amount} NIBI successfully`);
+        toast.success(`Withdraw ${amount} stNIBI successfully`);
       })
       .catch((err) => {
         console.log("Withdraw Failed", err);
         toast.dismiss(toastId);
       });
-    // await burnrestake(event);
+    await burnrestake(event);
   };
 
   return (
@@ -329,7 +328,7 @@ export default function Staking() {
                       <label className="form-control w-full">
                         <div className="input input-lg input-bordered">
                           <div className="flex align-middle justify-between text-center pt-2 ">
-                            {withdrawAmount} stNIBI
+                            {unstakedAmount} stNIBI
                           </div>
                         </div>
                       </label>
