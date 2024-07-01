@@ -66,7 +66,7 @@ export default function Staking() {
 
 
   }
-
+  
   const getQueryDataFromContract = async () => {
     // if (address) {
     console.log("address", address)
@@ -131,7 +131,7 @@ export default function Staking() {
 
   const unstake = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    transfer(event);
+   await  transfer(event);
     const toastId = toast.loading("unstaking...");
     const amountAsNumber = parseFloat(unstakeAmount);
     const multipliedAmount = amountAsNumber * Math.pow(10, 6);

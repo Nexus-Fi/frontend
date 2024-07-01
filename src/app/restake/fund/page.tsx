@@ -81,7 +81,7 @@ export default function Staking() {
     const multipliedAmount = amountAsNumber * Math.pow(10, 6);
 
     const toastId = toast.loading("Transferring...");
-
+    console.log("multipliedAmount", multipliedAmount)
     console.log("transfering", stNIBITOKEN_CONTRACT_ADDRESS, "withdrawAmount", withdrawAmount, "amount", amount, "multipliedAmount", multipliedAmount)
     const tx = await sendTransaction(
       stNIBITOKEN_CONTRACT_ADDRESS,
@@ -93,7 +93,7 @@ export default function Staking() {
       .then((res) => {
         toast.dismiss(toastId);
         toast.success("Transferred Successfuly");
-        console.log("transfer tx", tx);
+        console.log("transfer tx");
       })
       .catch((err) => {
         console.log("Transfer Failed", err);
@@ -129,7 +129,7 @@ export default function Staking() {
 
   const restake_deposit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    transfer(event);
+   await  transfer(event);
     const toastId = toast.loading("restaking...");
     console.log("restake", amount, "exchange", exchange)
     const amountAsNumber = parseFloat(amount);
@@ -151,7 +151,7 @@ export default function Staking() {
       toast.dismiss(toastId);
     }
   };
-
+  
   const burnrestake = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     const toastId = toast.loading("buring...");
@@ -185,7 +185,7 @@ export default function Staking() {
         console.log("Withdraw Failed", err);
         toast.dismiss(toastId);
       });
-    await burnrestake(event);
+     burnrestake(event);
   };
 
   return (
