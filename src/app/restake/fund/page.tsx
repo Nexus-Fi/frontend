@@ -81,7 +81,7 @@ export default function Staking() {
     const multipliedAmount = amountAsNumber * Math.pow(10, 6);
 
     const toastId = toast.loading("Transferring...");
-
+    console.log("multipliedAmount", multipliedAmount)
     console.log("transfering", stNIBITOKEN_CONTRACT_ADDRESS, "withdrawAmount", withdrawAmount, "amount", amount, "multipliedAmount", multipliedAmount)
     const tx = await sendTransaction(
       stNIBITOKEN_CONTRACT_ADDRESS,
@@ -93,7 +93,7 @@ export default function Staking() {
       .then((res) => {
         toast.dismiss(toastId);
         toast.success("Transferred Successfuly");
-        console.log("transfer tx", tx);
+        console.log("transfer tx");
       })
       .catch((err) => {
         console.log("Transfer Failed", err);
@@ -129,7 +129,7 @@ export default function Staking() {
 
   const restake_deposit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    // transfer(event);
+   await  transfer(event);
     const toastId = toast.loading("restaking...");
     console.log("restake", amount, "exchange", exchange)
     const amountAsNumber = parseFloat(amount);
@@ -162,8 +162,7 @@ export default function Staking() {
     )
       .then((res) => {
         toast.dismiss(toastId);
-        toast.success(`Unstaked ${withdrawAmount} NIBI successfully`);
-        console.log("unstake sendFrom tx", tx)
+        toast.success(`Unstaked ${withdrawAmount} stNIBI successfully`);
       }
       )
   }
@@ -171,7 +170,7 @@ export default function Staking() {
   const withdraw_restaked = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
-    transferRestake(event);
+   await  transferRestake(event);
     const toastId = toast.loading("Withdrawing...");
     console.log("withdraw", amount, "exchange", exchange)
     const tx = await sendTransaction(
@@ -180,7 +179,7 @@ export default function Staking() {
     )
       .then((res) => {
         toast.dismiss(toastId);
-        toast.success(`Withdraw ${amount} NIBI successfully`);
+        toast.success(`Withdraw ${amount} stNIBI successfully`);
       })
       .catch((err) => {
         console.log("Withdraw Failed", err);
@@ -329,7 +328,7 @@ export default function Staking() {
                       <label className="form-control w-full">
                         <div className="input input-lg input-bordered">
                           <div className="flex align-middle justify-between text-center pt-2 ">
-                            {withdrawAmount} stNIBI
+                            {unstakedAmount} stNIBI
                           </div>
                         </div>
                       </label>
