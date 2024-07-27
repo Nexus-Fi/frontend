@@ -23,7 +23,6 @@ const DiscoverAVS = () => {
                         />
                     ))}
                 </div>
-
             </div>
         </div>
     )

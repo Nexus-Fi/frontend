@@ -109,7 +109,9 @@ const Dashboard = () => {
     getQueryDataFromContract();
     const points = calculateRestakedPoints();
     setRestakedPoints(points);
-  }, [status, address, delegated, restaked]);
+  }, [status, address,
+
+  ]);
 
   // useEffect(() => {
 
