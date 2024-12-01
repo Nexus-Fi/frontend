@@ -8,7 +8,8 @@ import { Wallet } from "@/components/wallet";
 import { GoDotFill } from "react-icons/go";
 
 const mockData = {
-  balance: 15,
+  nibiBalance: 15,
+  stNibiBalance: 50,
   pointsEarned: 9432,
   tvl: 2917644.46,
   totalStNIBIIssued: 84695.01,
@@ -43,17 +44,13 @@ export default function Home() {
             </CardHeader>
             <div className="flex justify-center">
               <div className="flex justify-center items-center w-full">
-                <div className="text-2xl font-bold text-black text-center">
-                  <div className="w-1/3 ">
-                    <span className="ml-2">NIBI</span>
-                  </div>
+                {/* <div className=" w-full text-xl font-semibold text-black text-center">
+                </div> */}
+                <div className="w-1/3 text-2xl font-semibold text-black text-center">{mockData.nibiBalance} Nibi</div>
+                <div className="w-1/3">
+                  <div className="w-1/3 border-l border-gray-400"></div>
                 </div>
-                <div className=" w-1/3 ">
-                  <div className="border-l border-gray-400 mx-5"></div>
-                </div>
-                <div className=" w-1/3 ">
-                  <div className="text-2xl font-bold text-black">5</div>
-                </div>
+                <div className="w-1/3 text-2xl font-semibold text-black">{mockData.stNibiBalance} stNibi</div>
               </div>
             </div>
 
@@ -63,6 +60,7 @@ export default function Home() {
             value={mockData.pointsEarned.toLocaleString()}
           />
         </div>
+
         <Card className="bg-white shadow-sm">
           <CardHeader>
             <CardTitle className="text-sm font-medium text-gray-600">
@@ -70,7 +68,7 @@ export default function Home() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="mb-4 text-2xl font-bold text-blue-600">
+            <div className="mb-4 text-2xl font-semibold text-blue-600">
               $ {mockData.tvl.toLocaleString()}
             </div>
             <Progress value={progress} className="mb-2 h-2 bg-blue-100" />
@@ -88,7 +86,7 @@ export default function Home() {
         </Card>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="pt-6 grid gap-6 md:grid-cols-3">
         <StatsCard
           title="Unbonding period"
           value="--"

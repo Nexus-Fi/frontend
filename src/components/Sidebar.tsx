@@ -8,7 +8,6 @@ import { Separator } from "@/components/ui/separator"
 import type { SidebarLink } from "@/types/dashboard"
 import { FaTelegramPlane, FaDiscord, FaTwitter } from 'react-icons/fa';
 
-
 const navigation: SidebarLink[] = [
     {
         label: "Dashboard",
