@@ -16,7 +16,7 @@ const navigation: SidebarLink[] = [
     },
     {
         label: "Stake",
-        href: "/staking",
+        href: "/stake",
         icon: FaDollarSign,
     },
     {
