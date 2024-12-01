@@ -16,7 +16,7 @@ const navigation: SidebarLink[] = [
     },
     {
         label: "Stake",
-        href: "/stake",
+        href: "/staking",
         icon: FaDollarSign,
     },
     {
@@ -30,7 +30,6 @@ const navigation: SidebarLink[] = [
 const footerLinks = [
     { label: "Terms of Service", href: "/terms" },
     { label: "Privacy Policy", href: "/privacy" },
-    { label: "Cookie Policy", href: "/cookies" },
 ]
 
 export function Sidebar() {
@@ -49,7 +48,7 @@ export function Sidebar() {
                         <Link key={item.href} href={item.href}>
                             <Button
                                 variant={item.href === "/" ? "secondary" : "ghost"}
-                                className={`w-full py-2 justify-start ${item.href === "/" ? "bg-[#DFFFD6]" : ""}`}
+                                className={`w-full py-5 justify-start ${item.href === "/" ? "bg-[#DFFFD6]" : ""}`}
                             >
                                 {React.createElement(item.icon, { className: "mr-2 h-4 w-4" } as React.ComponentProps<typeof item.icon>)}
                                 {item.label}
