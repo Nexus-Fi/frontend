@@ -50,7 +50,7 @@ export function Sidebar() {
                         <Link key={item.href} href={item.href}>
                             <Button
                                 variant={item.href === "/" ? "secondary" : "ghost"}
-                                className={`w-full justify-start ${item.href === "/" ? "bg-[#DFFFD6]" : ""}`}
+                                className={`w-full py-2 justify-start ${item.href === "/" ? "bg-[#DFFFD6]" : ""}`}
                             >
                                 {React.createElement(item.icon, { className: "mr-2 h-4 w-4" } as React.ComponentProps<typeof item.icon>)}
                                 {item.label}

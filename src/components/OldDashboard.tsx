@@ -319,4 +319,4 @@ const OldDashboard = () => {
   );
 };
 
-export default Dashboard;
+export default OldDashboard;

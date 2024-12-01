@@ -1,16 +1,17 @@
+"use client";
 import Image from "next/image";
 // import Dashboard from "@/components/Dashboard";
-import { ConnectWallet } from "@/components/connect-wallet"
 import { StatsCard } from "@/components/stats-card"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
+import { Wallet } from "@/components/wallet";
+import { GoDotFill } from "react-icons/go";
 
-// This would typically come from an API
 const mockData = {
   balance: 15,
   pointsEarned: 9432,
   tvl: 2917644.46,
-  totalStNIBIIssued: 2784695.01,
+  totalStNIBIIssued: 84695.01,
   totalNIBIIssued: 132459.05,
   totalBurned: {
     amount: 1747790.02,
@@ -23,31 +24,45 @@ const progress = (mockData.totalStNIBIIssued / (mockData.totalStNIBIIssued + moc
 
 export default function Home() {
   return (
-    <main className="flex flex-col justify-between px-28 py-16">
+    <main className="flex flex-col justify-between px-20 py-12">
 
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
           <div className="hidden md:block">
-            <ConnectWallet />
+            <Wallet />
           </div>
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">
-          <StatsCard
-            title="Your balance"
-            value={`${mockData.balance} stNIBI`}
-          />
+          <Card className="bg-white w-full shadow-sm md:col-span-2">
+            <CardHeader>
+              <CardTitle className="text-sm font-medium text-gray-600">
+                Your balance
+              </CardTitle>
+            </CardHeader>
+            <div className="flex justify-center">
+              <div className="flex justify-center items-center w-full">
+                <div className="text-2xl font-bold text-black text-center">
+                  <div className="w-1/3 ">
+                    <span className="ml-2">NIBI</span>
+                  </div>
+                </div>
+                <div className=" w-1/3 ">
+                  <div className="border-l border-gray-400 mx-5"></div>
+                </div>
+                <div className=" w-1/3 ">
+                  <div className="text-2xl font-bold text-black">5</div>
+                </div>
+              </div>
+            </div>
+
+          </Card>
           <StatsCard
             title="Points earned"
             value={mockData.pointsEarned.toLocaleString()}
           />
-          <StatsCard
-            title="Staking reward"
-            value={`${mockData.stakingReward} NIBI`}
-          />
         </div>
-
         <Card className="bg-white shadow-sm">
           <CardHeader>
             <CardTitle className="text-sm font-medium text-gray-600">
@@ -58,27 +73,37 @@ export default function Home() {
             <div className="mb-4 text-2xl font-bold text-blue-600">
               $ {mockData.tvl.toLocaleString()}
             </div>
-            <Progress value={progress} className="mb-2 h-2 bg-gray-200" indicatorClassName="bg-blue-600" />
-            <div className="flex justify-between text-sm text-gray-600">
-              <div>Total stNIBI issued: {mockData.totalStNIBIIssued.toLocaleString()}</div>
-              <div>Total NIBI issued: {mockData.totalNIBIIssued.toLocaleString()}</div>
+            <Progress value={progress} className="mb-2 h-2 bg-blue-100" />
+            <div className="flex flex-col items-end text-sm text-gray-600">
+              <div className="flex items-center">
+                <GoDotFill className="text-blue-600 text-xl" />
+                <div className="ml-1">Total stNIBI issued: {mockData.totalStNIBIIssued.toLocaleString()}</div>
+              </div>
+              <div className="flex items-center">
+                <GoDotFill className="text-blue-200 text-xl" />
+                <div className="ml-1">Total NIBI issued: {mockData.totalNIBIIssued.toLocaleString()}</div>
+              </div>
             </div>
           </CardContent>
         </Card>
-
-        <div className="grid gap-6 md:grid-cols-3">
-          <StatsCard
-            title="Unbonding period"
-            value="--"
-          />
-          <StatsCard
-            title="Total burned"
-            value={mockData.totalBurned.amount.toLocaleString()}
-            subValue={`/$${mockData.totalBurned.usdValue.toLocaleString()}`}
-          />
-        </div>
       </div>
 
-    </main>
+      <div className="grid gap-6 md:grid-cols-3">
+        <StatsCard
+          title="Unbonding period"
+          value="--"
+        />
+        <StatsCard
+          title="Total burned"
+          value={mockData.totalBurned.amount.toLocaleString()}
+          subValue={`/$${mockData.totalBurned.usdValue.toLocaleString()}`}
+        />
+        <StatsCard
+          title="Staking reward"
+          value={`${mockData.stakingReward} NIBI`}
+        />
+      </div>
+
+    </main >
   );
 }

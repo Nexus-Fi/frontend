@@ -15,7 +15,7 @@ export function StatsCard({ title, value, subValue }: StatsCardProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold text-gray-800">{value}</div>
+        <div className="text-2xl font-bold text-blue-600">{value}</div>
         {subValue && (
           <p className="text-sm text-gray-600">{subValue}</p>
         )}

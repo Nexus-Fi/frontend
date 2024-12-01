@@ -38,10 +38,6 @@ export default function DashboardPage() {
                     title="Points earned"
                     value={mockData.pointsEarned.toLocaleString()}
                 />
-                <StatsCard
-                    title="Staking reward"
-                    value={`${mockData.stakingReward} NIBI`}
-                />
             </div>
 
             <Card className="bg-white shadow-sm">
@@ -54,7 +50,7 @@ export default function DashboardPage() {
                     <div className="mb-4 text-2xl font-bold text-blue-600">
                         $ {mockData.tvl.toLocaleString()}
                     </div>
-                    <Progress value={progress} className="mb-2 h-2 bg-gray-200" indicatorClassName="bg-blue-600" />
+                    <Progress value={progress} className="mb-2 h-2 bg-gray-200" />
                     <div className="flex justify-between text-sm text-gray-600">
                         <div>Total stNIBI issued: {mockData.totalStNIBIIssued.toLocaleString()}</div>
                         <div>Total NIBI issued: {mockData.totalNIBIIssued.toLocaleString()}</div>
@@ -71,6 +67,10 @@ export default function DashboardPage() {
                     title="Total burned"
                     value={mockData.totalBurned.amount.toLocaleString()}
                     subValue={`/$${mockData.totalBurned.usdValue.toLocaleString()}`}
+                />
+                <StatsCard
+                    title="Staking reward"
+                    value={`${mockData.stakingReward} NIBI`}
                 />
             </div>
         </div>
