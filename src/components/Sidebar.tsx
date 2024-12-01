@@ -1,3 +1,4 @@
+"use client";
 import React from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -7,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import type { SidebarLink } from "@/types/dashboard"
 import { FaTelegramPlane, FaDiscord, FaTwitter } from 'react-icons/fa';
+import { usePathname } from "next/navigation";
 
 const navigation: SidebarLink[] = [
     {
@@ -33,6 +35,10 @@ const footerLinks = [
 ]
 
 export function Sidebar() {
+    const pathname = usePathname();
+
+    console.log("router", pathname)
+
     return (
         <div className="hidden md:flex w-64 flex-col bg-white border-r border-gray-200">
             <div className="p-6">
@@ -47,10 +53,13 @@ export function Sidebar() {
                     {navigation.map((item) => (
                         <Link key={item.href} href={item.href}>
                             <Button
-                                variant={item.href === "/" ? "secondary" : "ghost"}
-                                className={`w-full py-5 justify-start ${item.href === "/" ? "bg-[#DFFFD6]" : ""}`}
+                                variant={pathname === item.href ? "secondary" : "ghost"}
+                                className={`w-full py-5 justify-start ${pathname === item.href ? "bg-[#DFFFD6]" : ""}`}
                             >
-                                {React.createElement(item.icon, { className: "mr-2 h-4 w-4" } as React.ComponentProps<typeof item.icon>)}
+                                {React.createElement(item.icon, {
+                                    className: "mr-2 h-4 w-4",
+                                    'aria-hidden': "true"
+                                })}
                                 {item.label}
                                 {item.isComingSoon && (
                                     <Badge variant="outline" className="ml-auto">
@@ -74,7 +83,7 @@ export function Sidebar() {
                             <FaDiscord size={20} />
                         </Button>
                     </Link>
-                    <Link href="https://twitter.com/nexusfi" target="_blank">
+                    <Link href="https://x.com/NexusFi_xyz" target="_blank">
                         <Button size="icon" variant="ghost">
                             <FaTwitter size={20} />
                         </Button>
