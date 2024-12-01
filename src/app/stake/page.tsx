@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, ChangeEvent, FormEvent } from "react";
+import { ConnectWallet } from "@/components/connect-wallet"
 import useTransaction from "@/hooks/useTransaction";
 import toast from "react-hot-toast";
 import { STAKE_CONTRACT_ADDRESS, stNIBITOKEN_CONTRACT_ADDRESS } from "@/lib/address";
@@ -12,6 +13,7 @@ import { STAKE_QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
 import { useChain, useWalletClient } from '@cosmos-kit/react';
 import { CHAIN_NAME } from '@/lib/utils';
 import { STAKE_CONTRACT_MESSAGES } from "@/lib/Message/stakeMessages";
+import { Wallet } from "@/components/wallet";
 export default function Staking() {
   const [exchange, setExchange] = useState("1");
   const [amount, setAmount] = useState<string>("0");
@@ -184,166 +186,173 @@ export default function Staking() {
   };
 
   return (
-    <div className="max-w-xl mx-auto pt-16 pb-10">
-      <div className="relative w-full h-[600px]">
-        <Card className="bg-white border-gray-900 h-[600px] p-8 rounded-none ">
-          <Card className="bg-white rounded-none  border-gray-800 p-6 absolute top-[-2%] left-[-2%] right-[2%] bottom-[2%]">
-            <div className=" p-4 justify-between items-center">
-              <div className="flex flex-wrap">
-                <div
-                  className={`w-1/3 py-4 px-1 md:px-4 text- md:text-base lg:px-12 hover:underline-offset-8
+    <div>
+      <div className=" flex items-center w-full justify-between p-10">
+        <div className="ml-auto">
+          <Wallet />
+        </div>
+
+      </div>
+      <div className="max-w-xl mx-auto pb-10 space-y-6">
+        <div className="relative w-full h-[600px]">
+          <Card className="bg-white border-gray-900 h-[600px] p-8 rounded-none ">
+            <Card className="bg-white rounded-none  border-gray-800 p-6 absolute top-[-2%] left-[-2%] right-[2%] bottom-[2%]">
+              <div className=" p-4 justify-between items-center">
+                <div className="flex flex-wrap">
+                  <div
+                    className={`w-1/3 py-4 px-1 md:px-4 text- md:text-base lg:px-12 hover:underline-offset-8
                                   rounded text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${open === "stake"
-                      ? "bg-blue-100 drop-shadow-xl text-black font-semibold"
-                      : " "
-                    }`}
-                >
-                  <button onClick={() => handleTabOpen("stake")}>Stake</button>
-                </div>
+                        ? "bg-blue-100 drop-shadow-xl text-black font-semibold"
+                        : " "
+                      }`}
+                  >
+                    <button onClick={() => handleTabOpen("stake")}>Stake</button>
+                  </div>
 
-                <div
-                  className={`w-1/3 py-4 px-1 md:px-4 text- md:text-base lg:px-12 hover:underline-offset-8
+                  <div
+                    className={`w-1/3 py-4 px-1 md:px-4 text- md:text-base lg:px-12 hover:underline-offset-8
                                   rounded text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${open === "unstake"
-                      ? "bg-blue-200 drop-shadow-xl text-black font-semibold"
-                      : " "
-                    }`}
-                >
-                  <button onClick={() => handleTabOpen("unstake")}>
-                    Unstake
-                  </button>
-                </div>
+                        ? "bg-blue-200 drop-shadow-xl text-black font-semibold"
+                        : " "
+                      }`}
+                  >
+                    <button onClick={() => handleTabOpen("unstake")}>
+                      Unstake
+                    </button>
+                  </div>
 
-                <div
-                  className={`w-1/3 py-4 px-1 md:px-4 text- md:text-base lg:px-12 hover:underline-offset-8
+                  <div
+                    className={`w-1/3 py-4 px-1 md:px-4 text- md:text-base lg:px-12 hover:underline-offset-8
                                   rounded text-center transition-all delay-75 text-black focus:ring focus:ring-blue-400 cursor-pointer ${open === "withdraw"
-                      ? "bg-blue-200 drop-shadow-xl text-black font-semibold"
-                      : " "
-                    }`}
-                >
-                  <button onClick={() => handleTabOpen("withdraw")}>
-                    Withdraw
-                  </button>
+                        ? "bg-blue-200 drop-shadow-xl text-black font-semibold"
+                        : " "
+                      }`}
+                  >
+                    <button onClick={() => handleTabOpen("withdraw")}>
+                      Withdraw
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-            {/* <div className="divider divider-neutral mt-0"></div> */}
+              {/* <div className="divider divider-neutral mt-0"></div> */}
 
-            {/* stake option */}
-            {open === "stake" && (
-              <div>
-                <form onSubmit={stake} className="w-full max-w-lg">
-                  <div className="my-4">
-                    <label className="form-control w-full">
-                      <div className="label">
-                        <div>Select the Asset</div>
+              {/* stake option */}
+              {open === "stake" && (
+                <div>
+                  <form onSubmit={stake} className="w-full max-w-lg">
+                    <div className="my-4">
+                      <label className="form-control w-full">
+                        <div className="label">
+                          <div>Select the Asset</div>
+                        </div>
+                        <select className="select select-bordered">
+                          <option>NIBI</option>
+                        </select>
+                      </label>
+                    </div>
+
+                    <div className="my-6">
+                      <label className="form-control w-full">
+                        <div className="label">
+                          <div className="my-2">Enter Amount</div>
+                        </div>
+                        <input
+                          type="text"
+                          id="stake-value"
+                          defaultValue={amount}
+                          onChange={priceHandler}
+                          className="input input-lg input-bordered"
+                          placeholder="0"
+                          required
+                        />
+                      </label>
+                    </div>
+
+                    <div className="text-sm pb-5">
+                      {/* <div className="my-1 border-t border-gray-300"></div> */}
+                      <div className="my-2">
+                        <div className="flex items-center justify-between">
+                          <div className="">You wil get</div>
+                          <div>{amount} stNIBI</div>
+                        </div>
                       </div>
-                      <select className="select select-bordered">
-                        <option>NIBI</option>
-                      </select>
-                    </label>
-                  </div>
 
-                  <div className="my-6">
-                    <label className="form-control w-full">
-                      <div className="label">
-                        <div className="my-2">Enter Amount</div>
-                      </div>
-                      <input
-                        type="text"
-                        id="stake-value"
-                        defaultValue={amount}
-                        onChange={priceHandler}
-                        className="input input-lg input-bordered"
-                        placeholder="0"
-                        required
-                      />
-                    </label>
-                  </div>
-
-                  <div className="text-sm pb-5">
-                    {/* <div className="my-1 border-t border-gray-300"></div> */}
-                    <div className="my-2">
-                      <div className="flex items-center justify-between">
-                        <div className="">You wil get</div>
-                        <div>{amount} stNIBI</div>
+                      <div className="my-2">
+                        <div className="flex items-center justify-between">
+                          <div className="">Exchange Rate</div>
+                          <div>1 stNIBI = {exchange} NIBI</div>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="my-2">
-                      <div className="flex items-center justify-between">
-                        <div className="">Exchange Rate</div>
-                        <div>1 stNIBI = {exchange} NIBI</div>
-                      </div>
-                    </div>
-                  </div>
+                    <Button
+                      type="submit"
+                      className="bg-blue-600 pt-10 dark:bg-blue-900 text-white text-lg font-bold py-4 px-4  dark:text-black border-blue-700 "
+                    >
+                      Stake
+                    </Button>
+                  </form>
+                </div>
+              )}
 
-                  <Button
-                    type="submit"
-                    className="bg-blue-600 pt-10 dark:bg-blue-900 text-white text-lg font-bold py-4 px-4  dark:text-black border-blue-700 "
-                  >
-                    Stake
-                  </Button>
-                </form>
-              </div>
-            )}
-
-            {/* unstake option */}
-            {open === "unstake" && (
-              <div>
-                <form onSubmit={unstake} className="w-full max-w-lg">
-                  <div className="my-4">
-                    <label className="form-control w-full">
-                      <div className="label">
-                        <div>Withdraw stNIBI as</div>
-                      </div>
-                      <select className="select select-bordered">
-                        <option>NIBI</option>
-                        <option>ATOM</option>
-                      </select>
-                    </label>
-                  </div>
-
-                  <div className="my-6">
-                    <label className="form-control w-full">
-                      <div className="label">
-                        <div className="my-2">Enter amount of stNIBI</div>
-                      </div>
-                      <input
-                        type="text"
-                        id="unstake-value"
-                        defaultValue={unstakeAmount}
-                        onChange={unstakeHandler}
-                        className="input input-lg input-bordered"
-                        placeholder="0"
-                        required
-                      />
-                    </label>
-                  </div>
-
-                  <div className="text-sm">
-                    {/* <div className="my-1 border-t border-gray-300"></div> */}
-                    <div className="">
-                      <div className="flex items-center justify-between">
-                        <div className="">You wil get</div>
-                        <div>{amount} NIBI</div>
-                      </div>
+              {/* unstake option */}
+              {open === "unstake" && (
+                <div>
+                  <form onSubmit={unstake} className="w-full max-w-lg">
+                    <div className="my-4">
+                      <label className="form-control w-full">
+                        <div className="label">
+                          <div>Withdraw stNIBI as</div>
+                        </div>
+                        <select className="select select-bordered">
+                          <option>NIBI</option>
+                          <option>ATOM</option>
+                        </select>
+                      </label>
                     </div>
 
-                    <div className="my-2">
-                      <div className="flex items-center justify-between">
-                        <div className="">Exchange Rate</div>
-                        <div>1 stNIBI = {exchange} NIBI</div>
+                    <div className="my-6">
+                      <label className="form-control w-full">
+                        <div className="label">
+                          <div className="my-2">Enter amount of stNIBI</div>
+                        </div>
+                        <input
+                          type="text"
+                          id="unstake-value"
+                          defaultValue={unstakeAmount}
+                          onChange={unstakeHandler}
+                          className="input input-lg input-bordered"
+                          placeholder="0"
+                          required
+                        />
+                      </label>
+                    </div>
+
+                    <div className="text-sm">
+                      {/* <div className="my-1 border-t border-gray-300"></div> */}
+                      <div className="">
+                        <div className="flex items-center justify-between">
+                          <div className="">You wil get</div>
+                          <div>{amount} NIBI</div>
+                        </div>
+                      </div>
+
+                      <div className="my-2 pb-10">
+                        <div className="flex items-center justify-between">
+                          <div className="">Exchange Rate</div>
+                          <div>1 stNIBI = {exchange} NIBI</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <Button
-                    type="submit"
-                    className="bg-blue-600 mt-18 dark:bg-blue-900 text-white text-lg font-bold py-4 px-4  dark:text-black border-blue-700 "
-                  >
-                    Unstake
-                  </Button>
-                </form>
-                {/* <div role="alert" className="mt-3 alert alert-warning">
+                    <Button
+                      type="submit"
+                      className="bg-blue-600 dark:bg-blue-900 text-white text-lg font-bold py-4 px-4  dark:text-black border-blue-700 "
+                    >
+                      Unstake
+                    </Button>
+                  </form>
+                  {/* <div role="alert" className="mt-3 alert alert-warning">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 shrink-0 stroke-current"
@@ -362,98 +371,100 @@ export default function Staking() {
                   queue on Network
                 </span>
               </div> */}
-              </div>
-            )}
-
-            {/* withdraw option */}
-            {open === "withdraw" && (
-              <div>
-                <div role="alert" className="mt-3 alert alert-warning">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 shrink-0 stroke-current"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                    />
-                  </svg>
-                  <span>
-                    Unstake requests are processed in 7-10 days, subject to exit
-                    queue on Network
-                  </span>
                 </div>
+              )}
 
-                {!unstakeStatus ? (
-                  <div>
-                    <div className="flex flex-col align-middle justify-center my-8 py-8 p-5 bg-white rounded-3xl ">
-                      <div className="py-5 text-center text-3xl font-semibold">
-                        No unstake requests found
-                      </div>
-                      <div className="py-5 text-center ">
-                        You will be able to claim your tokens after the Unstake
-                        request has been processed. To Unstake your tokens go to
-                        Unstake tab
+              {/* withdraw option */}
+              {open === "withdraw" && (
+                <div>
+                  <div role="alert" className="mt-3 alert alert-warning">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 shrink-0 stroke-current"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                      />
+                    </svg>
+                    <span>
+                      Unstake requests are processed in 7-10 days, subject to exit
+                      queue on Network
+                    </span>
+                  </div>
+
+                  {!unstakeStatus ? (
+                    <div>
+                      <div className="flex flex-col align-middle justify-center my-8 py-8 p-5 bg-white rounded-3xl ">
+                        <div className="py-5 text-center text-3xl font-semibold">
+                          No unstake requests found
+                        </div>
+                        <div className="py-5 text-center ">
+                          You will be able to claim your tokens after the Unstake
+                          request has been processed. To Unstake your tokens go to
+                          Unstake tab
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ) : (
-                  <div>
-                    <form onSubmit={withdraw} className="w-full max-w-lg">
-                      <div className="my-4">
-                        <label className="form-control w-full">
-                          <div className="label">
-                            <div className="font-bold text-2xl pt-5">
-                              Withdraw amount available
+                  ) : (
+                    <div>
+                      <form onSubmit={withdraw} className="w-full max-w-lg">
+                        <div className="my-4">
+                          <label className="form-control w-full">
+                            <div className="label">
+                              <div className="font-bold text-2xl pt-5">
+                                Withdraw amount available
+                              </div>
                             </div>
-                          </div>
-                        </label>
-                      </div>
+                          </label>
+                        </div>
 
-                      <div className="my-6">
-                        <label className="form-control w-full">
-                          <div className="input input-lg input-bordered">
-                            <div className="flex align-middle justify-between text-center pt-2 ">
-                              {withdrawAmount} NIBI
+                        <div className="my-6">
+                          <label className="form-control w-full">
+                            <div className="input input-lg input-bordered">
+                              <div className="flex align-middle justify-between text-center pt-2 ">
+                                {withdrawAmount} NIBI
+                              </div>
                             </div>
-                          </div>
-                        </label>
-                      </div>
+                          </label>
+                        </div>
 
-                      <div className="flex items-center mb-6">
-                        <input
-                          type="checkbox"
-                          id="terms"
-                          checked={termsAccepted}
-                          onChange={termsHandler}
-                          className="mr-2"
-                        />
-                        <label
-                          htmlFor="terms"
-                          className="text-lg font-semibold text-black dark:text-white"
+                        <div className="flex items-center mb-6">
+                          <input
+                            type="checkbox"
+                            id="terms"
+                            checked={termsAccepted}
+                            onChange={termsHandler}
+                            className="mr-2"
+                          />
+                          <label
+                            htmlFor="terms"
+                            className="text-lg font-semibold text-black dark:text-white"
+                          >
+                            I want to withdraw all available amount
+                          </label>
+                        </div>
+
+                        <Button
+                          type="submit"
+                          className="bg-blue-600 pt-10 dark:bg-blue-900 text-white text-lg font-bold py-4 px-4  dark:text-black border-blue-700 "
                         >
-                          I want to withdraw all available amount
-                        </label>
-                      </div>
-
-                      <Button
-                        type="submit"
-                        className="bg-blue-600 pt-10 dark:bg-blue-900 text-white text-lg font-bold py-4 px-4  dark:text-black border-blue-700 "
-                      >
-                        Withdraw
-                      </Button>
-                    </form>
-                  </div>
-                )}
-              </div>
-            )}
+                          Withdraw
+                        </Button>
+                      </form>
+                    </div>
+                  )}
+                </div>
+              )}
+            </Card>
           </Card>
-        </Card>
+        </div>
       </div>
     </div>
+
   );
 }

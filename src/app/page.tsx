@@ -26,7 +26,6 @@ const progress = (mockData.totalStNIBIIssued / (mockData.totalStNIBIIssued + moc
 export default function Home() {
   return (
     <main className="flex flex-col justify-between px-20 py-12">
-
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
