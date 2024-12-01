@@ -54,7 +54,7 @@ export function Sidebar() {
                         <Link key={item.href} href={item.href}>
                             <Button
                                 variant={pathname === item.href ? "secondary" : "ghost"}
-                                className={`w-full py-5 justify-start ${pathname === item.href ? "bg-[#DFFFD6]" : ""}`}
+                                className={`w-full my-3 justify-start ${pathname === item.href ? "bg-[#DFFFD6]" : ""}`}
                             >
                                 {React.createElement(item.icon, {
                                     className: "mr-2 h-4 w-4",

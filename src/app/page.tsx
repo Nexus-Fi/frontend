@@ -46,7 +46,7 @@ export default function Home() {
                 {/* <div className=" w-full text-xl font-semibold text-black text-center">
                 </div> */}
                 <div className="w-1/3 text-2xl font-semibold text-black text-center">{mockData.nibiBalance} Nibi</div>
-                <div className="border-l border-gray-600 h-[10vh] w-1 pb-5"></div>
+                <div className="border-l border-gray-600 h-[10vh] w-1 mb-3"></div>
                 <div className="w-1/3 text-2xl font-semibold text-center text-black">{mockData.stNibiBalance} stNibi</div>
               </div>
             </div>
