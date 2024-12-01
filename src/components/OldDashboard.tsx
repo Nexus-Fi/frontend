@@ -8,7 +8,7 @@ import { useChain } from "@cosmos-kit/react";
 import { CHAIN_NAME, getChainLogo } from "@/lib/utils";
 import { stat } from "fs";
 
-const Dashboard = () => {
+const OldDashboard = () => {
   const { sendTransaction, fetchQuery } = useTransaction();
   const { status, address } = useChain(CHAIN_NAME);
   console.log("status", status, "address", address)
