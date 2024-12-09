@@ -70,12 +70,12 @@ export function Sidebar() {
             </div>
             <div className="mt-auto p-6">
                 <div className="flex justify-center space-x-4">
-                    <Link href="https://t.me/nexusfi" target="_blank">
+                    <Link href="https://t.me/NexusFinanceglobal" target="_blank">
                         <Button size="icon" variant="ghost">
                             <FaTelegramPlane size={20} />
                         </Button>
                     </Link>
-                    <Link href="https://discord.gg/nexusfi" target="_blank">
+                    <Link href="https://discord.com/invite/hpkjjQcB" target="_blank">
                         <Button size="icon" variant="ghost">
                             <FaDiscord size={20} />
                         </Button>
