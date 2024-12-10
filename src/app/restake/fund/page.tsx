@@ -2,7 +2,8 @@
 import React, { useState, ChangeEvent } from "react";
 import useTransaction from "@/hooks/useTransaction";
 import { STAKE_CONTRACT_MESSAGES } from "@/lib/Message/stakeMessages";
-import toast from "react-hot-toast";
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 import {
   STAKE_CONTRACT_ADDRESS,
   rstNIBI_TOKEN_CONTRACT_ADDRESS,
@@ -92,7 +93,7 @@ export default function Staking() {
     )
       .then((res) => {
         toast.dismiss(toastId);
-        toast.success("Transferred Successfuly");
+        toast.success("Transferred Successfully");
         console.log("transfer tx");
       })
       .catch((err) => {
@@ -118,7 +119,7 @@ export default function Staking() {
     )
       .then((res) => {
         toast.dismiss(toastId);
-        toast.success("Transferred Successfuly");
+        toast.success("Transferred Successfully");
         console.log("transfer tx", tx);
       })
       .catch((err) => {
@@ -129,7 +130,7 @@ export default function Staking() {
 
   const restake_deposit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-   await  transfer(event);
+    await transfer(event);
     const toastId = toast.loading("restaking...");
     console.log("restake", amount, "exchange", exchange)
     const amountAsNumber = parseFloat(amount);
@@ -170,7 +171,7 @@ export default function Staking() {
   const withdraw_restaked = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
-   await  transferRestake(event);
+    await transferRestake(event);
     const toastId = toast.loading("Withdrawing...");
     console.log("withdraw", amount, "exchange", exchange)
     const tx = await sendTransaction(

@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 // import Dashboard from "@/components/Dashboard";
 import { StatsCard } from "@/components/stats-card"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -14,6 +14,8 @@ import { STAKE_QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
 import { REWARD_QUERY_MESSAGES } from "@/lib/Query/rewardDispatcher";
 import { useChain } from "@cosmos-kit/react";
 import { CHAIN_NAME, getChainLogo } from "@/lib/utils";
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const mockData = {
   nibiBalance: 15,
@@ -130,7 +132,7 @@ export default function Home() {
           </Card>
           <StatsCard
             title="Points earned"
-            value= {restakedPoints}
+            value={restakedPoints}
           />
         </div>
 
