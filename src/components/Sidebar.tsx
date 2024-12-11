@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator"
 import type { SidebarLink } from "@/types/dashboard"
 import { FaTelegramPlane, FaDiscord, FaTwitter } from 'react-icons/fa';
 import { usePathname } from "next/navigation";
+import type { IconType } from "react-icons";
 
 const navigation: SidebarLink[] = [
     {
@@ -52,14 +53,10 @@ export function Sidebar() {
                 <nav className="space-y-5">
                     {navigation.map((item) => (
                         <Link key={item.href} href={item.href}>
-                            <Button
-                                variant={pathname === item.href ? "secondary" : "ghost"}
-                                className={`w-full my-3 justify-start ${pathname === item.href ? "bg-[#DFFFD6]" : ""}`}
+                            <Button variant={pathname === item.href ? "secondary" : "ghost"}
+                                className={`w-full my-3 py-4 justify-start ${pathname === item.href ? "bg-[#DFFFD6]" : ""}`}
                             >
-                                {React.createElement(item.icon, {
-                                    className: "mr-2 h-4 w-4",
-                                    'aria-hidden': "true"
-                                })}
+                                {React.createElement(item.icon as IconType, { className: "mr-2 h-4 w-4", 'aria-hidden': "true" })}
                                 {item.label}
                                 {item.isComingSoon && (
                                     <Badge variant="outline" className="ml-auto">

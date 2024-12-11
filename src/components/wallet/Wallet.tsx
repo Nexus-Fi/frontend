@@ -28,10 +28,10 @@ export function Wallet() {
   }[status] || <ButtonConnect onClick={connect} />;
 
   return (
-    <div className="flex flex-row focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 text-center border-1 border-black text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
+    <div className="flex flex-row gap-2 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 text-center border-1 border-black text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
       {/* <Chain logo={getChainLogo(chain.chain_name)!} /> */}
 
-      {/* {address ? <ClipboardCopyText text={address} truncate="middle" /> : null} */}
+      {address ? <ClipboardCopyText text={address} truncate="middle" /> : null}
 
       {ConnectButton}
 
