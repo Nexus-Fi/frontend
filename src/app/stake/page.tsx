@@ -8,9 +8,6 @@ import { STAKE_CONTRACT_ADDRESS, stNIBITOKEN_CONTRACT_ADDRESS } from "@/lib/addr
 import { Button } from "@/components/ui/moving-border"
 import { TOKEN_CONTRACT_MESSAGES } from "@/lib/Message/token";
 import { Card } from "@/components/ui/card";
-
-import { STAKE_QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
-
 import { useChain, useWalletClient } from '@cosmos-kit/react';
 import { CHAIN_NAME } from '@/lib/utils';
 import { Cw20ReceiveMsg, STAKE_CONTRACT_MESSAGES } from "@/lib/Message/stakeMessages";
@@ -29,10 +26,12 @@ export default function Staking() {
   const { address } = useChain(CHAIN_NAME);
   console.log("address", address)
 
+  console.log("STAKE_QUERY_MESSAGES_NEW", STAKE_QUERY_MESSAGES_NEW)
+
   const handleTabOpen = (tabCategory: string) => {
     setOpen(tabCategory);
   };
- interface ReceiveWrapper {
+  interface ReceiveWrapper {
     receive: Cw20ReceiveMsg;
   }
   const priceHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -80,9 +79,7 @@ export default function Staking() {
     try {
       const result = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
-
         STAKE_CONTRACT_MESSAGES.withdraw_unbonded()
-
       );
       const amountAsNumber = parseFloat(result.withdrawable);
       const diviedAmount = amountAsNumber / Math.pow(10, 6);
@@ -93,7 +90,6 @@ export default function Staking() {
       console.log(error);
     }
     // }
-
   };
 
   React.useEffect(() => {
@@ -156,7 +152,7 @@ export default function Staking() {
       )
     }
   };
-  
+
   const unstake = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     await transfer(event);
@@ -179,7 +175,7 @@ export default function Staking() {
         console.log("Unstaking Failed", err);
         toast.dismiss(toastId);
       });
-      console.log("Address",address)
+    console.log("Address", address)
     //   const cw20Recivemsg:Cw20ReceiveMsg = {
     //     sender:address!,
     //     amount: multipliedAmount.toString(),

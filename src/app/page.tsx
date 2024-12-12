@@ -15,7 +15,7 @@ import { REWARD_QUERY_MESSAGES } from "@/lib/Query/rewardDispatcher";
 import { useChain } from "@cosmos-kit/react";
 import { CHAIN_NAME, getChainLogo } from "@/lib/utils";
 // import { StateQuery } from "@/lib/Message/stakeMessages";
-import { STAKE_QUERY_MESSAGES_NEW} from "@/lib/Message/stakeMessages";
+import { STAKE_QUERY_MESSAGES_NEW } from "@/lib/Message/stakeMessages";
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 const mockData = {
@@ -69,13 +69,19 @@ export default function Home() {
   const getQueryDataFromContract = async () => {
     if (address === undefined) return;
     try {
-       const queryState = async (contractAddress: string) => {
-         const query = STAKE_QUERY_MESSAGES_NEW.state()
+      const resultNew = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES_NEW.state()
+      );
+      console.log("queryData new", resultNew);
+
+      const queryState = async (contractAddress: string) => {
+        const query = STAKE_QUERY_MESSAGES_NEW.state()
         return fetchQuery(contractAddress, query);
       };
 
-      console.log("state",queryState)
-      
+      console.log("state", queryState)
+
 
       const result2 = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,

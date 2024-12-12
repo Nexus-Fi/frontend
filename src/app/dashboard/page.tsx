@@ -1,7 +1,15 @@
+"use client";
 import { ConnectWallet } from "@/components/connect-wallet"
 import { StatsCard } from "@/components/stats-card"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
+import STAKE_QUERY_MESSAGES_NEW from "@/lib/Message/stakeMessages";
+import { STAKE_CONTRACT_ADDRESS } from "@/lib/address";
+import React from "react";
+import { useChain, useWalletClient } from '@cosmos-kit/react';
+import { CHAIN_NAME } from '@/lib/utils';
+import useTransaction from "@/hooks/useTransaction";
+
 
 // This would typically come from an API
 const mockData = {
@@ -19,6 +27,27 @@ const mockData = {
 
 export default function DashboardPage() {
     const progress = (mockData.totalStNIBIIssued / (mockData.totalStNIBIIssued + mockData.totalNIBIIssued)) * 100
+    const { address } = useChain(CHAIN_NAME);
+    const { sendTransaction, fetchQuery } = useTransaction();
+
+    const getQueryDataFromContract = async () => {
+        // if (address) {
+        console.log("address", address)
+
+        try {
+            const result = await fetchQuery(
+                STAKE_CONTRACT_ADDRESS,
+                STAKE_QUERY_MESSAGES_NEW.state()
+            );
+            console.log("queryData", result);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    React.useEffect(() => {
+        getQueryDataFromContract();
+    }, []);
 
     return (
         <div className="space-y-6">
