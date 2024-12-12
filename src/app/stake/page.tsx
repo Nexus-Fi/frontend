@@ -2,7 +2,8 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { ConnectWallet } from "@/components/connect-wallet"
 import useTransaction from "@/hooks/useTransaction";
-import toast from "react-hot-toast";
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 import { STAKE_CONTRACT_ADDRESS, stNIBITOKEN_CONTRACT_ADDRESS } from "@/lib/address";
 import { Button } from "@/components/ui/moving-border"
 import { TOKEN_CONTRACT_MESSAGES } from "@/lib/Message/token";
@@ -26,6 +27,7 @@ export default function Staking() {
   const { sendTransaction, fetchQuery } = useTransaction();
   const [queryData, setQueryData] = React.useState();
   const { address } = useChain(CHAIN_NAME);
+  console.log("address", address)
 
   const handleTabOpen = (tabCategory: string) => {
     setOpen(tabCategory);
@@ -61,7 +63,7 @@ export default function Staking() {
     )
       .then((res) => {
         toast.dismiss(toastId);
-        toast.success("Transferred Successfuly");
+        toast.success("Transferred Successfully");
         console.log("transfer tx", tx)
       })
       .catch((err) => {
@@ -121,15 +123,37 @@ export default function Staking() {
         tokenToStake
       );
 
-      // If the transaction is successful
-      toast.dismiss(toastId);
-      toast.success(`Staked ${amount} NIBI successfully`);
+      toast.success(`Staked ${amount} NIBI successfully`, {
+        position: "top-center"
+      });
+
+      toast(
+        <div>
+          Link - {`https://explorer.nibiru.fi/nibiru-testnet-1/tx/${tx}`}
+          {"top-center"}
+          <button> Retry</button>
+        </div >
+      )
+
+
+      // toast.dismiss(toastId);
+      // toast.success(`Staked ${amount} NIBI successfully`);
 
     } catch (err) {
       // If the transaction fails
       console.log("Staking Failed", err);
-      toast.dismiss(toastId);
-      toast.error("Staking Failed");
+
+      toast.error("Staking Failed !", {
+        position: "top-right"
+      });
+
+      toast(
+        <div>
+          {/* @ts-ignore */}
+          {error?.reason}
+          {/* by default will show on top-right */}
+        </div>
+      )
     }
   };
   
@@ -494,6 +518,7 @@ export default function Staking() {
           </Card>
         </div>
       </div>
+      <ToastContainer />
     </div>
 
   );
