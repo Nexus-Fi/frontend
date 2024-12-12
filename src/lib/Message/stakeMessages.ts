@@ -187,6 +187,11 @@ export const STAKE_QUERY_MESSAGES_NEW = {
             delegator,
         },
     }),
+    get_unbonding_info: (user_address: string) => ({
+        get_unbonding_info: {
+            user_address,
+        },
+    }),
     hub_balance: (contractAddress: string) => ({
         hub_balance: {
             contract_address: contractAddress,
@@ -276,9 +281,4 @@ export const STAKE_QUERY_MESSAGES_NEW = {
 //     };
 // }
 
-// export interface GetUnbondingInfoQuery {
-//     get_unbonding_info: {
-//         user_address: string;
-//     };
-// }
 

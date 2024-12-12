@@ -18,6 +18,7 @@ import { CHAIN_NAME, getChainLogo } from "@/lib/utils";
 import { STAKE_QUERY_MESSAGES_NEW } from "@/lib/Message/stakeMessages";
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { REWARD_CONTRACT_MESSAGES } from "@/lib/Message/rewardDispatcher";
 const mockData = {
   nibiBalance: 15,
   stNibiBalance: 50,
@@ -50,7 +51,7 @@ export default function Home() {
   const [HistroyqueryData, setHistoryQueryData] = React.useState()
   const [StakequeryData, setStakeQueryData] = React.useState()
   const [RestakequeryData, setRestakeQueryData] = React.useState()
-  const [RewardequeryData, setRewardQueryData] = React.useState()
+  const [RewardQueryData, setRewardQueryData] = React.useState()
   const [UnbondRequestData, setUnbondReQuestQueryData] = React.useState()
   const [DelegationData, setDelegationDataQueryData] = React.useState()
 
@@ -74,22 +75,52 @@ export default function Home() {
         STAKE_QUERY_MESSAGES_NEW.state()
       );
       console.log("queryData new", resultNew);
-
-      const queryState = async (contractAddress: string) => {
-        const query = STAKE_QUERY_MESSAGES_NEW.state()
-        return fetchQuery(contractAddress, query);
-      };
-
-      console.log("state", queryState)
+      setStakeQueryData(resultNew);
 
 
-      const result2 = await fetchQuery(
+      // get_unbonding_info, hub_balance, staker - fetchQuery
+
+      const resultUnbondingInfo = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
-        STAKE_QUERY_MESSAGES.staker(address)
+        STAKE_QUERY_MESSAGES_NEW.get_unbonding_info(address)
       );
-      console.log("result2", result2);
-      setDelegated(convertToNibi(result2?.amount_restaked_rstnibi));
-      setRestaked(convertToNibi(result2?.amount_staked_stnibi));
+      console.log("resultUnbondingInfo", resultUnbondingInfo);
+
+
+      const resultHubBalance = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES_NEW.hub_balance(STAKE_CONTRACT_ADDRESS)
+      );
+      console.log("resultHubBalance", resultHubBalance);
+
+      console.log("address", address)
+      const resultStaker = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES_NEW.staker("nibi1c8psyv4ur2x8s6ex4zv23vszgj05pu8ngrr5lu")
+      );
+      console.log("resultStaker", resultStaker);
+
+      const resultStaker2 = await fetchQuery(
+        REWARD_DISPATCHER_CONTRACT_ADDRESS,
+        REWARD_QUERY_MESSAGES.get_user_rewards(address, STAKE_CONTRACT_ADDRESS, REWARD_DISPATCHER_CONTRACT_ADDRESS)
+      );
+      console.log("resultStaker2", resultStaker2);
+      setRewardQueryData(resultStaker2);
+
+      // const queryState = async (contractAddress: string) => {
+      //   const query = STAKE_QUERY_MESSAGES_NEW.state()
+      //   return fetchQuery(contractAddress, query);
+      // };
+
+      // console.log("state", queryState)
+
+      // const result2 = await fetchQuery(
+      //   STAKE_CONTRACT_ADDRESS,
+      //   STAKE_QUERY_MESSAGES.staker(address)
+      // );
+      // console.log("result2", result2);
+      // setDelegated(convertToNibi(result2?.amount_restaked_rstnibi));
+      // setRestaked(convertToNibi(result2?.amount_staked_stnibi));
       calculateRestakedPoints();
 
       const Historyresult = await fetchQuery(
@@ -159,7 +190,7 @@ export default function Home() {
           </CardHeader>
           <CardContent>
             <div className="mb-4 text-2xl font-semibold text-blue-600">
-              $ {mockData.tvl.toLocaleString()}
+              {StakequeryData?.total_bond_stnibi_amount} nibi
             </div>
             <Progress value={progress} className="mb-2 h-2 bg-blue-100" />
             <div className="flex flex-col items-end text-sm text-gray-600">
@@ -188,7 +219,7 @@ export default function Home() {
         />
         <StatsCard
           title="Staking reward"
-          value={`${mockData.stakingReward} NIBI`}
+          value={`${RewardQueryData?.amount} NIBI`}
         />
       </div>
 

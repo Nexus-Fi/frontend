@@ -26,8 +26,6 @@ export default function Staking() {
   const { address } = useChain(CHAIN_NAME);
   console.log("address", address)
 
-  console.log("STAKE_QUERY_MESSAGES_NEW", STAKE_QUERY_MESSAGES_NEW)
-
   const handleTabOpen = (tabCategory: string) => {
     setOpen(tabCategory);
   };
