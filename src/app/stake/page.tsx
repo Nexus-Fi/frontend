@@ -13,7 +13,7 @@ import { STAKE_QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
 
 import { useChain, useWalletClient } from '@cosmos-kit/react';
 import { CHAIN_NAME } from '@/lib/utils';
-import { STAKE_CONTRACT_MESSAGES } from "@/lib/Message/stakeMessages";
+import { Cw20ReceiveMsg, STAKE_CONTRACT_MESSAGES } from "@/lib/Message/stakeMessages";
 import { Wallet } from "@/components/wallet";
 export default function Staking() {
   const [exchange, setExchange] = useState("1");
@@ -32,7 +32,9 @@ export default function Staking() {
   const handleTabOpen = (tabCategory: string) => {
     setOpen(tabCategory);
   };
-
+ interface ReceiveWrapper {
+    receive: Cw20ReceiveMsg;
+  }
   const priceHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setAmount(event.target.value);
     console.log("amount", amount);
@@ -154,7 +156,7 @@ export default function Staking() {
       )
     }
   };
-
+  
   const unstake = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     await transfer(event);
@@ -177,6 +179,34 @@ export default function Staking() {
         console.log("Unstaking Failed", err);
         toast.dismiss(toastId);
       });
+      console.log("Address",address)
+    //   const cw20Recivemsg:Cw20ReceiveMsg = {
+    //     sender:address!,
+    //     amount: multipliedAmount.toString(),
+    //     msg:"eyJ1bmJvbmQiOnt9fQ=="
+    //   }
+
+    // const payload: ReceiveWrapper = {
+    //   receive: cw20Recivemsg
+    // };
+
+    // const tx = await sendTransaction(
+    //   STAKE_CONTRACT_ADDRESS,
+    //   payload,
+
+    // )
+    //   .then((res) => {
+    //     toast.dismiss(toastId);
+    //     toast.success(`Unstaked ${unstakeAmount} NIBI successfully`);
+    //     console.log("unstake sendFrom tx", tx)
+
+    //   })
+    //   .catch((err) => {
+    //     console.log("Unstaking Failed", err);
+    //     toast.dismiss(toastId);
+    //   });
+
+
   };
 
   const withdraw = async (event: { preventDefault: () => void; }) => {
