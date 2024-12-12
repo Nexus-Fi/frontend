@@ -22,3 +22,32 @@ export const REWARD_CONTRACT_MESSAGES = {
         },
     }),
 };
+
+
+
+export interface GetBufferedRewardsQuery {
+    get_buffered_rewards: {
+        contract_addr: string;
+    };
+}
+
+export interface ConfigQuery {
+    config: {};
+}
+
+
+
+export interface GetUserRewardsQuery {
+    get_user_rewards: {
+        user_address: string;
+        hub_contract: string;
+        contract_addr: string;
+    };
+}
+
+export interface GetUnbondingInfoQuery {
+    get_unbonding_info: {
+        user_address: string;
+    };
+}
+

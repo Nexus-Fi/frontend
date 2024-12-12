@@ -14,7 +14,8 @@ import { STAKE_QUERY_MESSAGES } from "@/lib/Query/stakeQuery";
 import { REWARD_QUERY_MESSAGES } from "@/lib/Query/rewardDispatcher";
 import { useChain } from "@cosmos-kit/react";
 import { CHAIN_NAME, getChainLogo } from "@/lib/utils";
-
+// import { StateQuery } from "@/lib/Message/stakeMessages";
+import { STAKE_QUERY_MESSAGES_NEW} from "@/lib/Message/stakeMessages";
 const mockData = {
   nibiBalance: 15,
   stNibiBalance: 50,
@@ -66,6 +67,14 @@ export default function Home() {
   const getQueryDataFromContract = async () => {
     if (address === undefined) return;
     try {
+       const queryState = async (contractAddress: string) => {
+         const query = STAKE_QUERY_MESSAGES_NEW.state()
+        return fetchQuery(contractAddress, query);
+      };
+
+      console.log("state",queryState)
+      
+
       const result2 = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
         STAKE_QUERY_MESSAGES.staker(address)
