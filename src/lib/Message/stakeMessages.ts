@@ -197,6 +197,20 @@ export const STAKE_QUERY_MESSAGES_NEW = {
             contract_address: contractAddress,
         },
     }),
+    balance_history: (staker:string , start_after:number|null, limit:number|null) => ({
+        balance_history: {
+            staker: staker,
+            start_after: null,
+            limit: null
+        }
+    }),
+    balance_updates: (staker: string, start_after: number | null, limit: number | null) => ({
+        balance_updates: {
+            staker: staker,
+            start_after: null,
+            limit: null
+        }
+    })
 };
 
 

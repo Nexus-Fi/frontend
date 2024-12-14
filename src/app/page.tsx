@@ -136,6 +136,96 @@ export default function Home() {
       setRestakeQueryData(DlegationDataResult)
       console.log("DlegationDataResult", DlegationDataResult);
 
+      /// getting balances 
+      const get_balance_history = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES_NEW.balance_history(address,null,null)
+      );
+      console.log("balances",get_balance_history);
+
+      // it gives you below responce 
+      /**
+       * 
+       * 
+       * {
+  "data": {
+    "updates": [
+      {
+        "action": {
+          "Bond": {
+            "nibi_amount": "1000000",
+            "stnibi_minted": "1000000",
+            "validator": null
+          }
+        },
+        "timestamp": 1734200964,
+        "exchange_rate": "1",
+        "resulting_nibi_balance": "1000000",
+        "resulting_stnibi_balance": "1000000",
+        "block_height": 10627161
+      }
+    ],
+    "total_bonded": "1000000",
+    "total_unbonded": "0",
+    "current_stnibi": "1000000"
+  }
+}
+
+       */
+
+
+
+      /// getting updates
+      const get_balance_updates = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES_NEW.balance_updates(address, null, null)
+      );
+      console.log("balances", get_balance_updates);
+
+      /// it gives you same responce 
+
+      /**
+       * 
+       * {
+  "data": {
+    "updates": [
+      {
+        "action": {  /// actions like bond | unbond -> so we can keep track of users balances depending on their actions
+          "Unbond": {
+            "stnibi_burned": "1000000",
+            "nibi_unbonded": "1000000",
+            "batch_id": 1
+          }
+        },
+        "timestamp": 1734203830,
+        "exchange_rate": "1",
+        "resulting_nibi_balance": "1000000",
+        "resulting_stnibi_balance": "0",
+        "block_height": 10627699
+      },
+      {
+        "action": {
+          "Bond": {
+            "nibi_amount": "1000000",
+            "stnibi_minted": "1000000",
+            "validator": null
+          }
+        },
+        "timestamp": 1734200964,
+        "exchange_rate": "1",
+        "resulting_nibi_balance": "1000000",
+        "resulting_stnibi_balance": "1000000",
+        "block_height": 10627161
+      }
+    ],
+    "total_bonded": "1000000",
+    "total_unbonded": "1000000",
+    "current_stnibi": "1000000"
+  }
+}
+   
+       */
+
     } catch (error) {
       console.log(error);
     }
