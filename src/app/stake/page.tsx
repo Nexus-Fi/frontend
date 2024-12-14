@@ -159,35 +159,9 @@ export default function Staking() {
     const multipliedAmount = amountAsNumber * Math.pow(10, 6);
 
     console.log("unstaking unstakeAmount", unstakeAmount, "stakeAmount", amount)
-    const tx = await sendTransaction(
-      stNIBITOKEN_CONTRACT_ADDRESS,
-      TOKEN_CONTRACT_MESSAGES.send_from("", STAKE_CONTRACT_ADDRESS, multipliedAmount.toString(), "")
-    )
-      .then((res) => {
-        toast.dismiss(toastId);
-        toast.success(`Unstaked ${unstakeAmount} NIBI successfully`);
-        console.log("unstake sendFrom tx", tx)
-
-      })
-      .catch((err) => {
-        console.log("Unstaking Failed", err);
-        toast.dismiss(toastId);
-      });
-    console.log("Address", address)
-    //   const cw20Recivemsg:Cw20ReceiveMsg = {
-    //     sender:address!,
-    //     amount: multipliedAmount.toString(),
-    //     msg:"eyJ1bmJvbmQiOnt9fQ=="
-    //   }
-
-    // const payload: ReceiveWrapper = {
-    //   receive: cw20Recivemsg
-    // };
-
     // const tx = await sendTransaction(
-    //   STAKE_CONTRACT_ADDRESS,
-    //   payload,
-
+    //   stNIBITOKEN_CONTRACT_ADDRESS,
+    //   TOKEN_CONTRACT_MESSAGES.send_from("", STAKE_CONTRACT_ADDRESS, multipliedAmount.toString(), "")
     // )
     //   .then((res) => {
     //     toast.dismiss(toastId);
@@ -199,6 +173,34 @@ export default function Staking() {
     //     console.log("Unstaking Failed", err);
     //     toast.dismiss(toastId);
     //   });
+    // console.log("Address", address)
+
+    
+      const cw20Recivemsg:Cw20ReceiveMsg = {
+        sender:address!,
+        amount: multipliedAmount.toString(),
+        msg:"eyJ1bmJvbmQiOnt9fQ=="
+      }
+
+    const payload: ReceiveWrapper = {
+      receive: cw20Recivemsg
+    };
+
+    const tx = await sendTransaction(
+      STAKE_CONTRACT_ADDRESS,
+      STAKE_CONTRACT_MESSAGES.receive(cw20Recivemsg),
+
+    )
+      .then((res) => {
+        toast.dismiss(toastId);
+        toast.success(`Unstaked ${unstakeAmount} NIBI successfully`);
+        console.log("unstake sendFrom tx", tx)
+
+      })
+      .catch((err) => {
+        console.log("Unstaking Failed", err);
+        toast.dismiss(toastId);
+      });
 
 
   };
