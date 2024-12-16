@@ -2,12 +2,11 @@
 import React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { FaCube, FaDollarSign, FaSync } from "react-icons/fa"
+import { FaCube, FaDollarSign, FaSync, FaTelegramPlane, FaDiscord, FaTwitter } from "react-icons/fa"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import type { SidebarLink } from "@/types/dashboard"
-import { FaTelegramPlane, FaDiscord, FaTwitter } from 'react-icons/fa';
 import { usePathname } from "next/navigation";
 import type { IconType } from "react-icons";
 
