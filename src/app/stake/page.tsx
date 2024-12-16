@@ -108,7 +108,7 @@ export default function Staking() {
       },
     ];
 
-    const toastId = toast.loading("Staking...");
+    // const toastId = toast.loading("Staking...");
     console.log("staking", tokenToStake, "amount", amount, "exchange", exchange)
     try {
       const tx = await sendTransaction(
@@ -174,13 +174,13 @@ export default function Staking() {
     //     toast.dismiss(toastId);
     //   });
     // console.log("Address", address)
-    
-    
-      const cw20Recivemsg:Cw20ReceiveMsg = {
-        sender:address!,
-        amount: multipliedAmount.toString(),
-        msg:"eyJ1bmJvbmQiOnt9fQ=="
-      }
+
+
+    const cw20Recivemsg: Cw20ReceiveMsg = {
+      sender: address!,
+      amount: multipliedAmount.toString(),
+      msg: "eyJ1bmJvbmQiOnt9fQ=="
+    }
 
     const payload: ReceiveWrapper = {
       receive: cw20Recivemsg
