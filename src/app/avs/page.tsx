@@ -1,4 +1,3 @@
-import Image from "next/image";
 import DiscoverAVS from "@/components/DiscoverAVS";
 
 export default function Home() {

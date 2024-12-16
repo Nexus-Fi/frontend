@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import { ConnectWallet } from "@/components/connect-wallet"
 import useTransaction from "@/hooks/useTransaction";
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
@@ -12,6 +11,7 @@ import { useChain, useWalletClient } from '@cosmos-kit/react';
 import { CHAIN_NAME } from '@/lib/utils';
 import { Cw20ReceiveMsg, STAKE_CONTRACT_MESSAGES } from "@/lib/Message/stakeMessages";
 import { Wallet } from "@/components/wallet";
+
 export default function Staking() {
   const [exchange, setExchange] = useState("1");
   const [amount, setAmount] = useState<string>("0");
