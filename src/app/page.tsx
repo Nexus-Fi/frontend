@@ -35,6 +35,15 @@ const mockData = {
 
 const progress = (mockData.totalStNIBIIssued / (mockData.totalStNIBIIssued + mockData.totalNIBIIssued)) * 100
 
+interface StakeQueryData {
+  total_bond_stnibi_amount?: string; // Define other properties as needed
+}
+
+interface RewardQueryData {
+  amount?: string; // or the appropriate type
+  // Add other properties as needed
+}
+
 export default function Home() {
   const { sendTransaction, fetchQuery } = useTransaction();
   const { status, address } = useChain(CHAIN_NAME);
@@ -49,11 +58,12 @@ export default function Home() {
   const [isConnected, setIsConnected] = React.useState(status === "Connected");
 
   const [HistroyqueryData, setHistoryQueryData] = React.useState()
-  const [StakequeryData, setStakeQueryData] = React.useState()
   const [RestakequeryData, setRestakeQueryData] = React.useState()
-  const [RewardQueryData, setRewardQueryData] = React.useState()
+  const [RewardQueryData, setRewardQueryData] = React.useState<RewardQueryData | undefined>(undefined);
   const [UnbondRequestData, setUnbondReQuestQueryData] = React.useState()
   const [DelegationData, setDelegationDataQueryData] = React.useState()
+  const [StakequeryData, setStakeQueryData] = React.useState<StakeQueryData | undefined>(undefined);
+
 
 
   const convertToNibi = (value: string): string => {
@@ -96,7 +106,7 @@ export default function Home() {
 
       const get_user_rewards = await fetchQuery(
         REWARD_DISPATCHER_CONTRACT_ADDRESS,
-        REWARD_QUERY_MESSAGES.get_user_rewards(address,STAKE_CONTRACT_ADDRESS,REWARD_DISPATCHER_CONTRACT_ADDRESS)
+        REWARD_QUERY_MESSAGES.get_user_rewards(address, STAKE_CONTRACT_ADDRESS, REWARD_DISPATCHER_CONTRACT_ADDRESS)
       );
 
       console.log("get_user_rewards", get_user_rewards)
@@ -114,7 +124,7 @@ export default function Home() {
         STAKE_QUERY_MESSAGES_NEW.get_unbonding_info(address)
       );
       console.log("resultUnbondingInfo", resultUnbondingInfo);
-     
+
       const resultHubBalance = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
         STAKE_QUERY_MESSAGES_NEW.hub_balance(STAKE_CONTRACT_ADDRESS)
@@ -218,7 +228,7 @@ export default function Home() {
           </CardHeader>
           <CardContent>
             <div className="mb-4 text-2xl font-semibold text-blue-600">
-              {StakequeryData?.total_bond_stnibi_amount} nibi
+              {StakequeryData?.total_bond_stnibi_amount ? `${StakequeryData.total_bond_stnibi_amount} nibi` : 'Loading...'}
             </div>
             <Progress value={progress} className="mb-2 h-2 bg-blue-100" />
             <div className="flex flex-col items-end text-sm text-gray-600">
