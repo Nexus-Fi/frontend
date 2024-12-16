@@ -3,7 +3,7 @@ import { ConnectWallet } from "@/components/connect-wallet"
 import { StatsCard } from "@/components/stats-card"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import STAKE_QUERY_MESSAGES_NEW from "@/lib/Message/stakeMessages";
+import { STAKE_QUERY_MESSAGES_NEW } from "@/lib/Message/stakeMessages";
 import { STAKE_CONTRACT_ADDRESS } from "@/lib/address";
 import React from "react";
 import { useChain, useWalletClient } from '@cosmos-kit/react';

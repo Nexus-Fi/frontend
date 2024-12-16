@@ -35,6 +35,14 @@ const mockData = {
 
 const progress = (mockData.totalStNIBIIssued / (mockData.totalStNIBIIssued + mockData.totalNIBIIssued)) * 100
 
+interface StakeQueryData {
+  total_bond_stnibi_amount?: string; // Define other properties as needed
+}
+
+interface RewardQueryData {
+  amount?: string; // Define other properties as needed
+}
+
 export default function Home() {
   const { sendTransaction, fetchQuery } = useTransaction();
   const { status, address } = useChain(CHAIN_NAME);
@@ -49,9 +57,9 @@ export default function Home() {
   const [isConnected, setIsConnected] = React.useState(status === "Connected");
 
   const [HistroyqueryData, setHistoryQueryData] = React.useState()
-  const [StakequeryData, setStakeQueryData] = React.useState()
+  const [StakequeryData, setStakeQueryData] = React.useState<StakeQueryData | undefined>(undefined);
   const [RestakequeryData, setRestakeQueryData] = React.useState()
-  const [RewardQueryData, setRewardQueryData] = React.useState()
+  const [RewardQueryData, setRewardQueryData] = React.useState<RewardQueryData | undefined>(undefined);
   const [UnbondRequestData, setUnbondReQuestQueryData] = React.useState()
   const [DelegationData, setDelegationDataQueryData] = React.useState()
 
@@ -139,9 +147,9 @@ export default function Home() {
       /// getting balances 
       const get_balance_history = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
-        STAKE_QUERY_MESSAGES_NEW.balance_history(address,null,null)
+        STAKE_QUERY_MESSAGES_NEW.balance_history(address, null, null)
       );
-      console.log("balances",get_balance_history);
+      console.log("balances", get_balance_history);
 
       // it gives you below responce 
       /**
@@ -280,7 +288,7 @@ export default function Home() {
           </CardHeader>
           <CardContent>
             <div className="mb-4 text-2xl font-semibold text-blue-600">
-              {StakequeryData?.total_bond_stnibi_amount} nibi
+              {StakequeryData?.total_bond_stnibi_amount ? `${StakequeryData.total_bond_stnibi_amount} nibi` : 'Loading...'}
             </div>
             <Progress value={progress} className="mb-2 h-2 bg-blue-100" />
             <div className="flex flex-col items-end text-sm text-gray-600">

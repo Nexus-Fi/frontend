@@ -8,7 +8,6 @@
 // export const stNIBITOKEN_CONTRACT_ADDRESS = "nibi1jwc8jufz03vmtsrcwywptzksc4t9yjgnstax3r09rm9pcrl4jy9s4vpzel";
 // export const VALIDATOR_REGISTARY_CONTRACT_ADDRESS = "nibi17gxmfpc6l6s79dvghs5pxgruh3spxetx0td70qwq5jkd8sa5zx7sxvjwls";
 // export const REWARD_DISPATCHER_CONTRACT_ADDRESS = "nibi12y04ajv9fmh2n64mhtrltf8yzpqkl2a4djg8du24np5xklw5kvcq6dtsmj";
-// export const rstNIBI_TOKEN_CONTRACT_ADDRESS ="nibi1h3rnkjxargplk88nqg9y0xrwscj5phk8jkdhc7vcre72qp8gvfdsg8xa66"
 
 // export const STAKE_CONTRACT_ADDRESS = "nibi1gt7vts94scgqmj9tphuzy2rz4mdnyl5j4vlkrrm2pz2p0vkkkegs2luh35";
 // export const stNIBITOKEN_CONTRACT_ADDRESS = "nibi1eh28zmnu8kups8tcslkuwz8q38mf4m5a3rjzyjmsdzt3ytemcgqqh5rnfn";
@@ -19,6 +18,9 @@ export const STAKE_CONTRACT_ADDRESS = "nibi1j69w9w934pp5kml5ex2y0xw9tqmagqnqme95
 export const stNIBITOKEN_CONTRACT_ADDRESS = "nibi1ue6sxheyyjwdmznp76hzuwucff4jyp08mv9hvgap4khu3nmekhjq0hwykx";
 export const VALIDATOR_REGISTARY_CONTRACT_ADDRESS = "nibi1dhwt5eyj40kuqp08qg28287ucqyra4znk4sgesyvrp5fmxq02cyq0ph3sv";
 export const REWARD_DISPATCHER_CONTRACT_ADDRESS = "nibi18qpmakkya528z7yvqn3v22vu6st700hzhglyuyepxlw20rnk5fzsztjuyf";
+
+//testing contract
+export const rstNIBI_TOKEN_CONTRACT_ADDRESS = "nibi1h3rnkjxargplk88nqg9y0xrwscj5phk8jkdhc7vcre72qp8gvfdsg8xa66"
 
 
 
