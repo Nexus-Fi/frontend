@@ -1,6 +1,6 @@
 
 export interface Cw20ReceiveMsg {
-    sender: string;
+    sender: string|undefined;
     amount: string;  // Uint128 as a string
     msg: string;  // Binary as a base64 string
 }

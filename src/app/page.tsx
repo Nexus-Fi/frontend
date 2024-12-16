@@ -40,7 +40,7 @@ interface StakeQueryData {
 }
 
 interface RewardQueryData {
-  amount?: string; // Define other properties as needed
+  amount?: string;
 }
 
 export default function Home() {
@@ -62,6 +62,8 @@ export default function Home() {
   const [RewardQueryData, setRewardQueryData] = React.useState<RewardQueryData | undefined>(undefined);
   const [UnbondRequestData, setUnbondReQuestQueryData] = React.useState()
   const [DelegationData, setDelegationDataQueryData] = React.useState()
+  const [StakequeryData, setStakeQueryData] = React.useState<StakeQueryData | undefined>(undefined);
+
 
 
   const convertToNibi = (value: string): string => {
@@ -78,22 +80,50 @@ export default function Home() {
   const getQueryDataFromContract = async () => {
     if (address === undefined) return;
     try {
+
+
+      const get_balance_history = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES_NEW.balance_history(address, null, null)
+      );
+      console.log("get_balance_history", get_balance_history);
+
+
+      ///
+      const get_balance_updates = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES_NEW.balance_updates(address, null, null)
+      );
+      console.log("get_balance_updates", get_balance_updates);
+
+
+      const get_buffered_rewards = await fetchQuery(
+        REWARD_DISPATCHER_CONTRACT_ADDRESS,
+        REWARD_QUERY_MESSAGES.get_buffered_rewards(REWARD_DISPATCHER_CONTRACT_ADDRESS)
+      );
+
+      console.log("get_buffered_rewards", get_buffered_rewards)
+
+      const get_user_rewards = await fetchQuery(
+        REWARD_DISPATCHER_CONTRACT_ADDRESS,
+        REWARD_QUERY_MESSAGES.get_user_rewards(address, STAKE_CONTRACT_ADDRESS, REWARD_DISPATCHER_CONTRACT_ADDRESS)
+      );
+
+      console.log("get_user_rewards", get_user_rewards)
+
       const resultNew = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
         STAKE_QUERY_MESSAGES_NEW.state()
       );
-      console.log("queryData new", resultNew);
+
+      // console.log("queryData new", resultNew);
       setStakeQueryData(resultNew);
-
-
-      // get_unbonding_info, hub_balance, staker - fetchQuery
-
+      // // get_unbonding_info, hub_balance, staker - fetchQuery
       const resultUnbondingInfo = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
         STAKE_QUERY_MESSAGES_NEW.get_unbonding_info(address)
       );
       console.log("resultUnbondingInfo", resultUnbondingInfo);
-
 
       const resultHubBalance = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
@@ -101,7 +131,7 @@ export default function Home() {
       );
       console.log("resultHubBalance", resultHubBalance);
 
-      console.log("address", address)
+      // console.log("address", address)
       const resultStaker = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
         STAKE_QUERY_MESSAGES_NEW.staker("nibi1c8psyv4ur2x8s6ex4zv23vszgj05pu8ngrr5lu")
@@ -115,20 +145,20 @@ export default function Home() {
       console.log("resultStaker2", resultStaker2);
       setRewardQueryData(resultStaker2);
 
-      // const queryState = async (contractAddress: string) => {
-      //   const query = STAKE_QUERY_MESSAGES_NEW.state()
-      //   return fetchQuery(contractAddress, query);
-      // };
+      const queryState = async (contractAddress: string) => {
+        const query = STAKE_QUERY_MESSAGES_NEW.state()
+        return fetchQuery(contractAddress, query);
+      };
 
-      // console.log("state", queryState)
+      console.log("state", queryState)
 
-      // const result2 = await fetchQuery(
-      //   STAKE_CONTRACT_ADDRESS,
-      //   STAKE_QUERY_MESSAGES.staker(address)
-      // );
-      // console.log("result2", result2);
-      // setDelegated(convertToNibi(result2?.amount_restaked_rstnibi));
-      // setRestaked(convertToNibi(result2?.amount_staked_stnibi));
+      const result2 = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES.staker(address)
+      );
+      console.log("result2", result2);
+      setDelegated(convertToNibi(result2?.amount_restaked_rstnibi));
+      setRestaked(convertToNibi(result2?.amount_staked_stnibi));
       calculateRestakedPoints();
 
       const Historyresult = await fetchQuery(
@@ -143,7 +173,6 @@ export default function Home() {
       );
       setRestakeQueryData(DlegationDataResult)
       console.log("DlegationDataResult", DlegationDataResult);
-
       /// getting balances 
       const get_balance_history = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
@@ -233,7 +262,6 @@ export default function Home() {
 }
    
        */
-
     } catch (error) {
       console.log(error);
     }
