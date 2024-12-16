@@ -151,6 +151,8 @@ export default function Staking() {
     }
   };
 
+  
+
   const unstake = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     await transfer(event);
@@ -173,11 +175,11 @@ export default function Staking() {
     //     console.log("Unstaking Failed", err);
     //     toast.dismiss(toastId);
     //   });
-    // console.log("Address", address)
+    console.log("Address", address)
     
-    
+
       const cw20Recivemsg:Cw20ReceiveMsg = {
-        sender:address!,
+        sender:address,
         amount: multipliedAmount.toString(),
         msg:"eyJ1bmJvbmQiOnt9fQ=="
       }
@@ -188,8 +190,7 @@ export default function Staking() {
 
     const tx = await sendTransaction(
       STAKE_CONTRACT_ADDRESS,
-      STAKE_CONTRACT_MESSAGES.receive(cw20Recivemsg),
-
+      payload
     )
       .then((res) => {
         toast.dismiss(toastId);
@@ -233,6 +234,85 @@ export default function Staking() {
       toast.error('Please tick the box to withdraw funds');
     }
 
+  };
+
+
+  // dispatch rewards 
+  const dispatchRewards = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+
+    const toastId = toast.loading("Dispatching Rewards...");
+
+    try {
+      const tx = await sendTransaction(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_CONTRACT_MESSAGES.dispatch_rewards(),
+        []  // No tokens needed for this message
+      );
+
+      toast.success("Rewards Dispatched Successfully", {
+        position: "top-center"
+      });
+
+      toast(
+        <div>
+          Link - {`https://explorer.nibiru.fi/nibiru-testnet-1/tx/${tx}`}
+          <button>Retry</button>
+        </div>
+      );
+    } catch (err) {
+      console.log("Dispatch Rewards Failed", err);
+
+      toast.error("Dispatching Rewards Failed!", {
+        position: "top-right"
+      });
+
+      toast(
+        <div>
+          {/* @ts-ignore */}
+          {error?.reason}
+        </div>
+      );
+    }
+  };
+
+  //withdraw unbonded 
+  const withdrawUnbonded = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+
+    const toastId = toast.loading("Withdrawing Unbonded Tokens...");
+
+    try {
+      const tx = await sendTransaction(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_CONTRACT_MESSAGES.withdraw_unbonded(),
+        []  // No tokens needed for this message
+      );
+
+      toast.success("Unbonded Tokens Withdrawn Successfully", {
+        position: "top-center"
+      });
+
+      toast(
+        <div>
+          Link - {`https://explorer.nibiru.fi/nibiru-testnet-1/tx/${tx}`}
+          <button>Retry</button>
+        </div>
+      );
+    } catch (err) {
+      console.log("Withdraw Unbonded Failed", err);
+
+      toast.error("Withdrawing Unbonded Tokens Failed!", {
+        position: "top-right"
+      });
+
+      toast(
+        <div>
+          {/* @ts-ignore */}
+          {error?.reason}
+        </div>
+      );
+    }
   };
 
   return (

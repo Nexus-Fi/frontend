@@ -70,6 +70,40 @@ export default function Home() {
   const getQueryDataFromContract = async () => {
     if (address === undefined) return;
     try {
+
+
+      const get_balance_history = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES_NEW.balance_history("nibi1seg3dn793ysgg7rdkhkgzvur7v40gdqcy3pj9z", null, null)
+      );
+      console.log("get_balance_history", get_balance_history);
+
+
+      ///
+      const get_balance_updates = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES_NEW.balance_updates("nibi1seg3dn793ysgg7rdkhkgzvur7v40gdqcy3pj9z", null, null)
+      );
+      console.log("get_balance_updates", get_balance_updates);
+      
+      const get_buffered_rewards = await fetchQuery(
+        REWARD_DISPATCHER_CONTRACT_ADDRESS,
+        REWARD_QUERY_MESSAGES.get_buffered_rewards()
+      );
+
+      console.log("get_buffered_rewards", get_buffered_rewards)
+
+      const get_user_rewards = await fetchQuery(
+        REWARD_DISPATCHER_CONTRACT_ADDRESS,
+        REWARD_QUERY_MESSAGES.get_user_rewards(address,STAKE_CONTRACT_ADDRESS,REWARD_DISPATCHER_CONTRACT_ADDRESS)
+      );
+
+      console.log("get_buffered_rewards", get_user_rewards)
+
+
+
+
+
       const resultNew = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
         STAKE_QUERY_MESSAGES_NEW.state()
@@ -85,8 +119,7 @@ export default function Home() {
         STAKE_QUERY_MESSAGES_NEW.get_unbonding_info(address)
       );
       console.log("resultUnbondingInfo", resultUnbondingInfo);
-
-
+     
       const resultHubBalance = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
         STAKE_QUERY_MESSAGES_NEW.hub_balance(STAKE_CONTRACT_ADDRESS)
@@ -137,12 +170,7 @@ export default function Home() {
       console.log("DlegationDataResult", DlegationDataResult);
 
       /// getting balances 
-      const get_balance_history = await fetchQuery(
-        STAKE_CONTRACT_ADDRESS,
-        STAKE_QUERY_MESSAGES_NEW.balance_history(address,null,null)
-      );
-      console.log("balances",get_balance_history);
-
+     
       // it gives you below responce 
       /**
        * 
@@ -176,11 +204,7 @@ export default function Home() {
 
 
       /// getting updates
-      const get_balance_updates = await fetchQuery(
-        STAKE_CONTRACT_ADDRESS,
-        STAKE_QUERY_MESSAGES_NEW.balance_updates(address, null, null)
-      );
-      console.log("balances", get_balance_updates);
+    
 
       /// it gives you same responce 
 
