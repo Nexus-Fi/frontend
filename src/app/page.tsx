@@ -74,7 +74,7 @@ export default function Home() {
 
       const get_balance_history = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
-        STAKE_QUERY_MESSAGES_NEW.balance_history("nibi1seg3dn793ysgg7rdkhkgzvur7v40gdqcy3pj9z", null, null)
+        STAKE_QUERY_MESSAGES_NEW.balance_history(address, null, null)
       );
       console.log("get_balance_history", get_balance_history);
 
@@ -82,13 +82,14 @@ export default function Home() {
       ///
       const get_balance_updates = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
-        STAKE_QUERY_MESSAGES_NEW.balance_updates("nibi1seg3dn793ysgg7rdkhkgzvur7v40gdqcy3pj9z", null, null)
+        STAKE_QUERY_MESSAGES_NEW.balance_updates(address, null, null)
       );
       console.log("get_balance_updates", get_balance_updates);
-      
+
+
       const get_buffered_rewards = await fetchQuery(
         REWARD_DISPATCHER_CONTRACT_ADDRESS,
-        REWARD_QUERY_MESSAGES.get_buffered_rewards()
+        REWARD_QUERY_MESSAGES.get_buffered_rewards(REWARD_DISPATCHER_CONTRACT_ADDRESS)
       );
 
       console.log("get_buffered_rewards", get_buffered_rewards)
@@ -98,22 +99,16 @@ export default function Home() {
         REWARD_QUERY_MESSAGES.get_user_rewards(address,STAKE_CONTRACT_ADDRESS,REWARD_DISPATCHER_CONTRACT_ADDRESS)
       );
 
-      console.log("get_buffered_rewards", get_user_rewards)
-
-
-
-
+      console.log("get_user_rewards", get_user_rewards)
 
       const resultNew = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
         STAKE_QUERY_MESSAGES_NEW.state()
       );
-      console.log("queryData new", resultNew);
+
+      // console.log("queryData new", resultNew);
       setStakeQueryData(resultNew);
-
-
-      // get_unbonding_info, hub_balance, staker - fetchQuery
-
+      // // get_unbonding_info, hub_balance, staker - fetchQuery
       const resultUnbondingInfo = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
         STAKE_QUERY_MESSAGES_NEW.get_unbonding_info(address)
@@ -126,7 +121,7 @@ export default function Home() {
       );
       console.log("resultHubBalance", resultHubBalance);
 
-      console.log("address", address)
+      // console.log("address", address)
       const resultStaker = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
         STAKE_QUERY_MESSAGES_NEW.staker("nibi1c8psyv4ur2x8s6ex4zv23vszgj05pu8ngrr5lu")
@@ -140,20 +135,20 @@ export default function Home() {
       console.log("resultStaker2", resultStaker2);
       setRewardQueryData(resultStaker2);
 
-      // const queryState = async (contractAddress: string) => {
-      //   const query = STAKE_QUERY_MESSAGES_NEW.state()
-      //   return fetchQuery(contractAddress, query);
-      // };
+      const queryState = async (contractAddress: string) => {
+        const query = STAKE_QUERY_MESSAGES_NEW.state()
+        return fetchQuery(contractAddress, query);
+      };
 
-      // console.log("state", queryState)
+      console.log("state", queryState)
 
-      // const result2 = await fetchQuery(
-      //   STAKE_CONTRACT_ADDRESS,
-      //   STAKE_QUERY_MESSAGES.staker(address)
-      // );
-      // console.log("result2", result2);
-      // setDelegated(convertToNibi(result2?.amount_restaked_rstnibi));
-      // setRestaked(convertToNibi(result2?.amount_staked_stnibi));
+      const result2 = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES.staker(address)
+      );
+      console.log("result2", result2);
+      setDelegated(convertToNibi(result2?.amount_restaked_rstnibi));
+      setRestaked(convertToNibi(result2?.amount_staked_stnibi));
       calculateRestakedPoints();
 
       const Historyresult = await fetchQuery(
@@ -168,87 +163,6 @@ export default function Home() {
       );
       setRestakeQueryData(DlegationDataResult)
       console.log("DlegationDataResult", DlegationDataResult);
-
-      /// getting balances 
-     
-      // it gives you below responce 
-      /**
-       * 
-       * 
-       * {
-  "data": {
-    "updates": [
-      {
-        "action": {
-          "Bond": {
-            "nibi_amount": "1000000",
-            "stnibi_minted": "1000000",
-            "validator": null
-          }
-        },
-        "timestamp": 1734200964,
-        "exchange_rate": "1",
-        "resulting_nibi_balance": "1000000",
-        "resulting_stnibi_balance": "1000000",
-        "block_height": 10627161
-      }
-    ],
-    "total_bonded": "1000000",
-    "total_unbonded": "0",
-    "current_stnibi": "1000000"
-  }
-}
-
-       */
-
-
-
-      /// getting updates
-    
-
-      /// it gives you same responce 
-
-      /**
-       * 
-       * {
-  "data": {
-    "updates": [
-      {
-        "action": {  /// actions like bond | unbond -> so we can keep track of users balances depending on their actions
-          "Unbond": {
-            "stnibi_burned": "1000000",
-            "nibi_unbonded": "1000000",
-            "batch_id": 1
-          }
-        },
-        "timestamp": 1734203830,
-        "exchange_rate": "1",
-        "resulting_nibi_balance": "1000000",
-        "resulting_stnibi_balance": "0",
-        "block_height": 10627699
-      },
-      {
-        "action": {
-          "Bond": {
-            "nibi_amount": "1000000",
-            "stnibi_minted": "1000000",
-            "validator": null
-          }
-        },
-        "timestamp": 1734200964,
-        "exchange_rate": "1",
-        "resulting_nibi_balance": "1000000",
-        "resulting_stnibi_balance": "1000000",
-        "block_height": 10627161
-      }
-    ],
-    "total_bonded": "1000000",
-    "total_unbonded": "1000000",
-    "current_stnibi": "1000000"
-  }
-}
-   
-       */
 
     } catch (error) {
       console.log(error);

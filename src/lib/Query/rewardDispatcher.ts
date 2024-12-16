@@ -1,6 +1,6 @@
 export const REWARD_QUERY_MESSAGES = {
-  get_buffered_rewards: () => ({
-    get_buffered_rewards: {},
+  get_buffered_rewards: (contract_addr:string) => ({
+    get_buffered_rewards: { contract_addr},
   }),
   config: () => ({
     config: {},
