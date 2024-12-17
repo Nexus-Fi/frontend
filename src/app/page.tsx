@@ -48,7 +48,6 @@ export default function Home() {
   const { status, address } = useChain(CHAIN_NAME);
   console.log("status", status, "address", address)
 
-  // create states for restaked, delegated, restaked points, restaked ratio
   const [restaked, setRestaked] = React.useState("0");
   const [delegated, setDelegated] = React.useState("0");
   const [restakedPoints, setRestakedPoints] = React.useState("0");
@@ -57,14 +56,11 @@ export default function Home() {
   const [isConnected, setIsConnected] = React.useState(status === "Connected");
 
   const [HistroyqueryData, setHistoryQueryData] = React.useState()
-  const [StakequeryData, setStakeQueryData] = React.useState<StakeQueryData | undefined>(undefined);
   const [RestakequeryData, setRestakeQueryData] = React.useState()
   const [RewardQueryData, setRewardQueryData] = React.useState<RewardQueryData | undefined>(undefined);
   const [UnbondRequestData, setUnbondReQuestQueryData] = React.useState()
   const [DelegationData, setDelegationDataQueryData] = React.useState()
   const [StakequeryData, setStakeQueryData] = React.useState<StakeQueryData | undefined>(undefined);
-
-
 
   const convertToNibi = (value: string): string => {
     const valueAsNumber = parseFloat(value);
@@ -81,20 +77,17 @@ export default function Home() {
     if (address === undefined) return;
     try {
 
+      // const get_balance_history = await fetchQuery(
+      //   STAKE_CONTRACT_ADDRESS,
+      //   STAKE_QUERY_MESSAGES_NEW.balance_history(address, null, null)
+      // );
+      // console.log("get_balance_history", get_balance_history);
 
-      const get_balance_history = await fetchQuery(
-        STAKE_CONTRACT_ADDRESS,
-        STAKE_QUERY_MESSAGES_NEW.balance_history(address, null, null)
-      );
-      console.log("get_balance_history", get_balance_history);
-
-
-      ///
-      const get_balance_updates = await fetchQuery(
-        STAKE_CONTRACT_ADDRESS,
-        STAKE_QUERY_MESSAGES_NEW.balance_updates(address, null, null)
-      );
-      console.log("get_balance_updates", get_balance_updates);
+      // const get_balance_updates = await fetchQuery(
+      //   STAKE_CONTRACT_ADDRESS,
+      //   STAKE_QUERY_MESSAGES_NEW.balance_updates(address, null, null)
+      // );
+      // console.log("get_balance_updates", get_balance_updates);
 
 
       const get_buffered_rewards = await fetchQuery(
@@ -173,6 +166,7 @@ export default function Home() {
       );
       setRestakeQueryData(DlegationDataResult)
       console.log("DlegationDataResult", DlegationDataResult);
+
       /// getting balances 
       const get_balance_history = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
@@ -180,6 +174,15 @@ export default function Home() {
       );
       console.log("balances", get_balance_history);
 
+
+      /// getting updates
+      const get_balance_updates = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES_NEW.balance_updates(address, null, null)
+      );
+      console.log("balances 2", get_balance_updates);
+      setRestaked(convertToNibi(get_balance_history?.total_bonded))
+      setDelegated(convertToNibi(get_balance_history?.total_unbonded))
       // it gives you below responce 
       /**
        * 
@@ -212,12 +215,7 @@ export default function Home() {
 
 
 
-      /// getting updates
-      const get_balance_updates = await fetchQuery(
-        STAKE_CONTRACT_ADDRESS,
-        STAKE_QUERY_MESSAGES_NEW.balance_updates(address, null, null)
-      );
-      console.log("balances", get_balance_updates);
+
 
       /// it gives you same responce 
 
@@ -272,7 +270,7 @@ export default function Home() {
     getQueryDataFromContract();
     const points = calculateRestakedPoints();
     setRestakedPoints(points);
-  }, [status, address, delegated, restaked]);
+  }, [status, address]);
 
   return (
     <main className="flex flex-col justify-between px-20 py-12">
