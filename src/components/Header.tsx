@@ -5,7 +5,7 @@ import { FaBars } from 'react-icons/fa'
 import { ConnectWallet } from "@/components/connect-wallet"
 import { Button } from "./ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet"
-import { Sidebar } from "@/components/Sidebar"
+import Sidebar from "@/components/Sidebar"
 
 export function Header() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -13,9 +13,7 @@ export function Header() {
         <header className="bg-white shadow-sm p-4 flex justify-between items-center md:hidden">
             <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
                 <SheetTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                        <FaBars className="h-5 w-5" />
-                    </Button>
+
                 </SheetTrigger>
                 <SheetContent side="left" className="p-0">
                     <Sidebar />

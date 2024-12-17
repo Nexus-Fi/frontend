@@ -273,14 +273,15 @@ export default function Home() {
   }, [status, address]);
 
   return (
-    <main className="flex flex-col justify-between px-20 py-12">
-      <div className="space-y-6">
+    <main className="flex flex-col justify-between px-8 md:px-20 py-6 md:py-12">
+      <div className="space-y-4 md:space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
           <div className="hidden md:block">
             <Wallet />
           </div>
         </div>
+
 
         <div className="grid gap-6 md:grid-cols-3">
           <Card className="bg-white w-full shadow-sm md:col-span-2">
@@ -289,17 +290,28 @@ export default function Home() {
                 Your balance
               </CardTitle>
             </CardHeader>
-            <div className="flex justify-center">
-              <div className="flex justify-center items-center w-full">
-                {/* <div className=" w-full text-xl font-semibold text-black text-center">
-                </div> */}
+            <div className="flex justify-center pb-5">
+              {/* <div className="flex justify-center items-center w-full">
                 <div className="w-1/3 text-2xl font-semibold text-black text-center">{restaked} stNIBI</div>
-                <div className="border-l border-gray-600 h-[10vh] w-1 mb-3"></div>
+                <div className="border-l border-gray-600 h-[10vh] text-center w-1 px-5 md:px-0 mb-3"></div>
                 <div className="w-1/3 text-2xl font-semibold text-center text-black">{delegated} rstNIBI</div>
+              </div> */}
+              <div className="flex md:flex-row justify-center items-center w-full space-y-4 md:space-y-0 md:space-x-4">
+                <div className="flex-1 text-center">
+                  <div className="text-2xl font-semibold text-black">{restaked} stNIBI</div>
+                  <div className="text-sm text-gray-500">Restaked</div>
+                </div>
+
+                <div className="block border-l border-gray-600 h-10"></div>
+
+                <div className="flex-1 text-center">
+                  <div className="text-2xl font-semibold text-black">{delegated} rstNIBI</div>
+                  <div className="text-sm text-gray-500">Delegated</div>
+                </div>
               </div>
             </div>
-
           </Card>
+
           <StatsCard
             title="Points earned"
             value={restakedPoints}
