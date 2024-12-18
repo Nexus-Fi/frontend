@@ -47,7 +47,7 @@ export default function Sidebar() {
         <>
             {/* Mobile Menu Button */}
             <button
-                className="md:hidden fixed top-9 p-2 rounded-md text-black"
+                className="md:hidden fixed top-9 left-9 p-2 rounded-md text-black"
                 onClick={toggleMobileMenu}
             >
                 <FaBars size={24} />
@@ -55,7 +55,7 @@ export default function Sidebar() {
 
             {/* Sidebar Container */}
             <aside className={`
-                fixed top-0 left-0 z-40 h-full
+                fixed top-0 left-0 z-40 h-screen
                 transition-transform duration-300 ease-in-out
                 bg-white dark:bg-gray-900 border-r
                 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
@@ -93,13 +93,15 @@ export default function Sidebar() {
                     <div className="mt-auto md:hidden">
                         <Footer />
                     </div>
-
                 </div>
 
-                <div className="flex flex-col">
-                    <div className="mt-auto">
-                        <Footer />
-                    </div>
+                {/* create space box */}
+                <div className="hidden md:block flex-col">
+                    <div className="h-[200px]"></div>
+                </div>
+
+                <div className="flex flex-col mt-auto">
+                    <Footer />
                 </div>
             </aside>
 
