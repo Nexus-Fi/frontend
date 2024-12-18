@@ -151,7 +151,7 @@ export default function Staking() {
     }
   };
 
-  
+
 
   const unstake = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
@@ -176,13 +176,13 @@ export default function Staking() {
     //     toast.dismiss(toastId);
     //   });
     console.log("Address", address)
-    
 
-      const cw20Recivemsg:Cw20ReceiveMsg = {
-        sender:address,
-        amount: multipliedAmount.toString(),
-        msg:"eyJ1bmJvbmQiOnt9fQ=="
-      }
+
+    const cw20Recivemsg: Cw20ReceiveMsg = {
+      sender: address,
+      amount: multipliedAmount.toString(),
+      msg: "eyJ1bmJvbmQiOnt9fQ=="
+    }
 
     const payload: ReceiveWrapper = {
       receive: cw20Recivemsg
@@ -317,15 +317,15 @@ export default function Staking() {
 
   return (
     <div>
-      <div className=" flex items-center w-full justify-between p-10">
-        <div className="ml-auto">
+      <div className="flex items-center w-full justify-between p-4 md:p-10">
+        <div className="ml-auto hidden md:block">
           <Wallet />
         </div>
 
       </div>
-      <div className="max-w-xl mx-auto pb-10 space-y-6">
-        <div className="relative w-full h-[600px]">
-          <Card className="bg-white border-gray-900 h-[600px] p-8 rounded-none ">
+      <div className="max-w-xl flex items-center justify-center md:mx-auto pb-10 space-y-6">
+        <div className="relative w-[400px] lg:w-[600px] md:h-[600px] h-[550px]">
+          <Card className="bg-white border-gray-900 md:h-[600px] h-[550px] p-8 rounded-none ">
             <Card className="bg-white rounded-none  border-gray-800 p-6 absolute top-[-2%] left-[-2%] right-[2%] bottom-[2%]">
               <div className=" p-4 justify-between items-center">
                 <div className="flex flex-wrap">
