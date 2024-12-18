@@ -18,25 +18,9 @@ import { CHAIN_NAME, getChainLogo } from "@/lib/utils";
 import { STAKE_QUERY_MESSAGES_NEW } from "@/lib/Message/stakeMessages";
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import { REWARD_CONTRACT_MESSAGES } from "@/lib/Message/rewardDispatcher";
-const mockData = {
-  nibiBalance: 15,
-  stNibiBalance: 50,
-  pointsEarned: 9432,
-  tvl: 2917644.46,
-  totalStNIBIIssued: 84695.01,
-  totalNIBIIssued: 132459.05,
-  totalBurned: {
-    amount: 1747790.02,
-    usdValue: 22805.21,
-  },
-  stakingReward: 10,
-}
-
-const progress = (mockData.totalStNIBIIssued / (mockData.totalStNIBIIssued + mockData.totalNIBIIssued)) * 100
 
 interface StakeQueryData {
-  total_bond_stnibi_amount?: string; // Define other properties as needed
+  total_bond_stnibi_amount?: string;
 }
 
 interface RewardQueryData {
@@ -46,12 +30,13 @@ interface RewardQueryData {
 export default function Home() {
   const { sendTransaction, fetchQuery } = useTransaction();
   const { status, address } = useChain(CHAIN_NAME);
-  console.log("status", status, "address", address)
 
   const [restaked, setRestaked] = React.useState("0");
   const [delegated, setDelegated] = React.useState("0");
   const [restakedPoints, setRestakedPoints] = React.useState("0");
   const [restakedRatio, setRestakedRatio] = React.useState("0.000000001");
+  const [totalStaked, setTotalStaked] = React.useState("0");
+  const [totalBurned, setTotalBurned] = React.useState("0");
 
   const [isConnected, setIsConnected] = React.useState(status === "Connected");
 
@@ -61,6 +46,11 @@ export default function Home() {
   const [UnbondRequestData, setUnbondReQuestQueryData] = React.useState()
   const [DelegationData, setDelegationDataQueryData] = React.useState()
   const [StakequeryData, setStakeQueryData] = React.useState<StakeQueryData | undefined>(undefined);
+
+  const [totalStNIBIIssued, setTotalStNIBIIssued] = React.useState(0);
+  const [totalNIBIIssued, setTotalNIBIIssued] = React.useState(0);
+
+  const progress = (totalStNIBIIssued / (totalStNIBIIssued + totalNIBIIssued)) * 100;
 
   const convertToNibi = (value: string): string => {
     const valueAsNumber = parseFloat(value);
@@ -85,6 +75,8 @@ export default function Home() {
       console.log("restaked", get_balance_history?.updates[0]?.resulting_stnibi_balance, "delegated", get_balance_history?.updates[0]?.resulting_nibi_balance)
       setRestaked(convertToNibi(get_balance_history?.updates[0]?.resulting_stnibi_balance))
       setDelegated(convertToNibi(get_balance_history?.updates[0]?.resulting_nibi_balance))
+      setTotalStaked(convertToNibi(get_balance_history?.total_bonded))
+      setTotalBurned(convertToNibi(get_balance_history?.total_unbonded))
 
 
       // const get_balance_history = await fetchQuery(
@@ -121,6 +113,7 @@ export default function Home() {
 
       // console.log("queryData new", resultNew);
       setStakeQueryData(resultNew);
+      console.log("resultNew state", resultNew)
       // // get_unbonding_info, hub_balance, staker - fetchQuery
       const resultUnbondingInfo = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
@@ -134,10 +127,13 @@ export default function Home() {
       );
       console.log("resultHubBalance", resultHubBalance);
 
+      setTotalStNIBIIssued(parseFloat(resultHubBalance.total_stnibi_issued || "0"));
+      setTotalNIBIIssued(parseFloat(resultHubBalance.total_nibi_issued || "0"));
+
       // console.log("address", address)
       const resultStaker = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
-        STAKE_QUERY_MESSAGES_NEW.staker("nibi1c8psyv4ur2x8s6ex4zv23vszgj05pu8ngrr5lu")
+        STAKE_QUERY_MESSAGES_NEW.staker(address)
       );
       console.log("resultStaker", resultStaker);
 
@@ -160,8 +156,7 @@ export default function Home() {
         STAKE_QUERY_MESSAGES.staker(address)
       );
       console.log("result2", result2);
-      setDelegated(convertToNibi(result2?.amount_restaked_rstnibi));
-      setRestaked(convertToNibi(result2?.amount_staked_stnibi));
+
       calculateRestakedPoints();
 
       const Historyresult = await fetchQuery(
@@ -342,11 +337,11 @@ export default function Home() {
             <div className="flex flex-col items-end text-sm text-gray-600">
               <div className="flex items-center">
                 <GoDotFill className="text-blue-600 text-xl" />
-                <div className="ml-1">Total stNIBI issued: {mockData.totalStNIBIIssued.toLocaleString()}</div>
+                <div className="ml-1">Total stNIBI issued: {totalBurned.toLocaleString()}</div>
               </div>
               <div className="flex items-center">
                 <GoDotFill className="text-blue-200 text-xl" />
-                <div className="ml-1">Total NIBI issued: {mockData.totalNIBIIssued.toLocaleString()}</div>
+                <div className="ml-1">Total NIBI staked: {totalStaked.toLocaleString()}</div>
               </div>
             </div>
           </CardContent>
@@ -360,8 +355,8 @@ export default function Home() {
         />
         <StatsCard
           title="Total burned"
-          value={mockData.totalBurned.amount.toLocaleString()}
-          subValue={`/$${mockData.totalBurned.usdValue.toLocaleString()}`}
+          value={"1000000"}
+          subValue={`/$${"1000000"}`}
         />
         <StatsCard
           title="Staking reward"
@@ -369,7 +364,6 @@ export default function Home() {
           isLoading={!isConnected}
         />
       </div>
-
     </main >
   );
 }
