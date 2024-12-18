@@ -76,6 +76,16 @@ export default function Home() {
   const getQueryDataFromContract = async () => {
     if (address === undefined) return;
     try {
+      const get_balance_history = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES_NEW.balance_history(address, null, null)
+      );
+      console.log("get_balance_history", get_balance_history);
+
+      console.log("restaked", get_balance_history?.updates[0]?.resulting_stnibi_balance, "delegated", get_balance_history?.updates[0]?.resulting_nibi_balance)
+      setRestaked(convertToNibi(get_balance_history?.updates[0]?.resulting_stnibi_balance))
+      setDelegated(convertToNibi(get_balance_history?.updates[0]?.resulting_nibi_balance))
+
 
       // const get_balance_history = await fetchQuery(
       //   STAKE_CONTRACT_ADDRESS,
@@ -168,11 +178,6 @@ export default function Home() {
       console.log("DlegationDataResult", DlegationDataResult);
 
       /// getting balances 
-      const get_balance_history = await fetchQuery(
-        STAKE_CONTRACT_ADDRESS,
-        STAKE_QUERY_MESSAGES_NEW.balance_history(address, null, null)
-      );
-      console.log("balances", get_balance_history);
 
       /// getting updates
       const get_balance_updates = await fetchQuery(
@@ -180,9 +185,7 @@ export default function Home() {
         STAKE_QUERY_MESSAGES_NEW.balance_updates(address, null, null)
       );
       console.log("balances 2", get_balance_updates);
-      setRestaked(convertToNibi(get_balance_history?.updates[0]?.resulting_stnibi_balance))
-      setDelegated(convertToNibi(get_balance_history?.updates[0]?.resulting_nibi_balance))
-      console.log("restaked", get_balance_history?.updates[0]?.resulting_stnibi_balance, "delegated", get_balance_history?.updates[0]?.resulting_nibi_balance)
+
       // it gives you below responce 
       /**
        * 
@@ -272,6 +275,11 @@ export default function Home() {
     setRestakedPoints(points);
   }, [status, address]);
 
+  const getSafeRewardAmount = (): number => {
+    const parsedAmount = parseFloat(RewardQueryData?.amount || "0");
+    return isNaN(parsedAmount) ? 0 : parsedAmount;
+  }
+
   return (
     <main className="flex flex-col justify-between px-8 md:px-20 py-6 md:py-12">
       <div className="space-y-4 md:space-y-6">
@@ -291,30 +299,31 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <div className="flex justify-center pb-5">
-              {/* <div className="flex justify-center items-center w-full">
-                <div className="w-1/3 text-2xl font-semibold text-black text-center">{restaked} stNIBI</div>
-                <div className="border-l border-gray-600 h-[10vh] text-center w-1 px-5 md:px-0 mb-3"></div>
-                <div className="w-1/3 text-2xl font-semibold text-center text-black">{delegated} rstNIBI</div>
-              </div> */}
-              <div className="flex md:flex-row justify-center items-center w-full space-y-4 md:space-y-0 md:space-x-4">
-                <div className="flex-1 text-center">
-                  <div className="text-2xl font-semibold text-black">{restaked} lstNIBI</div>
-                  <div className="text-sm text-gray-500">LST Tokens</div>
-                </div>
+              {isConnected ? (
+                <div className="flex md:flex-row justify-center items-center w-full space-y-4 md:space-y-0 md:space-x-4">
+                  <div className="flex-1 text-center">
+                    <div className="text-2xl font-semibold text-black">{(restaked || "0").toLocaleString()} lstNIBI</div>
+                    <div className="text-sm text-gray-500">LST Tokens</div>
+                  </div>
 
-                <div className="block border-l border-gray-600 h-10"></div>
+                  <div className="block border-l border-gray-600 h-10"></div>
 
-                <div className="flex-1 text-center">
-                  <div className="text-2xl font-semibold text-black">{delegated} NIBI</div>
-                  <div className="text-sm text-gray-500">Staked NIBI</div>
+                  <div className="flex-1 text-center">
+                    <div className="text-2xl font-semibold text-black">{(delegated || "0").toLocaleString()} NIBI</div>
+                    <div className="text-sm text-gray-500">Staked NIBI</div>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="w-full flex justify-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                </div>
+              )}
             </div>
           </Card>
 
           <StatsCard
             title="Points earned"
-            value={restakedPoints}
+            value={isConnected ? restakedPoints : <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>}
           />
         </div>
 
@@ -355,7 +364,10 @@ export default function Home() {
         />
         <StatsCard
           title="Staking reward"
-          value={`${RewardQueryData?.amount} NIBI`}
+          value={
+            isConnected ? `${getSafeRewardAmount().toLocaleString()} NIBI` :
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+          }
         />
       </div>
 
