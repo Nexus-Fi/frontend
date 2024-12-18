@@ -323,7 +323,8 @@ export default function Home() {
 
           <StatsCard
             title="Points earned"
-            value={isConnected ? restakedPoints : <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>}
+            value={restakedPoints}
+            isLoading={!isConnected}
           />
         </div>
 
@@ -364,10 +365,8 @@ export default function Home() {
         />
         <StatsCard
           title="Staking reward"
-          value={
-            isConnected ? `${getSafeRewardAmount().toLocaleString()} NIBI` :
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-          }
+          value={`${getSafeRewardAmount().toLocaleString()} NIBI`}
+          isLoading={!isConnected}
         />
       </div>
 
