@@ -174,15 +174,15 @@ export default function Home() {
       );
       console.log("balances", get_balance_history);
 
-
       /// getting updates
       const get_balance_updates = await fetchQuery(
         STAKE_CONTRACT_ADDRESS,
         STAKE_QUERY_MESSAGES_NEW.balance_updates(address, null, null)
       );
       console.log("balances 2", get_balance_updates);
-      setRestaked(convertToNibi(get_balance_history?.total_bonded))
-      setDelegated(convertToNibi(get_balance_history?.total_unbonded))
+      setRestaked(convertToNibi(get_balance_history?.updates[0]?.resulting_stnibi_balance))
+      setDelegated(convertToNibi(get_balance_history?.updates[0]?.resulting_nibi_balance))
+      console.log("restaked", get_balance_history?.updates[0]?.resulting_stnibi_balance, "delegated", get_balance_history?.updates[0]?.resulting_nibi_balance)
       // it gives you below responce 
       /**
        * 
@@ -298,15 +298,15 @@ export default function Home() {
               </div> */}
               <div className="flex md:flex-row justify-center items-center w-full space-y-4 md:space-y-0 md:space-x-4">
                 <div className="flex-1 text-center">
-                  <div className="text-2xl font-semibold text-black">{restaked} stNIBI</div>
-                  <div className="text-sm text-gray-500">Restaked</div>
+                  <div className="text-2xl font-semibold text-black">{restaked} lstNIBI</div>
+                  <div className="text-sm text-gray-500">LST Tokens</div>
                 </div>
 
                 <div className="block border-l border-gray-600 h-10"></div>
 
                 <div className="flex-1 text-center">
-                  <div className="text-2xl font-semibold text-black">{delegated} rstNIBI</div>
-                  <div className="text-sm text-gray-500">Delegated</div>
+                  <div className="text-2xl font-semibold text-black">{delegated} NIBI</div>
+                  <div className="text-sm text-gray-500">Staked NIBI</div>
                 </div>
               </div>
             </div>

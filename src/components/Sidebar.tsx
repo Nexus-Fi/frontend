@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import type { SidebarLink } from "@/types/dashboard"
 import { usePathname } from "next/navigation";
+import Footer from "@/components/Footer"
 import type { IconType } from "react-icons";
 
 const navigation: SidebarLink[] = [
@@ -58,7 +59,7 @@ export default function Sidebar() {
                 transition-transform duration-300 ease-in-out
                 bg-white dark:bg-gray-900 border-r
                 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
-                md:translate-x-0 md:w-64 md:static
+                md:translate-x-0 md:w-64 md:static md:h-full md:transform-none
             `}>
                 <div className="flex w-64 flex-col bg-white border-r border-gray-200 h-full">
                     <div className="p-6">
@@ -89,35 +90,19 @@ export default function Sidebar() {
                         </nav>
                     </div>
 
-                    <div className="mt-auto p-6 flex flex-col text-center">
-                        <div className="flex justify-center space-x-4">
-                            <Link href="https://t.me/NexusFinanceglobal" target="_blank">
-                                <Button size="icon" variant="ghost">
-                                    <FaTelegramPlane size={20} />
-                                </Button>
-                            </Link>
-                            <Link href="https://discord.com/invite/hpkjjQcB" target="_blank">
-                                <Button size="icon" variant="ghost">
-                                    <FaDiscord size={20} />
-                                </Button>
-                            </Link>
-                            <Link href="https://x.com/NexusFi_xyz" target="_blank">
-                                <Button size="icon" variant="ghost">
-                                    <FaTwitter size={20} />
-                                </Button>
-                            </Link>
-                        </div>
-                        <Separator className="my-4" />
-                        <div className="flex flex-col space-y-2 text-sm text-gray-600">
-                            {footerLinks.map((link) => (
-                                <Link key={link.href} href={link.href} className="hover:underline">
-                                    {link.label}
-                                </Link>
-                            ))}
-                        </div>
+                    <div className="mt-auto md:hidden">
+                        <Footer />
+                    </div>
+
+                </div>
+
+                <div className="flex flex-col">
+                    <div className="mt-auto">
+                        <Footer />
                     </div>
                 </div>
             </aside>
+
 
             {/* Overlay for mobile */}
             {isMobileMenuOpen && (
