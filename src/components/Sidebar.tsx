@@ -44,7 +44,7 @@ export default function Sidebar() {
         setIsMobileMenuOpen(!isMobileMenuOpen);
     };
 
-    const handleDrag = (e: MouseEvent) => {
+    const handleDrag = (e: React.MouseEvent) => {
         const newPosition = { x: e.clientX - 50, y: e.clientY - 50 };
         setPosition(newPosition);
     };
@@ -117,7 +117,7 @@ export default function Sidebar() {
 
                 {/* create space box */}
                 <div className="hidden md:block flex-col">
-                    <div className="h-[200px]"></div>
+                    <div className="h-[12rem]"></div>
                 </div>
 
                 <div className="flex flex-col mt-auto">
