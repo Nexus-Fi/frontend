@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { FaCube, FaDollarSign, FaSync, FaTelegramPlane, FaDiscord, FaTwitter, FaBars } from "react-icons/fa"
@@ -38,16 +38,36 @@ const footerLinks = [
 export default function Sidebar() {
     const pathname = usePathname();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [position, setPosition] = useState({ x: 20, y: 25 });
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
     };
 
+    const handleDrag = (e: MouseEvent) => {
+        const newPosition = { x: e.clientX - 50, y: e.clientY - 50 };
+        setPosition(newPosition);
+    };
+
+    useEffect(() => {
+        const button = document.querySelector('.draggable-button');
+        if (button) {
+            button.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                window.addEventListener('mousemove', handleDrag);
+                window.addEventListener('mouseup', () => {
+                    window.removeEventListener('mousemove', handleDrag);
+                });
+            });
+        }
+    }, []);
+
     return (
         <>
             {/* Mobile Menu Button */}
             <button
-                className="md:hidden fixed top-9 left-9 p-2 rounded-md text-black"
+                className="draggable-button md:hidden absolute p-2 rounded-md text-black"
+                style={{ top: `${position.y}px`, left: `${position.x}px` }}
                 onClick={toggleMobileMenu}
             >
                 <FaBars size={24} />
