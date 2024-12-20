@@ -1,4 +1,3 @@
-import Restaking from "@/components/Restaking";
 
 export default function Home() {
     return (

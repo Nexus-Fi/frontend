@@ -1,8 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-// import Dashboard from "@/components/Dashboard";
-import { StatsCard } from "@/components/stats-card"
+import { StatsCard } from "@/components/ui/stats-card"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Wallet } from "@/components/wallet";
@@ -256,7 +255,6 @@ export default function Home() {
     "current_stnibi": "1000000"
   }
 }
-   
        */
     } catch (error) {
       console.log(error);

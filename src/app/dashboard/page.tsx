@@ -1,6 +1,6 @@
 "use client";
-import { ConnectWallet } from "@/components/connect-wallet"
-import { StatsCard } from "@/components/stats-card"
+import { Wallet } from "@/components/wallet/Wallet";
+import { StatsCard } from "@/components/ui/stats-card"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { STAKE_QUERY_MESSAGES_NEW } from "@/lib/Message/stakeMessages";
@@ -54,7 +54,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between">
                 <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
                 <div className="hidden md:block">
-                    <ConnectWallet />
+                    <Wallet />
                 </div>
             </div>
 
