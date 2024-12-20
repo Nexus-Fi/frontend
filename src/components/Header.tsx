@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ConnectWallet } from "@/components/connect-wallet"
+import { Wallet } from "@/components/wallet"
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet"
 import Sidebar from "@/components/Sidebar"
 import { FaBars } from 'react-icons/fa'
@@ -24,7 +24,7 @@ export function Header() {
                 </SheetContent>
             </Sheet>
 
-            <ConnectWallet />
+            <Wallet />
         </header>
     )
 }

@@ -13,10 +13,26 @@ import {
   ButtonNotExist,
   ButtonRejected,
 } from "./Connect";
+import { useEffect, useState } from "react";
 
 export function Wallet() {
   const { chain, status, wallet, address, message, connect, openView } =
     useChain(CHAIN_NAME);
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // Adjust the width as per your design
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Call on mount to set initial state
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const ConnectButton = {
     [WalletStatus.Connected]: <ButtonConnected onClick={openView} />,
@@ -31,7 +47,13 @@ export function Wallet() {
     <div className="flex flex-row gap-2 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 text-center border-1 border-black text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
       {/* <Chain logo={getChainLogo(chain.chain_name)!} /> */}
 
-      {address ? <ClipboardCopyText text={address} truncate="middle" /> : null}
+      {address ? (
+        isMobile ? (
+          <span>{address.slice(0, 3)}...{address.slice(-4)}</span>
+        ) : (
+          <ClipboardCopyText text={address} truncate="middle" />
+        )
+      ) : null}
 
       {ConnectButton}
 
