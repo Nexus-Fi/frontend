@@ -24,7 +24,7 @@ export default function RootLayout({
   };
   return (
     <html lang="en" data-theme="light">
-      <body className={`${inter.className} p-5 bg-white min-h-screen`}>
+      <body className={`${inter.className} p-3 md:p-6 bg-white min-h-screen`}>
         <ChainProvider
           chains={chains}
           assetLists={assets}

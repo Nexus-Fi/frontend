@@ -276,7 +276,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex flex-col justify-between px-8 md:px-20 py-6 md:py-12">
+    <main className="flex flex-col justify-between px-5 md:px-20 py-6 md:py-12">
       <div className="space-y-4 md:space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
