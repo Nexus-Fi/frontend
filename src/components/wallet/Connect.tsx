@@ -1,5 +1,6 @@
 import { MouseEventHandler } from "react";
 import { Button as UIButton, IconName } from "@interchain-ui/react";
+import toast from 'react-hot-toast';
 
 export type ButtonProps = {
   text?: string;

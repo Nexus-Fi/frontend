@@ -14,10 +14,6 @@
 // export const VALIDATOR_REGISTARY_CONTRACT_ADDRESS = "nibi1gnhtdx4fuvylnz44hs5876lg5sts5nkrkd7ypv9z2atn3mt8pacq9ej0cx";
 // export const REWARD_DISPATCHER_CONTRACT_ADDRESS = "nibi16c0tzrthetetntnl9tzk22hgk5d4aly0a62yg8qun0m82fhjzlksr8qnkv";
 
-export const STAKE_CONTRACT_ADDRESS = "nibi19dpr3ltx385dujt34hdq8y96xktpxvd3z8ernedjqq40cfr7fmzqq0f0r7";
-export const stNIBITOKEN_CONTRACT_ADDRESS = "nibi1yvxghhskjtw63hdvqvp89atfd07vjdyf5gjh9mmu44gdt9mlafrq6qs7fj";
-export const VALIDATOR_REGISTARY_CONTRACT_ADDRESS = "nibi1ej9hvp3qwf9u4plupy3lvhdgfkk65fxxg20tl4afwcsga79w77jswz99pd";
-export const REWARD_DISPATCHER_CONTRACT_ADDRESS = "nibi1m758fffepc76gn3m464y9qjnjn0j4tf7gsuyup6vjkvksd7344zsma2d7l";
 
 //testing contract
 export const rstNIBI_TOKEN_CONTRACT_ADDRESS = "nibi1h3rnkjxargplk88nqg9y0xrwscj5phk8jkdhc7vcre72qp8gvfdsg8xa66"
@@ -33,3 +29,15 @@ export const rstNIBI_TOKEN_CONTRACT_ADDRESS = "nibi1h3rnkjxargplk88nqg9y0xrwscj5
 // "validators_registry_contract": "nibi1gnhtdx4fuvylnz44hs5876lg5sts5nkrkd7ypv9z2atn3mt8pacq9ej0cx",
 //     "rewards_dispatcher_contract": "nibi16c0tzrthetetntnl9tzk22hgk5d4aly0a62yg8qun0m82fhjzlksr8qnkv",
 // nibi1gt7vts94scgqmj9tphuzy2rz4mdnyl5j4vlkrrm2pz2p0vkkkegs2luh35
+
+// export const STAKE_CONTRACT_ADDRESS = "nibi19dpr3ltx385dujt34hdq8y96xktpxvd3z8ernedjqq40cfr7fmzqq0f0r7";
+// export const stNIBITOKEN_CONTRACT_ADDRESS = "nibi1yvxghhskjtw63hdvqvp89atfd07vjdyf5gjh9mmu44gdt9mlafrq6qs7fj";
+// export const VALIDATOR_REGISTARY_CONTRACT_ADDRESS = "nibi1ej9hvp3qwf9u4plupy3lvhdgfkk65fxxg20tl4afwcsga79w77jswz99pd";
+// export const REWARD_DISPATCHER_CONTRACT_ADDRESS = "nibi1m758fffepc76gn3m464y9qjnjn0j4tf7gsuyup6vjkvksd7344zsma2d7l";
+
+
+export const STAKE_CONTRACT_ADDRESS = "nibi1ap6mdk7a899a3cqkq07zrc5dxz7jwmf28x54c9tezt69e7cp94qq67yvlv";
+export const stNIBITOKEN_CONTRACT_ADDRESS = "nibi1zm4xwjrr3cvrrv7z7h4m96z6l8clk0j4xwy5qdqfu7tt4mmf5trs8tktgr";
+export const VALIDATOR_REGISTARY_CONTRACT_ADDRESS = "nibi1uks3tduxzmvgpspe627tsdv39fqypl9lwfrms389rj4e5jdzv5fsjx006w";
+export const REWARD_DISPATCHER_CONTRACT_ADDRESS = "nibi1knyym35nwflx96hqa3s6f5m0vjsvxlgyrx29x28akuegm6rpjpfsd53qu7";
+

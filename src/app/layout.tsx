@@ -4,11 +4,11 @@ import { Inter } from "next/font/google";
 import { SignerOptions, wallets } from "cosmos-kit";
 import { ChainProvider } from "@cosmos-kit/react";
 import { assets, chains } from "chain-registry";
-import { Toaster } from "react-hot-toast";
 import Sidebar from "@/components/Sidebar"
 import { Header } from "@/components/Header"
 import "@interchain-ui/react/styles";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] });
 

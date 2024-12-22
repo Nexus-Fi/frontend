@@ -1,8 +1,6 @@
 "use client";
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import useTransaction from "@/hooks/useTransaction";
-import { toast, ToastContainer } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
 import { STAKE_CONTRACT_ADDRESS, stNIBITOKEN_CONTRACT_ADDRESS } from "@/lib/address";
 import { Button } from "@/components/ui/moving-border"
 import { TOKEN_CONTRACT_MESSAGES } from "@/lib/Message/token";
@@ -11,8 +9,10 @@ import { useChain, useWalletClient } from '@cosmos-kit/react';
 import { CHAIN_NAME } from '@/lib/utils';
 import { Cw20ReceiveMsg, STAKE_CONTRACT_MESSAGES } from "@/lib/Message/stakeMessages";
 import { Wallet } from "@/components/wallet";
+import { useToast } from "@/hooks/use-toast"
 
 export default function Staking() {
+  const { toast } = useToast();
   const [exchange, setExchange] = useState("1");
   const [amount, setAmount] = useState<string>("0");
   const [unstakeAmount, setUnstakeAmount] = useState<string>("0");
@@ -98,56 +98,61 @@ export default function Staking() {
   const stake = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
-    const amountAsNumber = parseFloat(amount);
-    const multipliedAmount = amountAsNumber * Math.pow(10, 6);
+    toast({
+      title: "Connecting Wallet",
+      description: "Please approve the transaction in your wallet",
+    });
 
-    const tokenToStake = [
-      {
-        amount: multipliedAmount.toString(),
-        denom: "unibi",
-      },
-    ];
-
-    // const toastId = toast.loading("Staking...");
-    console.log("staking", tokenToStake, "amount", amount, "exchange", exchange)
     try {
-      const tx = await sendTransaction(
+      const amountAsNumber = parseFloat(amount);
+      const multipliedAmount = amountAsNumber * Math.pow(10, 6);
+
+      const tokenToStake = [
+        {
+          amount: multipliedAmount.toString(),
+          denom: "unibi",
+        },
+      ];
+
+      toast({
+        title: "Transaction Initiated",
+        description: "Processing transaction on chain...",
+        duration: null, // Will stay until manually dismissed
+      });
+
+      const tx: any = await sendTransaction(
         STAKE_CONTRACT_ADDRESS,
         STAKE_CONTRACT_MESSAGES.bond_forstnibi(),
         tokenToStake
       );
 
-      toast.success(`Staked ${amount} NIBI successfully`, {
-        position: "top-center"
-      });
-
-      toast(
-        <div>
-          Link - {`https://explorer.nibiru.fi/nibiru-testnet-1/tx/${tx}`}
-          {"top-center"}
-          <button> Retry</button>
-        </div >
-      )
-
-
-      // toast.dismiss(toastId);
-      // toast.success(`Staked ${amount} NIBI successfully`);
+      if (tx && (tx.transactionHash || typeof tx === 'string')) {
+        toast({
+          title: "Transaction Confirmed",
+          description: (
+            <div className="flex flex-col gap-2">
+              <span>Transaction completed successfully!</span>
+              <a
+                href={`https://explorer.nibiru.fi/nibiru-testnet-1/tx/${tx.transactionHash || tx}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline text-blue-500 hover:text-blue-600"
+              >
+                View on Explorer
+              </a>
+            </div>
+          ),
+        });
+      }
 
     } catch (err) {
-      // If the transaction fails
       console.log("Staking Failed", err);
 
-      toast.error("Staking Failed !", {
-        position: "top-right"
+      toast({
+        title: "Staking Failed",
+        description: "There was an error while processing your stake",
+        variant: "destructive",
       });
-
-      toast(
-        <div>
-          {/* @ts-ignore */}
-          {error?.reason}
-          {/* by default will show on top-right */}
-        </div>
-      )
     }
   };
 
@@ -155,85 +160,104 @@ export default function Staking() {
 
   const unstake = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    await transfer(event);
-    const toastId = toast.loading("unstaking...");
-    const amountAsNumber = parseFloat(unstakeAmount);
-    const multipliedAmount = amountAsNumber * Math.pow(10, 6);
+    const { toast } = useToast();
 
-    console.log("unstaking unstakeAmount", unstakeAmount, "stakeAmount", amount)
-    // const tx = await sendTransaction(
-    //   stNIBITOKEN_CONTRACT_ADDRESS,
-    //   TOKEN_CONTRACT_MESSAGES.send_from("", STAKE_CONTRACT_ADDRESS, multipliedAmount.toString(), "")
-    // )
-    //   .then((res) => {
-    //     toast.dismiss(toastId);
-    //     toast.success(`Unstaked ${unstakeAmount} NIBI successfully`);
-    //     console.log("unstake sendFrom tx", tx)
+    toast({
+      title: "Initiating Unstake",
+      description: "Please approve the transaction in your wallet",
+    });
 
-    //   })
-    //   .catch((err) => {
-    //     console.log("Unstaking Failed", err);
-    //     toast.dismiss(toastId);
-    //   });
-    console.log("Address", address)
+    try {
+      await transfer(event);
+      const amountAsNumber = parseFloat(unstakeAmount);
+      const multipliedAmount = amountAsNumber * Math.pow(10, 6);
+
+      console.log("unstaking unstakeAmount", unstakeAmount, "stakeAmount", amount)
+      // const tx = await sendTransaction(
+      //   stNIBITOKEN_CONTRACT_ADDRESS,
+      //   TOKEN_CONTRACT_MESSAGES.send_from("", STAKE_CONTRACT_ADDRESS, multipliedAmount.toString(), "")
+      // )
+      //   .then((res) => {
+      //     toast.dismiss(toastId);
+      //     toast.success(`Unstaked ${unstakeAmount} NIBI successfully`);
+      //     console.log("unstake sendFrom tx", tx)
+
+      //   })
+      //   .catch((err) => {
+      //     console.log("Unstaking Failed", err);
+      //     toast.dismiss(toastId);
+      //   });
+      console.log("Address", address)
 
 
-    const cw20Recivemsg: Cw20ReceiveMsg = {
-      sender: address,
-      amount: multipliedAmount.toString(),
-      msg: "eyJ1bmJvbmQiOnt9fQ=="
-    }
+      const cw20Recivemsg: Cw20ReceiveMsg = {
+        sender: address,
+        amount: multipliedAmount.toString(),
+        msg: "eyJ1bmJvbmQiOnt9fQ=="
+      };
 
-    const payload: ReceiveWrapper = {
-      receive: cw20Recivemsg
-    };
+      const payload: ReceiveWrapper = {
+        receive: cw20Recivemsg
+      };
 
-    const tx = await sendTransaction(
-      STAKE_CONTRACT_ADDRESS,
-      payload
-    )
-      .then((res) => {
-        toast.dismiss(toastId);
-        toast.success(`Unstaked ${unstakeAmount} NIBI successfully`);
-        console.log("unstake sendFrom tx", tx)
+      const tx = await sendTransaction(
+        STAKE_CONTRACT_ADDRESS,
+        payload
+      );
 
-      })
-      .catch((err) => {
-        console.log("Unstaking Failed", err);
-        toast.dismiss(toastId);
+      toast({
+        title: "Unstaking Successful!",
+        description: `Successfully unstaked ${unstakeAmount} NIBI`,
+        variant: "success",
       });
 
-
+    } catch (error) {
+      console.log("Unstaking Failed", error);
+      toast({
+        title: "Unstaking Failed",
+        description: "There was an error while processing your unstake",
+        variant: "destructive",
+      });
+    }
   };
 
   const withdraw = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
+    const { toast } = useToast();
 
-    const toastId = toast.loading("withdrawing...");
-    // const amountAsNumber = parseFloat(withdrawAmount);
-    // const multipliedAmount = amountAsNumber * Math.pow(10, 6);
+    if (!termsAccepted) {
+      toast({
+        title: "Terms Not Accepted",
+        description: "Please accept the terms before withdrawing",
+        variant: "destructive",
+      });
+      return;
+    }
 
-    console.log("withdraw", withdrawAmount, "termsAccepted", termsAccepted)
-    if (termsAccepted) {
-      // call contract withdraw function here
+    toast({
+      title: "Initiating Withdrawal",
+      description: "Please approve the transaction in your wallet",
+    });
+
+    try {
       const tx = await sendTransaction(
         STAKE_CONTRACT_ADDRESS,
         STAKE_CONTRACT_MESSAGES.withdraw_unbonded,
-      )
-        .then((res) => {
-          toast.dismiss(toastId);
-          toast.success(`Withdraw ${withdrawAmount} NIBI successfully`);
-        })
-        .catch((err) => {
-          "Withdrawing Failed";
-          console.log("withdraw error", err)
-        });
-      console.log("withdraw tx", tx)
+      );
 
-    } else {
-      toast.error('Please tick the box to withdraw funds');
+      toast({
+        title: "Withdrawal Successful!",
+        description: `Successfully withdrew ${withdrawAmount} NIBI`,
+        variant: "success",
+      });
+
+    } catch (error) {
+      toast({
+        title: "Withdrawal Failed",
+        description: "There was an error while processing your withdrawal",
+        variant: "destructive",
+      });
     }
-
   };
 
 
@@ -594,8 +618,6 @@ export default function Staking() {
           </Card>
         </div>
       </div>
-      <ToastContainer />
     </div>
-
   );
 }
