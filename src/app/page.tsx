@@ -36,9 +36,11 @@ export default function Home() {
   const [restakedRatio, setRestakedRatio] = React.useState("0.000000001");
   const [totalStaked, setTotalStaked] = React.useState("0");
   const [totalBurned, setTotalBurned] = React.useState("0");
+  const [totalStnibIssued, setTotalStNibiIssued] = React.useState("0");
+  const [totalStnibBurned, setTotalStNibiBurned] = React.useState("0");
+  const [Tvl, setTvl] = React.useState("0");
 
   const [isConnected, setIsConnected] = React.useState(status === "Connected");
-
   const [HistroyqueryData, setHistoryQueryData] = React.useState()
   const [RestakequeryData, setRestakeQueryData] = React.useState()
   const [RewardQueryData, setRewardQueryData] = React.useState<RewardQueryData | undefined>(undefined);
@@ -89,6 +91,24 @@ export default function Home() {
       //   STAKE_QUERY_MESSAGES_NEW.balance_updates(address, null, null)
       // );
       // console.log("get_balance_updates", get_balance_updates);
+
+      const get_tvl = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES.total_supply()
+      );
+
+      console.log("TVL",get_tvl);
+      setTvl(get_tvl);
+      const get_state = await fetchQuery(
+        STAKE_CONTRACT_ADDRESS,
+        STAKE_QUERY_MESSAGES.state()
+      );
+      console.log("state",get_state)
+
+      setTotalStNibiIssued(convertToNibi(get_state?.total_stnibi_issued));
+      setTotalStNibiBurned(convertToNibi(get_state?.total_stnibi_burned));
+
+
 
 
       const get_buffered_rewards = await fetchQuery(
@@ -329,13 +349,13 @@ export default function Home() {
           </CardHeader>
           <CardContent>
             <div className="mb-4 text-2xl font-semibold text-blue-600">
-              {StakequeryData?.total_bond_stnibi_amount ? `${StakequeryData.total_bond_stnibi_amount} nibi` : 'Loading...'}
+              {Tvl?.total_bond_stnibi_amount ? `${Tvl.total_bond_stnibi_amount} nibi` : 'Loading...'}
             </div>
             <Progress value={progress} className="mb-2 h-2 bg-blue-100" />
             <div className="flex flex-col items-end text-sm text-gray-600">
               <div className="flex items-center">
                 <GoDotFill className="text-blue-600 text-xl" />
-                <div className="ml-1">Total stNIBI issued: {totalBurned.toLocaleString()}</div>
+                <div className="ml-1">Total stNIBI issued: {totalStnibIssued.toLocaleString()}</div>
               </div>
               <div className="flex items-center">
                 <GoDotFill className="text-blue-200 text-xl" />
@@ -345,7 +365,7 @@ export default function Home() {
           </CardContent>
         </Card>
       </div>
-
+              
       <div className="pt-6 grid gap-6 md:grid-cols-3">
         <StatsCard
           title="Unbonding period"
@@ -353,8 +373,8 @@ export default function Home() {
         />
         <StatsCard
           title="Total burned"
-          value={"1000000"}
-          subValue={`/$${"1000000"}`}
+          value={totalStnibBurned.toLocaleString()}
+          subValue={`/$${totalStnibBurned.toLocaleString()}`}
         />
         <StatsCard
           title="Staking reward"

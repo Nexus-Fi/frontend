@@ -40,5 +40,10 @@ export const STAKE_QUERY_MESSAGES = {
         delegation_data:{
             delegator
         }
+    }),
+    total_supply:() =>({
+        total_supply:{
+            
+        }
     })
 };
