@@ -1,6 +1,6 @@
 
-interface Cw20ReceiveMsg {
-    sender: string;
+export interface Cw20ReceiveMsg {
+    sender: string|undefined;
     amount: string;  // Uint128 as a string
     msg: string;  // Binary as a base64 string
 }
@@ -38,9 +38,9 @@ export interface ExecuteMsg {
 
 
 export const STAKE_CONTRACT_MESSAGES = {
-    receive: (msg: string) => ({
+    receive: (msg: Cw20ReceiveMsg) => ({
         receive: {
-            msg,
+            msg
         },
     }),
     bond_forstnibi: () => ({
@@ -121,6 +121,7 @@ export const STAKE_CONTRACT_MESSAGES = {
 };
 
 
+
 // pub enum QueryMsg {
 //     Config { },
 //     State { },
@@ -139,8 +140,159 @@ export const STAKE_CONTRACT_MESSAGES = {
 // Guardians,
 // }
 
-export interface STAKE_QUERY_MESSAGE {
+export const STAKE_QUERY_MESSAGES_NEW = {
     config: () => ({
-
+        config: {},
+    }),
+    state: () => ({
+        state: {},
+    }),
+    current_batch: () => ({
+        current_batch: {},
+    }),
+    withdrawable_unbonded: (address: string) => ({
+        withdrawable_unbonded: {
+            address,
+        },
+    }),
+    parameters: () => ({
+        parameters: {},
+    }),
+    unbond_requests: (address: string) => ({
+        unbond_requests: {
+            address,
+        },
+    }),
+    all_history: (start_from?: number, limit?: number) => ({
+        all_history: {
+            start_from,
+            limit,
+        },
+    }),
+    guardians: () => ({
+        guardians: {},
+    }),
+    restake: (staker: string) => ({
+        restake: {
+            staker,
+        },
+    }),
+    staker: (staker: string) => ({
+        staker: {
+            staker,
+        },
+    }),
+    delegation_data: (delegator: string) => ({
+        delegation_data: {
+            delegator,
+        },
+    }),
+    get_unbonding_info: (user_address: string) => ({
+        get_unbonding_info: {
+            user_address,
+        },
+    }),
+    hub_balance: (contractAddress: string) => ({
+        hub_balance: {
+            contract_address: contractAddress,
+        },
+    }),
+    balance_history: (staker:string , start_after:number|null, limit:number|null) => ({
+        balance_history: {
+            staker: staker,
+            start_after: null,
+            limit: null
+        }
+    }),
+    balance_updates: (staker: string, start_after: number | null, limit: number | null) => ({
+        balance_updates: {
+            staker: staker,
+            start_after: null,
+            limit: null
+        }
     })
-}
+};
+
+
+
+// Import necessary modules
+
+// Define TypeScript interfaces for each query
+// export interface GetBufferedRewardsQuery {
+//     get_buffered_rewards: {
+//         contract_addr: string;
+//     };
+// }
+
+// export interface ConfigQuery {
+//     config: {};
+// }
+
+// export interface StateQuery {
+//     state: {};
+// }
+
+// export interface CurrentBatchQuery {
+//     current_batch: {};
+// }
+
+// export interface WithdrawableUnbondedQuery {
+//     withdrawable_unbonded: {
+//         address: string;
+//     };
+// }
+
+// export interface ParametersQuery {
+//     parameters: {};
+// }
+
+// export interface UnbondRequestsQuery {
+//     unbond_requests: {
+//         address: string;
+//     };
+// }
+
+// export interface AllHistoryQuery {
+//     all_history: {
+//         start_from?: number;
+//         limit?: number;
+//     };
+// }
+
+// export interface GuardiansQuery {
+//     guardians: {};
+// }
+
+// export interface RestakeQuery {
+//     restake: {
+//         staker: string;
+//     };
+// }
+
+// export interface StakerQuery {
+//     staker: {
+//         staker: string;
+//     };
+// }
+
+// export interface DelegationDataQuery {
+//     delegation_data: {
+//         delegator: string;
+//     };
+// }
+
+// export interface HubBalanceQuery {
+//     hub_balance: {
+//         contract_address: string;
+//     };
+// }
+
+// export interface GetUserRewardsQuery {
+//     get_user_rewards: {
+//         user_address: string;
+//         hub_contract: string;
+//         contract_addr: string;
+//     };
+// }
+
+

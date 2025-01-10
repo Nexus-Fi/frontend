@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Restaking from "@/components/Restaking";
 
 export default function Home() {
